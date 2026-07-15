@@ -49,14 +49,32 @@ collectors:
 
 # ─── Processors ─────────────────────────────────────────────────────────────
 processors:
-  dedup:
+  similarity_dedup:
     enabled: true
-    keys: [url, title]            # deduplicate on these fields
+    title_threshold: 0.6
+    url_normalize: true
   enrich:
     enabled: true
-    add_sentiment: true           # basic positive/negative/neutral
-    add_keywords: true            # extract top keywords from title
-    add_read_time: true           # estimate reading time
+    add_sentiment: true
+    add_keywords: true
+    add_read_time: true
+  entity_extraction:
+    enabled: true
+  competitor_detection:
+    enabled: true
+  pain_point_extraction:
+    enabled: true
+  buying_signal_detection:
+    enabled: true
+  topic_clustering:
+    enabled: true
+    similarity_threshold: 0.2
+    min_cluster_size: 2
+    max_clusters: 15
+  trend_detection:
+    enabled: true
+    spike_threshold: 2.0
+    hot_threshold: 3.0
 
 # ─── Storage ────────────────────────────────────────────────────────────────
 storage:
@@ -67,13 +85,9 @@ storage:
 
 # ─── Reports ────────────────────────────────────────────────────────────────
 reports:
-  markdown:
+  intelligence:
     enabled: true
     output_path: reports/
-    include_summary: true
-    include_top_stories: true
-    include_by_source: true
-    include_by_topic: true
     top_stories_count: 10
 
 # ─── Retry Logic ────────────────────────────────────────────────────────────
