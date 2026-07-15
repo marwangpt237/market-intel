@@ -87,6 +87,7 @@ class DailyRun:
 
         from processors.similarity_dedup import SimilarityDedupProcessor
         from processors.enrich import EnrichProcessor
+        from processors.source_authority import SourceAuthorityProcessor
         from processors.entity_extraction import EntityExtractionProcessor
         from processors.competitor_detection import CompetitorDetectionProcessor
         from processors.pain_point_extraction import PainPointExtractionProcessor
@@ -95,10 +96,18 @@ class DailyRun:
         from processors.trend_detection import TrendDetectionProcessor
         from processors.entity_graph import EntityGraphProcessor
         from processors.scoring import ScoringProcessor
+        from processors.domain_processor import DomainProcessor
         from processors.decision_engine import DecisionEngine
+        from processors.false_positive_filter import FalsePositiveFilter
+        from processors.strategy_engine import StrategyEngine
         from processors.execution_engine import ExecutionEngine
         from processors.analytics_engine import AnalyticsEngine
         from processors.learning_engine import LearningEngine
+
+        # 0. Source authority (Phase 5) — filter low-quality + non-English items early
+        source_auth_cfg = processors_config.get("source_authority", {})
+        if source_auth_cfg.get("enabled", True):
+            self._container.register_processor("source_authority", SourceAuthorityProcessor(source_auth_cfg))
 
         # 1. Dedup (similarity-based)
         dedup_cfg = processors_config.get("similarity_dedup", processors_config.get("dedup", {}))
@@ -156,10 +165,28 @@ class DailyRun:
             merged_scoring_cfg = {**scoring_cfg, **{"weights": learning_weights}}
             self._container.register_processor("scoring", ScoringProcessor(merged_scoring_cfg))
 
+        # 10b. Domain processor (Phase 5) — tags items with SaaS / Cybersecurity / Ecommerce signals
+        domain_cfg = processors_config.get("domain", {})
+        if domain_cfg.get("enabled", True):
+            self._container.register_processor("domain", DomainProcessor(domain_cfg))
+
         # 11. Decision engine (Phase 4)
         decision_cfg = processors_config.get("decision_engine", {})
         if decision_cfg.get("enabled", True):
             self._container.register_processor("decision_engine", DecisionEngine(decision_cfg))
+
+        # 11b. False positive filter (Phase 5) — removes mega-corp / generic / weak-evidence decisions
+        fpf_cfg = processors_config.get("false_positive_filter", {})
+        if fpf_cfg.get("enabled", True):
+            self._container.register_processor("false_positive_filter", FalsePositiveFilter(fpf_cfg))
+
+        # 11c. Strategy engine (Phase 5) — knapsack optimization under budget + time
+        strategy_cfg = processors_config.get("strategy_engine", {})
+        if strategy_cfg.get("enabled", True):
+            # Pass historical performance data from Learning Engine for ROI bonus
+            historical_perf = self._load_historical_performance()
+            merged_strategy_cfg = {**strategy_cfg, **{"historical_performance": historical_perf}}
+            self._container.register_processor("strategy_engine", StrategyEngine(merged_strategy_cfg))
 
         # 12. Execution engine (Phase 4)
         execution_cfg = processors_config.get("execution_engine", {})
@@ -224,6 +251,56 @@ class DailyRun:
         except Exception as e:
             self._logger.warning(f"Could not load learning weights: {e}")
         return {}
+
+    def _load_historical_performance(self) -> dict:
+        """Load per-(decision_type, priority) historical outcome data from SQLite.
+
+        Used by Strategy Engine to give ROI bonus to actions whose buckets
+        have historically outperformed baseline.
+        """
+        try:
+            storage_cfg = self._config.storage
+            if storage_cfg.get("type") != "sqlite":
+                return {}
+            from storage.sqlite_store import SQLiteStorage
+            import sqlite3
+            storage = SQLiteStorage(storage_cfg)
+            db_path = storage._db_path
+            with sqlite3.connect(db_path) as conn:
+                conn.row_factory = sqlite3.Row
+                rows = conn.execute(
+                    """SELECT decision_type, priority,
+                              SUM(clicks) AS clicks, SUM(signups) AS signups,
+                              SUM(conversions) AS conversions, SUM(revenue) AS revenue,
+                              COUNT(*) AS count
+                       FROM actions
+                       WHERE status IN ('sent', 'published')
+                       GROUP BY decision_type, priority"""
+                ).fetchall()
+            if not rows:
+                return {}
+            # Compute overall baseline
+            total_outcome = 0
+            total_count = 0
+            buckets = []
+            for r in rows:
+                outcome = (r["signups"] or 0) * 5 + (r["conversions"] or 0) * 25 + float(r["revenue"] or 0) * 0.1
+                avg = outcome / r["count"] if r["count"] else 0
+                buckets.append((r["decision_type"], r["priority"], avg, r["count"]))
+                total_outcome += outcome
+                total_count += r["count"]
+            baseline = total_outcome / total_count if total_count else 0
+            result = {}
+            for dtype, priority, avg, count in buckets:
+                result[f"{dtype}_{priority}"] = {
+                    "avg_outcome": avg,
+                    "baseline_outcome": baseline,
+                    "sample_size": count,
+                }
+            return result
+        except Exception as e:
+            self._logger.warning(f"Could not load historical performance: {e}")
+            return {}
 
     def run(self) -> dict:
         """Execute the full pipeline. Returns a summary dict for logging."""
@@ -292,11 +369,24 @@ class DailyRun:
         except Exception as e:
             self._logger.error(f"Decision report failed: {e}", exc_info=True)
 
+        # 6b. Strategy report (Phase 5) — optimal plan under constraints
+        strategy_report_path = None
+        try:
+            from reports.strategy_report import StrategyReportGenerator
+            strat_cfg = self._config.reports.get("strategy", {"enabled": True, "output_path": "reports/"})
+            if strat_cfg.get("enabled", True):
+                strat_gen = StrategyReportGenerator(strat_cfg)
+                strategy_report_path = strat_gen.generate(processed_items, self._run_id)
+                self._logger.info(f"Strategy report generated: {strategy_report_path}")
+        except Exception as e:
+            self._logger.error(f"Strategy report failed: {e}", exc_info=True)
+
         # 7. Build summary
         scores = processed_items[0].metadata.get("_scores", {}) if processed_items else {}
         decisions = processed_items[0].metadata.get("_decisions", {}) if processed_items else {}
         executions = processed_items[0].metadata.get("_executions", {}) if processed_items else {}
         learning = processed_items[0].metadata.get("_learning", {}) if processed_items else {}
+        strategy = processed_items[0].metadata.get("_strategy", {}) if processed_items else {}
 
         summary = {
             "run_id": self._run_id,
@@ -307,10 +397,14 @@ class DailyRun:
             "topics_scored": len(scores.get("topic_scores", [])),
             "insights": len(scores.get("insights", [])),
             "decisions": len(decisions.get("decisions", [])) if isinstance(decisions, dict) else 0,
+            "filtered": sum(decisions.get("filter_counts", {}).values()) if isinstance(decisions, dict) else 0,
+            "actions_selected": len(strategy.get("selected", [])) if isinstance(strategy, dict) else 0,
             "actions_executed": len(executions.get("artifacts", [])) if isinstance(executions, dict) else 0,
             "learning_adjustments": len(learning.get("weight_adjustments", [])) if isinstance(learning, dict) else 0,
+            "projected_roi": strategy.get("projected", {}).get("total_roi", 0) if isinstance(strategy, dict) else 0,
             "report_path": report_path,
             "decision_report_path": decision_report_path,
+            "strategy_report_path": strategy_report_path,
         }
 
         self._logger.info(f"Run complete: {summary}")

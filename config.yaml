@@ -153,6 +153,37 @@ processors:
   learning_engine:
     enabled: true
 
+  # ─── Phase 5: data quality + strategy optimization ────────────────────
+  source_authority:
+    enabled: true
+    min_authority: 25            # below this, items are dropped
+    demote_non_english: true
+    non_english_penalty: 40
+
+  domain:
+    enabled: true
+    saas:
+      enabled: true
+    cybersecurity:
+      enabled: true
+    ecommerce:
+      enabled: true
+
+  false_positive_filter:
+    enabled: true
+    min_evidence_count: 2
+    min_authority_avg: 40
+    # Mega-corps blocked from "alternative" decisions
+    mega_corp_blocklist: []      # extends built-in list
+    generic_terms: []            # extends built-in list
+    allowlist: []                # smaller SaaS that ARE realistic targets
+
+  strategy_engine:
+    enabled: true
+    budget_usd: 500              # monthly budget for actions
+    time_hours: 20               # monthly hours available
+    team_size: 1
+
 # ─── Storage ────────────────────────────────────────────────────────────────
 storage:
   type: sqlite                      # json | sqlite
@@ -170,6 +201,9 @@ reports:
     enabled: true
     output_path: reports/
     top_decisions_count: 15
+  strategy:
+    enabled: true
+    output_path: reports/
 
 # ─── Retry Logic ────────────────────────────────────────────────────────────
 retry:
