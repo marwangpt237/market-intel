@@ -118,6 +118,9 @@ class LearningEngine(BaseProcessor):
         # 5. Persist new weights
         self._save_weights(new_weights, adjustments, len(bucket_outcomes))
 
+        # 5b. Phase 6: Update learned feature weights from observed outcomes
+        learned_update = self._update_learned_feature_weights(items)
+
         # 6. Stash on first item
         items[0].metadata["_learning"] = {
             "weights_path": str(self._weights_path),
@@ -127,14 +130,152 @@ class LearningEngine(BaseProcessor):
             "bucket_outcomes": bucket_outcomes,
             "metrics_synced": synced,
             "data_points": len(bucket_outcomes),
+            "learned_feature_weights": learned_update,
             "last_updated": datetime.now(timezone.utc).isoformat(),
         }
 
         self._logger.info(
-            f"Learning engine: {len(adjustments)} weight adjustments, {len(bucket_outcomes)} buckets analyzed",
-            extra={"adjustments": len(adjustments), "synced": synced},
+            f"Learning engine: {len(adjustments)} bucket adjustments, "
+            f"{learned_update.get('actions_updated', 0)} learned-weight updates "
+            f"across {learned_update.get('features_updated', 0)} features",
+            extra={
+                "adjustments": len(adjustments),
+                "synced": synced,
+                "learned_actions_updated": learned_update.get("actions_updated", 0),
+                "learned_features_updated": learned_update.get("features_updated", 0),
+            },
         )
         return items
+
+    # ─── Step 5b: Learned feature weights (Phase 6) ─────────────────────
+
+    def _update_learned_feature_weights(self, items: list[ProcessedItem]) -> dict:
+        """Update learned feature weights from observed action outcomes.
+
+        For each action in the SQLite actions table that has been marked
+        'sent' or 'published' (i.e. has outcome data), extract its feature
+        vector and call LearnedScorer.update().
+
+        Returns a summary dict for the report.
+        """
+        try:
+            from processors.learned_scorer import LearnedScorer
+            from processors.feature_extractor import FeatureExtractor
+            import sqlite3
+
+            scorer = LearnedScorer(self._db_path)
+            scorer.load()
+
+            # Find the decisions data on items (so we can look up original decisions
+            # to extract features — actions table only stores decision_type/target/priority)
+            decisions_data = None
+            for item in items:
+                if "_decisions" in item.metadata:
+                    decisions_data = item.metadata["_decisions"]
+                    break
+
+            # Build a lookup of decisions by ID (so we can reconstruct features)
+            decisions_by_id = {}
+            if decisions_data:
+                for d in decisions_data.get("decisions", []):
+                    if "id" in d:
+                        decisions_by_id[d["id"]] = d
+                # Also include filtered decisions (they may have outcomes too)
+                for d in decisions_data.get("filtered", []):
+                    if "id" in d:
+                        decisions_by_id[d["id"]] = d
+
+            # Query actions with outcome data
+            with sqlite3.connect(self._db_path) as conn:
+                conn.row_factory = sqlite3.Row
+                rows = conn.execute(
+                    """SELECT id, decision_type, target, priority, expected_impact,
+                              clicks, signups, conversions, revenue, status
+                       FROM actions
+                       WHERE status IN ('sent', 'published')
+                       AND (clicks > 0 OR signups > 0 OR conversions > 0 OR revenue > 0)"""
+                ).fetchall()
+
+            if not rows:
+                return {
+                    "actions_updated": 0,
+                    "features_updated": 0,
+                    "model_stats": scorer.get_stats(),
+                    "message": "No actions with outcome data yet — learned weights unchanged.",
+                }
+
+            extractor = FeatureExtractor()
+            actions_updated = 0
+            features_touched: set[str] = set()
+            errors: list[float] = []
+
+            for row in rows:
+                action_id = row["id"]
+
+                # Reconstruct decision dict for feature extraction
+                # Try to find original decision; if not found, build minimal one from action row
+                decision = decisions_by_id.get(action_id)
+                if not decision:
+                    # Build a minimal decision from the action row
+                    decision = {
+                        "id": action_id,
+                        "type": row["decision_type"],
+                        "target": row["target"],
+                        "priority": row["priority"],
+                        "expected_impact": row["expected_impact"],
+                        "evidence": [],  # we don't have evidence items for historical actions
+                    }
+
+                # Extract features
+                features = extractor.extract(decision, items)
+
+                # Compute outcome score (same formula as bucket outcomes)
+                outcome = (
+                    (row["clicks"] or 0) * 1
+                    + (row["signups"] or 0) * 5
+                    + (row["conversions"] or 0) * 25
+                    + float(row["revenue"] or 0) * 0.1
+                )
+
+                # Update weights
+                error = scorer.update(features, outcome)
+                errors.append(error)
+                actions_updated += 1
+                features_touched.update(features.names)
+
+            # Persist updated weights
+            scorer.save()
+
+            # Compute summary stats
+            avg_error = sum(errors) / len(errors) if errors else 0
+            abs_errors = [abs(e) for e in errors]
+            mae = sum(abs_errors) / len(abs_errors) if abs_errors else 0  # Mean Absolute Error
+
+            model_stats = scorer.get_stats()
+
+            self._logger.info(
+                f"Learned scorer: updated {actions_updated} actions, "
+                f"touched {len(features_touched)} features, MAE={mae:.2f}"
+            )
+
+            return {
+                "actions_updated": actions_updated,
+                "features_updated": len(features_touched),
+                "mean_absolute_error": round(mae, 2),
+                "avg_prediction_error": round(avg_error, 2),
+                "model_stats": model_stats,
+                "feature_importance": scorer.get_feature_importance()[:10],  # top 10
+                "message": f"Updated {actions_updated} weights. MAE: {mae:.2f}/100.",
+            }
+
+        except Exception as e:
+            self._logger.error(f"Learned feature weight update failed: {e}", exc_info=True)
+            return {
+                "actions_updated": 0,
+                "features_updated": 0,
+                "error": str(e),
+                "message": f"Learned weight update failed: {e}",
+            }
 
     # ─── Step 1: Sync user metrics ──────────────────────────────────────
 

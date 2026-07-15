@@ -180,12 +180,17 @@ class DailyRun:
         if fpf_cfg.get("enabled", True):
             self._container.register_processor("false_positive_filter", FalsePositiveFilter(fpf_cfg))
 
-        # 11c. Strategy engine (Phase 5) — knapsack optimization under budget + time
+        # 11c. Strategy engine (Phase 5 + Phase 6) — knapsack optimization with learned ROI
         strategy_cfg = processors_config.get("strategy_engine", {})
         if strategy_cfg.get("enabled", True):
-            # Pass historical performance data from Learning Engine for ROI bonus
+            # Pass historical performance data + storage config (for LearnedScorer)
             historical_perf = self._load_historical_performance()
-            merged_strategy_cfg = {**strategy_cfg, **{"historical_performance": historical_perf}}
+            storage_cfg_for_strategy = self._config.storage
+            merged_strategy_cfg = {
+                **strategy_cfg,
+                "historical_performance": historical_perf,
+                "storage": storage_cfg_for_strategy,
+            }
             self._container.register_processor("strategy_engine", StrategyEngine(merged_strategy_cfg))
 
         # 12. Execution engine (Phase 4)
@@ -381,6 +386,18 @@ class DailyRun:
         except Exception as e:
             self._logger.error(f"Strategy report failed: {e}", exc_info=True)
 
+        # 6c. Learning report (Phase 6) — feature weight evolution + model stats
+        learning_report_path = None
+        try:
+            from reports.learning_report import LearningReportGenerator
+            learn_cfg = self._config.reports.get("learning", {"enabled": True, "output_path": "reports/"})
+            if learn_cfg.get("enabled", True):
+                learn_gen = LearningReportGenerator(learn_cfg)
+                learning_report_path = learn_gen.generate(processed_items, self._run_id)
+                self._logger.info(f"Learning report generated: {learning_report_path}")
+        except Exception as e:
+            self._logger.error(f"Learning report failed: {e}", exc_info=True)
+
         # 7. Build summary
         scores = processed_items[0].metadata.get("_scores", {}) if processed_items else {}
         decisions = processed_items[0].metadata.get("_decisions", {}) if processed_items else {}
@@ -405,6 +422,7 @@ class DailyRun:
             "report_path": report_path,
             "decision_report_path": decision_report_path,
             "strategy_report_path": strategy_report_path,
+            "learning_report_path": learning_report_path,
         }
 
         self._logger.info(f"Run complete: {summary}")

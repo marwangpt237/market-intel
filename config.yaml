@@ -204,6 +204,9 @@ reports:
   strategy:
     enabled: true
     output_path: reports/
+  learning:
+    enabled: true
+    output_path: reports/
 
 # ─── Retry Logic ────────────────────────────────────────────────────────────
 retry:

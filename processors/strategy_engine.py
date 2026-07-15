@@ -110,18 +110,52 @@ class StrategyEngine(BaseProcessor):
             self._logger.info("Empty decisions list — skipping strategy engine")
             return items
 
+        # Phase 6: Load LearnedScorer for ROI prediction
+        learned_scorer = self._load_learned_scorer()
+        extractor = None
+        if learned_scorer:
+            from processors.feature_extractor import FeatureExtractor
+            extractor = FeatureExtractor()
+
         # 1. Estimate cost + ROI for each decision
         scored: list[dict] = []
         for d in decisions:
             cost = self._estimate_cost(d)
-            roi = self._estimate_roi(d, cost)
+            heuristic_roi = self._estimate_roi(d, cost)
+
+            # Phase 6: blend heuristic ROI with learned ROI (if scorer available)
+            learned_roi = None
+            if learned_scorer and extractor:
+                features = extractor.extract(d, items)
+                learned_roi = learned_scorer.predict(features)
+
+            # Blend: once we have enough samples, weight learned ROI higher
+            # For now, use a simple average once learned_roi is available
+            if learned_roi is not None:
+                # Check if we have enough samples for the bias to be reliable
+                stats = learned_scorer.get_stats()
+                if stats["features_with_enough_samples"] >= 5:
+                    # Blend 70% learned, 30% heuristic
+                    final_roi = 0.7 * learned_roi + 0.3 * heuristic_roi
+                    roi_source = "learned_70"
+                else:
+                    # Not enough samples — mostly heuristic
+                    final_roi = 0.3 * learned_roi + 0.7 * heuristic_roi
+                    roi_source = "cold_start_blend"
+            else:
+                final_roi = heuristic_roi
+                roi_source = "heuristic"
+
             scored.append({
                 "decision": d,
                 "cost_usd": cost["usd"],
                 "cost_hours": cost["hours"],
-                "roi": roi,
-                "roi_per_dollar": roi / max(1, cost["usd"]),
-                "roi_per_hour": roi / max(1, cost["hours"]),
+                "roi": round(final_roi, 1),
+                "heuristic_roi": round(heuristic_roi, 1),
+                "learned_roi": round(learned_roi, 1) if learned_roi is not None else None,
+                "roi_source": roi_source,
+                "roi_per_dollar": final_roi / max(1, cost["usd"]),
+                "roi_per_hour": final_roi / max(1, cost["hours"]),
             })
 
         # 2. Greedy knapsack: sort by ROI / combined resource cost
@@ -222,6 +256,33 @@ class StrategyEngine(BaseProcessor):
         return items
 
     # ─── Cost estimation ─────────────────────────────────────────────────
+
+    def _load_learned_scorer(self):
+        """Load the LearnedScorer from the SQLite DB.
+
+        Returns None if the DB doesn't exist or loading fails — in that
+        case the Strategy Engine falls back to pure heuristic ROI.
+        """
+        try:
+            storage_cfg = self._config.get("storage", {})
+            db_path = storage_cfg.get("path", "data/market_intel.db")
+            if not db_path:
+                return None
+            from processors.learned_scorer import LearnedScorer
+            from pathlib import Path
+            if not Path(db_path).exists():
+                return None
+            scorer = LearnedScorer(db_path)
+            scorer.load()
+            stats = scorer.get_stats()
+            self._logger.info(
+                f"Loaded LearnedScorer: {stats['features_with_enough_samples']}/{stats['total_features']} features have enough samples, "
+                f"bias={stats['bias']:.2f}, total_samples={stats['total_samples']}"
+            )
+            return scorer
+        except Exception as e:
+            self._logger.warning(f"Could not load LearnedScorer: {e}")
+            return None
 
     def _estimate_cost(self, decision: dict) -> dict[str, int]:
         """Estimate USD + hours cost for a decision."""
