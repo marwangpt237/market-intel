@@ -34,9 +34,7 @@ jobs:
           if git diff --staged --quiet; then
             echo "No new data to commit"
           else
-            git commit -m "Market-Intel: closed-loop run $(date -u '+%Y-%m-%d %H:%M UTC')
-
-  Phase 4: Score → Decide → Act → Measure → Learn"
+            git commit -m "Market-Intel: closed-loop run $(date -u '+%Y-%m-%d %H:%M UTC')"
             git push
           fi
         env:
