@@ -1,0 +1,13 @@
+{
+  "opportunity_high": 60,
+  "opportunity_medium": 35,
+  "threat_high": 60,
+  "threat_medium": 35,
+  "weakness_high": 50,
+  "trend_hot": 60,
+  "trend_rising": 35,
+  "min_evidence": 2,
+  "weight_adjustments": [],
+  "last_updated": "2026-07-15T03:12:51.524191+00:00",
+  "data_points": 0
+}
