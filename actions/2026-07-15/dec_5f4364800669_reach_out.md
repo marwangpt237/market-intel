@@ -2,11 +2,11 @@
 
 > Decision ID: `dec_5f4364800669`
 > Priority: **P1**
-> Generated: 2026-07-15T08:36:57.324768+00:00
+> Generated: 2026-07-15T14:11:16.518518+00:00
 
 ## Goal
 
-Personalized outreach to 10 prospects discussing google. Offer demo, comparison sheet, or migration help.
+Personalized outreach to 7 prospects discussing google. Offer demo, comparison sheet, or migration help.
 
 ## Email template A — Soft touch (high conversion)
 
@@ -67,8 +67,8 @@ For each prospect, fill in:
 - Why Scaled AI Content Fails: Google’s Crawl Economics Explained via @sejournal, @TaylorDanRW (Search Engine Journal)
 - Surviving The Impression Squeeze: How Agentic Commerce Is Changing Google Ads In 2026 via @sejournal, @siliconvallaeys (Search Engine Journal)
 - Google Says Canonical Re-Evaluation Can Take Up to Two Weeks via @sejournal, @MattGSouthern (Search Engine Journal)
-- Google Business Profiles Showing Empty Review Dashboards via @sejournal, @MattGSouthern (Search Engine Journal)
-- Free AI Citations Won’t Last. I’ve Watched Google Fence Off A Wide Open Field Before via @sejournal, @gregjarboe (Search Engine Journal)
+- How to Do an SEO Audit: A Step-by-Step Website Audit Guide (Neil Patel)
+- How To Make AEO and GEO Profitable (Neil Patel)
 
 ## Tracking
 

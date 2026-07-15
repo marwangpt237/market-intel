@@ -2,7 +2,7 @@
 
 > Decision ID: `dec_f41e0bc407b8`
 > Priority: **P1**
-> Generated: 2026-07-15T08:36:57.324745+00:00
+> Generated: 2026-07-15T14:11:16.518492+00:00
 
 ## Objective
 
@@ -16,7 +16,7 @@ Launch comparison campaign targeting 'google alternative' search intent. Highlig
 
 ## Pain points to address
 
-Capture dissatisfied google users — opportunity=100/100. 4 pain points, 10 buying signals detected.
+Capture dissatisfied google users — opportunity=100/100. 4 pain points, 7 buying signals detected.
 
 ## Ad copy variants (A/B/C test)
 
@@ -58,7 +58,7 @@ Capture dissatisfied google users — opportunity=100/100. 4 pain points, 10 buy
 ## Market evidence
 
 - [Google neemt laadsnelheid van mobiele websites mee in hun ranking](https://marketingland.nl/google-neemt-laadsnelheid-van-mobiele-websites-mee-in-hun-ranking/)
+- [How Google May ‘Understand’ Unique Content](https://www.searchenginejournal.com/how-google-may-understand-unique-content/581959/)
+- [Google Says No SEO Penalty For Year-Long A/B Tests? via @sejournal, @martinibuster](https://www.searchenginejournal.com/google-says-no-seo-penalty-for-year-long-a-b-tests/582349/)
 - [Google’s Mueller On First Link Priority & Link Obfuscation via @sejournal, @MattGSouthern](https://www.searchenginejournal.com/googles-mueller-on-first-link-priority-link-obfuscation/582316/)
-- [Google Adds Image Generation To AI Overviews, Revamps Images via @sejournal, @MattGSouthern](https://www.searchenginejournal.com/google-adds-image-generation-to-ai-overviews-revamps-images/582242/)
-- [Why Scaled AI Content Fails: Google’s Crawl Economics Explained via @sejournal, @TaylorDanRW](https://www.searchenginejournal.com/scaled-ai-content-often-fails-googles-crawl-economics-explain-why/581325/)
-- [Surviving The Impression Squeeze: How Agentic Commerce Is Changing Google Ads In 2026 via @sejournal, @siliconvallaeys](https://www.searchenginejournal.com/surviving-the-impression-squeeze-how-agentic-commerce-is-changing-google-ads-in-2026/579939/)
+- [Google Revamps Image Search, Adds Generation To AI Overviews via @sejournal, @MattGSouthern](https://www.searchenginejournal.com/google-adds-image-generation-to-ai-overviews-revamps-images/582242/)
