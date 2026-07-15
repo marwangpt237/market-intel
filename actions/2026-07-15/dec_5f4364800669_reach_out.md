@@ -2,7 +2,7 @@
 
 > Decision ID: `dec_5f4364800669`
 > Priority: **P1**
-> Generated: 2026-07-15T03:12:51.372878+00:00
+> Generated: 2026-07-15T08:36:57.324768+00:00
 
 ## Goal
 
@@ -64,7 +64,7 @@ For each prospect, fill in:
 
 ## Market evidence (use for personalization)
 
-- Scaled AI Content Often Fails & Google’s Crawl Economics Explain Why via @sejournal, @TaylorDanRW (Search Engine Journal)
+- Why Scaled AI Content Fails: Google’s Crawl Economics Explained via @sejournal, @TaylorDanRW (Search Engine Journal)
 - Surviving The Impression Squeeze: How Agentic Commerce Is Changing Google Ads In 2026 via @sejournal, @siliconvallaeys (Search Engine Journal)
 - Google Says Canonical Re-Evaluation Can Take Up to Two Weeks via @sejournal, @MattGSouthern (Search Engine Journal)
 - Google Business Profiles Showing Empty Review Dashboards via @sejournal, @MattGSouthern (Search Engine Journal)

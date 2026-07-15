@@ -2,7 +2,7 @@
 
 > Decision ID: `dec_f41e0bc407b8`
 > Priority: **P1**
-> Generated: 2026-07-15T03:12:51.372865+00:00
+> Generated: 2026-07-15T08:36:57.324745+00:00
 
 ## Objective
 
@@ -60,5 +60,5 @@ Capture dissatisfied google users — opportunity=100/100. 4 pain points, 10 buy
 - [Google neemt laadsnelheid van mobiele websites mee in hun ranking](https://marketingland.nl/google-neemt-laadsnelheid-van-mobiele-websites-mee-in-hun-ranking/)
 - [Google’s Mueller On First Link Priority & Link Obfuscation via @sejournal, @MattGSouthern](https://www.searchenginejournal.com/googles-mueller-on-first-link-priority-link-obfuscation/582316/)
 - [Google Adds Image Generation To AI Overviews, Revamps Images via @sejournal, @MattGSouthern](https://www.searchenginejournal.com/google-adds-image-generation-to-ai-overviews-revamps-images/582242/)
-- [Scaled AI Content Often Fails & Google’s Crawl Economics Explain Why via @sejournal, @TaylorDanRW](https://www.searchenginejournal.com/scaled-ai-content-often-fails-googles-crawl-economics-explain-why/581325/)
+- [Why Scaled AI Content Fails: Google’s Crawl Economics Explained via @sejournal, @TaylorDanRW](https://www.searchenginejournal.com/scaled-ai-content-often-fails-googles-crawl-economics-explain-why/581325/)
 - [Surviving The Impression Squeeze: How Agentic Commerce Is Changing Google Ads In 2026 via @sejournal, @siliconvallaeys](https://www.searchenginejournal.com/surviving-the-impression-squeeze-how-agentic-commerce-is-changing-google-ads-in-2026/579939/)
