@@ -37,6 +37,11 @@ class DailyRun:
         from collectors.reddit_collector import RedditCollector
         from collectors.rss_collector import RSSCollector
         from collectors.google_news_collector import GoogleNewsCollector
+        from collectors.hackernews_collector import HackerNewsCollector
+        from collectors.github_issues_collector import GitHubIssuesCollector
+        from collectors.producthunt_collector import ProductHuntCollector
+        from collectors.g2_collector import G2Collector
+        from collectors.jobboard_collector import JobBoardCollector
 
         reddit_cfg = collectors_config.get("reddit", {})
         if reddit_cfg.get("enabled", False):
@@ -50,6 +55,26 @@ class DailyRun:
         if gn_cfg.get("enabled", False):
             self._container.register_collector("google_news", GoogleNewsCollector(gn_cfg, retry_config))
 
+        hn_cfg = collectors_config.get("hacker_news", {})
+        if hn_cfg.get("enabled", False):
+            self._container.register_collector("hacker_news", HackerNewsCollector(hn_cfg, retry_config))
+
+        gh_cfg = collectors_config.get("github_issues", {})
+        if gh_cfg.get("enabled", False):
+            self._container.register_collector("github_issues", GitHubIssuesCollector(gh_cfg, retry_config))
+
+        ph_cfg = collectors_config.get("product_hunt", {})
+        if ph_cfg.get("enabled", False):
+            self._container.register_collector("product_hunt", ProductHuntCollector(ph_cfg, retry_config))
+
+        g2_cfg = collectors_config.get("g2", {})
+        if g2_cfg.get("enabled", False):
+            self._container.register_collector("g2", G2Collector(g2_cfg, retry_config))
+
+        jb_cfg = collectors_config.get("job_boards", {})
+        if jb_cfg.get("enabled", False):
+            self._container.register_collector("job_boards", JobBoardCollector(jb_cfg, retry_config))
+
         # ─── Processors (ordered pipeline) ─────────────────────────────
         processors_config = self._config.processors
 
@@ -61,6 +86,8 @@ class DailyRun:
         from processors.buying_signal import BuyingSignalProcessor
         from processors.topic_clustering import TopicClusteringProcessor
         from processors.trend_detection import TrendDetectionProcessor
+        from processors.entity_graph import EntityGraphProcessor
+        from processors.scoring import ScoringProcessor
 
         # 1. Dedup (similarity-based)
         dedup_cfg = processors_config.get("similarity_dedup", processors_config.get("dedup", {}))
@@ -106,92 +133,22 @@ class DailyRun:
             trend_processor.set_history(historical_counts)
             self._container.register_processor("trend_detection", trend_processor)
 
+        # 9. Entity graph builder
+        graph_cfg = processors_config.get("entity_graph", {})
+        if graph_cfg.get("enabled", True):
+            self._container.register_processor("entity_graph", EntityGraphProcessor(graph_cfg))
+
+        # 10. Scoring engine
+        scoring_cfg = processors_config.get("scoring", {})
+        if scoring_cfg.get("enabled", True):
+            self._container.register_processor("scoring", ScoringProcessor(scoring_cfg))
+
         # ─── Storage ───────────────────────────────────────────────────
-        storage_config = self._config.storage
-        from storage.json_store import JSONStorage
-        self._container.set_storage(JSONStorage(storage_config))
+"""
+Main workflow orchestrator — ties collectors, processors, storage, and reports together.
 
-        # ─── Reports ───────────────────────────────────────────────────
-        reports_config = self._config.reports
-        intel_cfg = reports_config.get("intelligence", reports_config.get("markdown", {}))
-        if intel_cfg.get("enabled", True):
-            from reports.intelligence_report import IntelligenceReportGenerator
-            self._container.set_report_generator(IntelligenceReportGenerator(intel_cfg))
-
-    def _load_historical_keywords(self) -> dict[str, int]:
-        """Load keyword frequencies from recent storage for trend comparison."""
-        try:
-            storage = self._container.get_storage()
-            recent_items = storage.load_recent(days=7)
-            keyword_counts: Counter = Counter()
-            for item in recent_items:
-                for kw in item.get("keywords", []):
-                    keyword_counts[kw] += 1
-            # Return average per day (7 days of data)
-            return {kw: max(1, count // 7) for kw, count in keyword_counts.items()}
-        except Exception:
-            return {}
-
-    def run(self) -> dict:
-        """Execute the full intelligence pipeline. Returns a summary dict."""
-        self._logger.info(f"Starting intelligence run {self._run_id}")
-        start_time = datetime.now(timezone.utc)
-
-        # Phase 1: Collect
-        self._logger.info("Phase 1: Collection")
-        raw_items: list[RawItem] = []
-        for name, collector in self._container.get_collectors().items():
-            items = collector.collect()
-            raw_items.extend(items)
-        self._logger.info(f"Collection complete: {len(raw_items)} raw items")
-
-        # Phase 2: Process (ordered pipeline)
-        self._logger.info("Phase 2: Intelligence Processing")
-        processed_items = [ProcessedItem.from_raw(raw) for raw in raw_items]
-
-        for name, processor in self._container.get_processors().items():
-            processed_items = processor.process(processed_items)
-
-        self._logger.info(f"Processing complete: {len(processed_items)} processed items")
-
-        # Phase 3: Store
-        self._logger.info("Phase 3: Storage")
-        item_dicts = [item.to_dict() for item in processed_items]
-        storage_path = self._container.get_storage().save(item_dicts, self._run_id)
-
-        # Phase 4: Report
-        self._logger.info("Phase 4: Intelligence Report")
-        report_path = ""
-        report_gen = self._container.get_report_generator()
-        if report_gen:
-            report_path = report_gen.generate(processed_items, self._run_id)
-
-        end_time = datetime.now(timezone.utc)
-        duration = (end_time - start_time).total_seconds()
-
-        # Build summary
-        pain_count = sum(len(item.metadata.get("pain_points", [])) for item in processed_items)
-        competitor_count = sum(len(item.metadata.get("competitor_mentions", [])) for item in processed_items)
-        buying_count = len([item for item in processed_items if item.metadata.get("buying_signals")])
-        entity_count = sum(len(item.metadata.get("entities", {}).get("companies", [])) for item in processed_items)
-
-        summary = {
-            "run_id": self._run_id,
-            "started_at": start_time.isoformat(),
-            "completed_at": end_time.isoformat(),
-            "duration_seconds": round(duration, 2),
-            "raw_items_collected": len(raw_items),
-            "processed_items": len(processed_items),
-            "pain_points_detected": pain_count,
-            "competitor_mentions": competitor_count,
-            "buying_signals": buying_count,
-            "entities_extracted": entity_count,
-            "collectors_used": list(self._container.get_collectors().keys()),
-            "processors_used": list(self._container.get_processors().keys()),
-            "storage_path": storage_path,
-            "report_path": report_path,
-            "status": "success" if processed_items else "no_data",
-        }
-
-        self._logger.info(f"Intelligence run complete in {duration:.1f}s", extra=summary)
-        return summary
+Phase 2: Intelligence pipeline
+  Collect → Dedup → Enrich → Entity Extraction → Competitor Detection →
+  Pain-Point Extraction → Buying-Signal Detection → Topic Clustering →
+  Trend Detection → Store → Generate Intelligence Report
+"""

@@ -78,8 +78,8 @@ processors:
 
 # ─── Storage ────────────────────────────────────────────────────────────────
 storage:
-  type: json                      # json | (future: sqlite, postgres)
-  path: data/
+  type: sqlite                      # json | (future: sqlite, postgres)
+  path: data/market_intel.db
   versioning: true                # store dated snapshots
   retention_days: 90              # delete raw data older than this
 
@@ -96,3 +96,51 @@ retry:
   initial_backoff: 1.0            # seconds
   max_backoff: 10.0               # seconds
   retryable_status_codes: [429, 500, 502, 503, 504]
+
+# ─── Additional Collectors (within collectors section) ────────────────────
+  hacker_news:
+    enabled: true
+    queries:
+      - "marketing tools"
+      - "startup marketing"
+      - "growth hacking"
+      - "SEO tools"
+      - "SaaS pricing"
+    min_points: 5
+
+  github_issues:
+    enabled: true
+    queries:
+      - "marketing automation"
+      - "SEO feature request"
+      - "email marketing alternative"
+    labels: ["help wanted", "enhancement", "feature"]
+
+  product_hunt:
+    enabled: true
+    categories:
+      - marketing
+      - seo
+      - analytics
+      - productivity
+
+  g2:
+    enabled: true
+    categories:
+      - marketing-automation
+      - seo-tools
+      - email-marketing
+
+  job_boards:
+    enabled: true
+    keywords:
+      - marketing
+      - SEO
+      - growth
+      - marketing automation
+    sources: ["remoteok", "workinstartups"]
+
+  entity_graph:
+    enabled: true
+  scoring:
+    enabled: true
