@@ -2,12 +2,11 @@ name: Market-Intel Collection
 
 on:
   schedule:
-    # Every 6 hours at :15 past the hour
     - cron: '15 */6 * * *'
-  workflow_dispatch:  # manual trigger
+  workflow_dispatch:
 
 permissions:
-  contents: write   # needed to commit collected data + reports
+  contents: write
 
 jobs:
   collect:
@@ -26,7 +25,7 @@ jobs:
       - name: Run Market-Intel
         run: python main.py
 
-      - name: Commit collected data + reports
+      - name: Commit collected data, reports, actions
         run: |
           git config user.name "Market-Intel Bot"
           git config user.email "actions@github.com"
