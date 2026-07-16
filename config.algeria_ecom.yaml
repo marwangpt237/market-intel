@@ -222,6 +222,13 @@ collector_marketplace:
       enabled: true
       categories: ["immobilier", "automobile", "high-tech", "emploi"]
       max_items: 40
+    algeria_news:
+      enabled: true
+      max_items_per_source: 20
+    jumia_dz:
+      enabled: true
+      categories: ["smartphones", "laptops", "homme-vetements", "beaute"]
+      max_items: 40
     algeria_jobs:
       enabled: true
       max_items_per_source: 25
@@ -231,6 +238,12 @@ collector_marketplace:
     algeria_gov:
       enabled: true
       max_items: 20
+    algeria_realestate:
+      enabled: true
+      max_items_per_source: 20
+    algeria_tenders:
+      enabled: true
+      max_items_per_source: 15
 
 # ─── Storage ────────────────────────────────────────────────────────────────
 storage:
@@ -266,6 +279,9 @@ reports:
     enabled: true
     output_path: reports/
   collector_registry:
+    enabled: true
+    output_path: reports/
+  moat_metrics:
     enabled: true
     output_path: reports/
 

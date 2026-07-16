@@ -279,8 +279,17 @@ class DailyRun:
         self._marketplace_cfg = marketplace_cfg  # stash for run()
         if marketplace_cfg.get("enabled", False):
             try:
+                from collectors.marketplace.ouedkniss_collector import OuedknissCollector
+                from collectors.marketplace.algeria_jobs_collector import AlgerianJobBoardCollector
+                from collectors.marketplace.algeria_forum_collector import AlgerianForumCollector
+                from collectors.marketplace.algeria_gov_collector import AlgerianGovCollector
+                from collectors.marketplace.algeria_news_collector import AlgerianNewsCollector
+                from collectors.marketplace.jumia_dz_collector import JumiaDZCollector
+                from collectors.marketplace.algeria_realestate_collector import AlgerianRealEstateCollector
+                from collectors.marketplace.algeria_tenders_collector import AlgerianTendersCollector
                 from collectors.marketplace.base import CollectorRegistry
                 from collectors.marketplace.health import CollectorHealthMonitor
+
                 storage_cfg = self._config.storage
                 db_path = storage_cfg.get("path", "data/market_intel.db")
                 self._health_monitor = CollectorHealthMonitor(db_path)
@@ -417,6 +426,14 @@ class DailyRun:
                     self._marketplace_registry.register(AlgerianForumCollector(enabled["algeria_forums"]))
                 if enabled.get("algeria_gov", {}).get("enabled", False):
                     self._marketplace_registry.register(AlgerianGovCollector(enabled["algeria_gov"]))
+                if enabled.get("algeria_news", {}).get("enabled", False):
+                    self._marketplace_registry.register(AlgerianNewsCollector(enabled["algeria_news"]))
+                if enabled.get("jumia_dz", {}).get("enabled", False):
+                    self._marketplace_registry.register(JumiaDZCollector(enabled["jumia_dz"]))
+                if enabled.get("algeria_realestate", {}).get("enabled", False):
+                    self._marketplace_registry.register(AlgerianRealEstateCollector(enabled["algeria_realestate"]))
+                if enabled.get("algeria_tenders", {}).get("enabled", False):
+                    self._marketplace_registry.register(AlgerianTendersCollector(enabled["algeria_tenders"]))
 
                 # Run each registered marketplace collector
                 import time
@@ -443,6 +460,18 @@ class DailyRun:
                 "status": "no_data",
                 "collectors": collector_stats,
             }
+
+        # 1c. Archive raw items permanently (Phase 11 — Raw Data Archiver)
+        # The archive is the moat: every item ever collected, never deleted.
+        try:
+            from storage.raw_archiver import RawDataArchiver
+            storage_cfg = self._config.storage
+            archive_db_path = storage_cfg.get("archive_path", storage_cfg.get("path", "data/market_intel.db").replace(".db", "_archive.db"))
+            archiver = RawDataArchiver(archive_db_path)
+            archived_count = archiver.archive_items(raw_items)
+            self._logger.info(f"Archived {archived_count} raw items (permanent archive)")
+        except Exception as e:
+            self._logger.error(f"Raw archiver failed: {e}", exc_info=True)
 
         # 2. Convert raw → processed
         processed_items = [ProcessedItem.from_raw(raw) for raw in raw_items]
@@ -590,6 +619,19 @@ class DailyRun:
         except Exception as e:
             self._logger.error(f"Collector registry report failed: {e}", exc_info=True)
 
+        # 6i. Moat Metrics report (Phase 11 — the report that answers investor questions)
+        moat_report_path = None
+        try:
+            from reports.moat_metrics_report import MoatMetricsReportGenerator
+            moat_cfg = self._config.reports.get("moat_metrics", {"enabled": False, "output_path": "reports/"})
+            if moat_cfg.get("enabled", False):
+                moat_cfg_with_storage = {**moat_cfg, "storage": self._config.storage}
+                moat_gen = MoatMetricsReportGenerator(moat_cfg_with_storage)
+                moat_report_path = moat_gen.generate(processed_items, self._run_id)
+                self._logger.info(f"Moat metrics report generated: {moat_report_path}")
+        except Exception as e:
+            self._logger.error(f"Moat metrics report failed: {e}", exc_info=True)
+
         # 7. Build summary
         scores = processed_items[0].metadata.get("_scores", {}) if processed_items else {}
         decisions = processed_items[0].metadata.get("_decisions", {}) if processed_items else {}
@@ -620,6 +662,7 @@ class DailyRun:
             "validation_report_path": validation_report_path,
             "acquisition_report_path": acquisition_report_path,
             "collector_registry_report_path": registry_report_path,
+            "moat_metrics_report_path": moat_report_path,
         }
 
         self._logger.info(f"Run complete: {summary}")
