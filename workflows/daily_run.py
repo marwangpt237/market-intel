@@ -248,6 +248,21 @@ class DailyRun:
             except Exception as e:
                 self._logger.error(f"Vertical pack '{vertical_name}' failed to load: {e}", exc_info=True)
 
+        # ─── Validation Engine (Phase 8) — knowledge base integrity ──────
+        validation_cfg = processors_config.get("validation_engine", {})
+        if validation_cfg.get("enabled", False):  # opt-in via config
+            try:
+                from validation.engine import ValidationEngine
+                storage_cfg = self._config.storage
+                merged_validation_cfg = {
+                    **validation_cfg,
+                    "storage": storage_cfg,
+                }
+                self._container.register_processor("validation_engine", ValidationEngine(merged_validation_cfg))
+                self._logger.info("Validation engine loaded (Phase 8)")
+            except Exception as e:
+                self._logger.error(f"Validation engine failed to load: {e}", exc_info=True)
+
         # ─── Storage ───────────────────────────────────────────────────
         storage_cfg = self._config.storage
         storage_type = storage_cfg.get("type", "json")
@@ -466,6 +481,22 @@ class DailyRun:
         except Exception as e:
             self._logger.error(f"Product intelligence report failed: {e}", exc_info=True)
 
+        # 6f. Validation report (Phase 8 — Evidence Validation Engine)
+        validation_report_path = None
+        try:
+            from reports.validation_report import ValidationReportGenerator
+            val_cfg = self._config.reports.get("validation", {"enabled": False, "output_path": "reports/"})
+            if val_cfg.get("enabled", False):
+                has_validation_data = any("_validation" in i.metadata for i in processed_items)
+                if has_validation_data:
+                    val_gen = ValidationReportGenerator(val_cfg)
+                    validation_report_path = val_gen.generate(processed_items, self._run_id)
+                    self._logger.info(f"Validation report generated: {validation_report_path}")
+                else:
+                    self._logger.info("Validation report enabled but no _validation data — skipping")
+        except Exception as e:
+            self._logger.error(f"Validation report failed: {e}", exc_info=True)
+
         # 7. Build summary
         scores = processed_items[0].metadata.get("_scores", {}) if processed_items else {}
         decisions = processed_items[0].metadata.get("_decisions", {}) if processed_items else {}
@@ -493,6 +524,7 @@ class DailyRun:
             "learning_report_path": learning_report_path,
             "client_acq_report_path": client_acq_report_path,
             "product_intelligence_report_path": product_intel_report_path,
+            "validation_report_path": validation_report_path,
         }
 
         self._logger.info(f"Run complete: {summary}")

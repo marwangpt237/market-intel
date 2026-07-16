@@ -171,6 +171,14 @@ processors:
     time_hours: 10
     team_size: 1
 
+  # ─── Phase 8: Evidence Validation Engine ──────────────────────────────
+  validation_engine:
+    enabled: true
+    min_sources_probable: 2
+    min_sources_verified: 3
+    min_evidence_reliability: 0.30
+    contradiction_tolerance: 0.30
+
   execution_engine:
     enabled: true
     output_path: actions
@@ -227,6 +235,9 @@ reports:
     enabled: true
     output_path: reports/
     top_products_count: 25
+  validation:
+    enabled: true
+    output_path: reports/
 
 # ─── Retry Logic ────────────────────────────────────────────────────────────
 retry:

@@ -184,6 +184,14 @@ processors:
     time_hours: 20               # monthly hours available
     team_size: 1
 
+  # ─── Phase 8: Evidence Validation Engine ──────────────────────────────
+  validation_engine:
+    enabled: true
+    min_sources_probable: 2
+    min_sources_verified: 3
+    min_evidence_reliability: 0.30
+    contradiction_tolerance: 0.30
+
 # ─── Storage ────────────────────────────────────────────────────────────────
 storage:
   type: sqlite                      # json | sqlite
@@ -205,6 +213,9 @@ reports:
     enabled: true
     output_path: reports/
   learning:
+    enabled: true
+    output_path: reports/
+  validation:
     enabled: true
     output_path: reports/
 
