@@ -32,10 +32,31 @@ async def lifespan(app: FastAPI):
     """Lifespan: startup + shutdown hooks."""
     # Startup
     import logging
-    logging.getLogger("api").info("Market-Intel API starting up")
+    logger = logging.getLogger("api")
+    logger.info("Market-Intel API starting up")
+
+    # Start the scheduler (Phase 2)
+    try:
+        from scheduler.engine import get_scheduler
+        sched = get_scheduler()
+        if not sched.is_running():
+            sched.start()
+            logger.info("Scheduler started (Phase 2)")
+    except Exception as e:
+        logger.error(f"Scheduler failed to start: {e}")
+
     yield
+
     # Shutdown
-    logging.getLogger("api").info("Market-Intel API shutting down")
+    logger.info("Market-Intel API shutting down")
+    try:
+        from scheduler.engine import get_scheduler
+        sched = get_scheduler()
+        if sched.is_running():
+            sched.shutdown(wait=False)
+            logger.info("Scheduler shut down")
+    except Exception:
+        pass
 
 
 def create_app() -> FastAPI:
@@ -57,10 +78,11 @@ def create_app() -> FastAPI:
     )
 
     # Register routers
-    from api.routers import health, runs, reports, collectors, claims, decisions, search, stats
+    from api.routers import health, runs, reports, collectors, claims, decisions, search, stats, scheduler
 
     app.include_router(health.router, prefix=config.API_PREFIX, tags=["health"])
     app.include_router(runs.router, prefix=config.API_PREFIX, tags=["runs"])
+    app.include_router(scheduler.router, prefix=config.API_PREFIX, tags=["scheduler"])
     app.include_router(reports.router, prefix=config.API_PREFIX, tags=["reports"])
     app.include_router(collectors.router, prefix=config.API_PREFIX, tags=["collectors"])
     app.include_router(claims.router, prefix=config.API_PREFIX, tags=["claims"])
