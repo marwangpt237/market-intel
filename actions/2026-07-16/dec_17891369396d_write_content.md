@@ -3,7 +3,7 @@
 > Decision ID: `dec_17891369396d`
 > Priority: **P2**
 > ⏰ Publish within 7 days to ride the trend wave.
-> Generated: 2026-07-16T01:03:32.445173+00:00
+> Generated: 2026-07-16T01:33:58.861078+00:00
 
 ## Topic & angle
 
@@ -69,4 +69,4 @@ Secondary:
 - [Moutons importés de l’Aïd : l’Algérie lance la vente exclusivement en ligne](https://news.google.com/rss/articles/CBMiogFBVV95cUxNUktXa3pKMk5Lb0ZSM3NCaWNSanQ2Uk4yWW11Nkhrdk1CM0JLaUNFSm05UEh5YXhYMXgzRjFSRjRLalBWenp4bllHNkhlVzBxcXlxRnVRZ3Z2N1EweFZtLUNVeWxGdk40MTJ6akRRaDNsNVRuS1NqQkYyUnJQQURiNFM0bklBNjF6akdNb1lEbVhTQ0FGNUdpMFpSa2FXM3MwN2c?oc=5)
 - [Vignette auto 2026 en Algérie : la vente lancée, ce qui change](https://news.google.com/rss/articles/CBMikgFBVV95cUxOUjB3c3lSUmdtUm9mTzVleUJZbE1sU2EtRlVndlg3aEhqdldOWjBTNkIwbmRsdm1SOHlYWC1ScXE2ZnlMUHlOU2ZLSFIyVHhlME5jU3NCbGhheEpUOXRBbHlDdzJNQlpaQjJEdjl3OGlWNDZsdWpIek5fbGFCbVpHX09xazAzRTl4WWhnRXFwdDJnQQ?oc=5)
 - [Naftal lance une plateforme d’achat de pneus en ligne, voici les conditions](https://news.google.com/rss/articles/CBMipAFBVV95cUxNdEJpSnczZ3cza3hKcm81SUF1dWJpVG1kc19BNWZYOURFU0hRNzFCVXlRbXZmNlp4V0VaMW5sclZQbnc1aURzMjEzdkhiak5mMlI4N2lldW1mUklaeDBUUERVQ1UyN0UzeGtfUHppN2hucDVheERic3M1SkJwejlnN2tRZjZxYWl2RDVtUHBiUUNUOFIxQmVBSm96blZNcU1UT3NVaQ?oc=5)
-- [Peut-on acheter sa vignette auto 2025 en ligne en Algérie ?](https://news.google.com/rss/articles/CBMijwFBVV95cUxQaHhpOEpiQVR0bVhpYnJPUmQ4V3pjMFVJajJEaTRVUG0tb0JGSFB5NnpOREluWDlRNTRiRVFnS2tVd1VBbmJDYWtxbUhjNjY5UGZXNjZkeGpzNzVsZkExdjhlR3ZaLW1mLUlNTXVCUVpzTW5jTVQtTmpOLTVPY1JRcElrRlE0LVRwYmtkV3hQSQ?oc=5)
+- [Paiement électronique : la Banque d’Algérie fixe deux règles majeures](https://news.google.com/rss/articles/CBMimwFBVV95cUxOZDE0dmNsVzM0WXQ5dUtkeVZmZU1fcC1tSjZRcE90Y0NHcXZLUURfRS1KLVFtZzNmcmF4X1VySVpyZk9TN0duSHZoeGxjd3NXVUc0MU9MdS1yQ1NWdmU1S2hrbmRZS0dJbDJLTEYzNXpiaExwQkFmNVRGY0YtZFpRZ3hLV0ozTG9WOVBOYzFNU2Z0anItVzYtd29Wcw?oc=5)
