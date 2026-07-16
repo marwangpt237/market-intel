@@ -1,4 +1,29 @@
 {
   "_instructions": "Fill in the metrics for each action below, then save this file. The Learning Engine will read it on the next run and adjust scoring weights. Set status to 'sent' once you send/publish, 'published' once live, 'abandoned' to drop, 'paused' to defer.",
-  "actions": []
+  "actions": [
+    {
+      "id": "dec_17891369396d",
+      "target": "vente / vignette / auto",
+      "type": "write_content",
+      "current_status": "draft",
+      "clicks": 0,
+      "signups": 0,
+      "conversions": 0,
+      "revenue": 0.0,
+      "status": "draft",
+      "notes": ""
+    },
+    {
+      "id": "dec_ee8661f5f314",
+      "target": "vente / des / tickets",
+      "type": "write_content",
+      "current_status": "draft",
+      "clicks": 0,
+      "signups": 0,
+      "conversions": 0,
+      "revenue": 0.0,
+      "status": "draft",
+      "notes": ""
+    }
+  ]
 }

@@ -3,7 +3,7 @@
 > Decision ID: `dec_17891369396d`
 > Priority: **P2**
 > ⏰ Publish within 7 days to ride the trend wave.
-> Generated: 2026-07-16T11:08:30.799501+00:00
+> Generated: 2026-07-16T14:46:55.728576+00:00
 
 ## Topic & angle
 
@@ -65,8 +65,8 @@ Secondary:
 
 ## Source evidence
 
-- [Moutons importés de l’Aïd : l’Algérie lance la vente exclusivement en ligne](https://news.google.com/rss/articles/CBMiogFBVV95cUxNUktXa3pKMk5Lb0ZSM3NCaWNSanQ2Uk4yWW11Nkhrdk1CM0JLaUNFSm05UEh5YXhYMXgzRjFSRjRLalBWenp4bllHNkhlVzBxcXlxRnVRZ3Z2N1EweFZtLUNVeWxGdk40MTJ6akRRaDNsNVRuS1NqQkYyUnJQQURiNFM0bklBNjF6akdNb1lEbVhTQ0FGNUdpMFpSa2FXM3MwN2c?oc=5)
 - [Aïd El Adha 2026 : lancement de la vente des moutons importés exclusivement en ligne](https://news.google.com/rss/articles/CBMiugFBVV95cUxOWjE4TE02REZnZ0t3RmhrVFQ3N1RnMUN0Q2FXMDNNNGFVZW5TMV90ZkxreTl0Q1FoSVREOEJfeDBmZWNYREZnaGtQeThyNS1XNE0wLU9SZnptU0IzMEoxREh2UW9fUTNMZlNZbWZkc3o0bUtWMlQ5czZPOU5MQVFMRkF5NHpKVk53XzkzUEpJUml1YnVMZXVQd1Y1Z2t0WnBaaU5lQlVJX1RfdWpveGlITW5HQmowcjRsdXc?oc=5)
+- [Moutons importés de l’Aïd : l’Algérie lance la vente exclusivement en ligne](https://news.google.com/rss/articles/CBMiogFBVV95cUxNUktXa3pKMk5Lb0ZSM3NCaWNSanQ2Uk4yWW11Nkhrdk1CM0JLaUNFSm05UEh5YXhYMXgzRjFSRjRLalBWenp4bllHNkhlVzBxcXlxRnVRZ3Z2N1EweFZtLUNVeWxGdk40MTJ6akRRaDNsNVRuS1NqQkYyUnJQQURiNFM0bklBNjF6akdNb1lEbVhTQ0FGNUdpMFpSa2FXM3MwN2c?oc=5)
 - [Vignette auto 2026 en Algérie : la vente lancée, ce qui change](https://news.google.com/rss/articles/CBMikgFBVV95cUxOUjB3c3lSUmdtUm9mTzVleUJZbE1sU2EtRlVndlg3aEhqdldOWjBTNkIwbmRsdm1SOHlYWC1ScXE2ZnlMUHlOU2ZLSFIyVHhlME5jU3NCbGhheEpUOXRBbHlDdzJNQlpaQjJEdjl3OGlWNDZsdWpIek5fbGFCbVpHX09xazAzRTl4WWhnRXFwdDJnQQ?oc=5)
 - [Peut-on acheter sa vignette auto 2025 en ligne en Algérie ?](https://news.google.com/rss/articles/CBMijwFBVV95cUxQaHhpOEpiQVR0bVhpYnJPUmQ4V3pjMFVJajJEaTRVUG0tb0JGSFB5NnpOREluWDlRNTRiRVFnS2tVd1VBbmJDYWtxbUhjNjY5UGZXNjZkeGpzNzVsZkExdjhlR3ZaLW1mLUlNTXVCUVpzTW5jTVQtTmpOLTVPY1JRcElrRlE0LVRwYmtkV3hQSQ?oc=5)
 - [La vente de 50 logements promotionnels à Alger ouverte aux Algériens de la diaspora](https://news.google.com/rss/articles/CBMiogFBVV95cUxNdkRGMnVfM1ZCZUdIbzJCQ2lHaHFlbERyYnVYY25SUFpiMmdLZlJZRTlVTGJUOGl3SVkyOGFneHZVTldSNUlQalJKaS1QZk9iczRaLVZmczZVVXpTajBJTy1CTnZCZ2h3dWd4eDhpck9QM245MS1CcDB2WVpVNTUwbVM2V3FPc1VQQTZsNEdlQjAyZzJ0TVNtVU9RTllSM0cxR0E?oc=5)
