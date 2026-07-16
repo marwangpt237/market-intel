@@ -192,6 +192,12 @@ processors:
     min_evidence_reliability: 0.30
     contradiction_tolerance: 0.30
 
+  # ─── Phase 9: Autonomous Research Planner ────────────────────────────
+  acquisition_engine:
+    enabled: true
+    max_plans_per_run: 20
+    max_actions_per_plan: 5
+
 # ─── Storage ────────────────────────────────────────────────────────────────
 storage:
   type: sqlite                      # json | sqlite
@@ -216,6 +222,9 @@ reports:
     enabled: true
     output_path: reports/
   validation:
+    enabled: true
+    output_path: reports/
+  acquisition:
     enabled: true
     output_path: reports/
 

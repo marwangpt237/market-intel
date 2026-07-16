@@ -263,6 +263,16 @@ class DailyRun:
             except Exception as e:
                 self._logger.error(f"Validation engine failed to load: {e}", exc_info=True)
 
+        # ─── Acquisition Engine (Phase 9) — autonomous research planner ──
+        acquisition_cfg = processors_config.get("acquisition_engine", {})
+        if acquisition_cfg.get("enabled", False):  # opt-in via config
+            try:
+                from acquisition.engine import AcquisitionEngine
+                self._container.register_processor("acquisition_engine", AcquisitionEngine(acquisition_cfg))
+                self._logger.info("Acquisition engine loaded (Phase 9)")
+            except Exception as e:
+                self._logger.error(f"Acquisition engine failed to load: {e}", exc_info=True)
+
         # ─── Storage ───────────────────────────────────────────────────
         storage_cfg = self._config.storage
         storage_type = storage_cfg.get("type", "json")
@@ -497,6 +507,22 @@ class DailyRun:
         except Exception as e:
             self._logger.error(f"Validation report failed: {e}", exc_info=True)
 
+        # 6g. Acquisition report (Phase 9 — Autonomous Research Planner)
+        acquisition_report_path = None
+        try:
+            from reports.acquisition_report import AcquisitionReportGenerator
+            acq_cfg = self._config.reports.get("acquisition", {"enabled": False, "output_path": "reports/"})
+            if acq_cfg.get("enabled", False):
+                has_acquisition_data = any("_acquisition" in i.metadata for i in processed_items)
+                if has_acquisition_data:
+                    acq_gen = AcquisitionReportGenerator(acq_cfg)
+                    acquisition_report_path = acq_gen.generate(processed_items, self._run_id)
+                    self._logger.info(f"Acquisition report generated: {acquisition_report_path}")
+                else:
+                    self._logger.info("Acquisition report enabled but no _acquisition data — skipping")
+        except Exception as e:
+            self._logger.error(f"Acquisition report failed: {e}", exc_info=True)
+
         # 7. Build summary
         scores = processed_items[0].metadata.get("_scores", {}) if processed_items else {}
         decisions = processed_items[0].metadata.get("_decisions", {}) if processed_items else {}
@@ -525,6 +551,7 @@ class DailyRun:
             "client_acq_report_path": client_acq_report_path,
             "product_intelligence_report_path": product_intel_report_path,
             "validation_report_path": validation_report_path,
+            "acquisition_report_path": acquisition_report_path,
         }
 
         self._logger.info(f"Run complete: {summary}")
