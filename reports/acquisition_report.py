@@ -92,7 +92,8 @@ class AcquisitionReportGenerator(BaseReportGenerator):
             for i, plan in enumerate(plans[: self._top_plans], 1):
                 lines.append(f"### {i}. [{plan['priority']}] {plan['entity_name']} — {plan['gap_type'].replace('_', ' ').title()}")
                 lines.append("")
-                lines.append(f"- **Gap:** {plan['affected_claim_count']} claims lack sufficient evidence")
+                lines.append(f"- **Plan ID:** `{plan.get('plan_id', '?')[:12]}`")
+                lines.append(f"- **Gap addressed:** `{plan.get('gap_id', '?')[:12]}`")
                 lines.append(f"- **Current confidence:** {plan['current_confidence']:.2f} → **Target:** {plan['target_confidence']:.2f} (Δ +{plan['estimated_confidence_lift']:.2f})")
                 lines.append(f"- **Estimated new evidence:** {plan['estimated_evidence_gain']} pieces")
                 lines.append(f"- **Resource cost:** {plan['total_cost']:.1f} units")
