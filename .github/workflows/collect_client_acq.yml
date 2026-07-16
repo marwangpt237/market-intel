@@ -1,0 +1,43 @@
+name: Market-Intel Client Acquisition
+
+on:
+  schedule:
+    # Every 12 hours (less frequent than default — prospect data changes slower)
+    - cron: '30 */12 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install pyyaml
+
+      - name: Run Market-Intel (client_acq profile)
+        run: python main.py --profile client_acq
+        env:
+          MARKET_INTEL_PROFILE: client_acq
+
+      - name: Commit collected data, reports, actions
+        run: |
+          git config user.name "Market-Intel Bot"
+          git config user.email "actions@github.com"
+          git add data/ reports/ actions/ 2>/dev/null || true
+          if git diff --staged --quiet; then
+            echo "No new data to commit"
+          else
+            git commit -m "Market-Intel (client_acq): prospect scan $(date -u '+%Y-%m-%d %H:%M UTC')"
+            git push
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
