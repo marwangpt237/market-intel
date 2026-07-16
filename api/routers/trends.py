@@ -4,6 +4,8 @@ import json
 import sqlite3
 from collections import Counter, defaultdict
 from datetime import datetime, timezone, timedelta
+import os
+import sqlite3
 from fastapi import APIRouter, Query
 from api.config import config
 
@@ -11,8 +13,20 @@ router = APIRouter()
 
 
 def _ensure_db() -> bool:
-    import os
     return os.path.exists(config.DB_PATH)
+
+
+def _safe_query(sql: str, params: tuple = ()) -> list:
+    if not _ensure_db():
+        return []
+    try:
+        conn = sqlite3.connect(config.DB_PATH)
+        conn.row_factory = sqlite3.Row
+        rows = conn.execute(sql, params).fetchall()
+        conn.close()
+        return rows
+    except Exception:
+        return []
 
 
 @router.get("/trends")
@@ -21,10 +35,7 @@ async def list_trends(limit: int = Query(default=20, ge=1, le=100)):
     if not _ensure_db():
         return {"trends": [], "total": 0}
 
-    conn = sqlite3.connect(config.DB_PATH)
-    conn.row_factory = sqlite3.Row
-    rows = conn.execute("SELECT metadata FROM items LIMIT 10000").fetchall()
-    conn.close()
+    rows = _safe_query("SELECT metadata FROM items LIMIT 10000")
 
     trends: dict[str, dict] = defaultdict(lambda: {"count": 0, "trend": "stable", "items": []})
     for row in rows:
@@ -58,10 +69,7 @@ async def list_hot_trends(limit: int = Query(default=10, ge=1, le=50)):
     if not _ensure_db():
         return {"trends": [], "total": 0}
 
-    conn = sqlite3.connect(config.DB_PATH)
-    conn.row_factory = sqlite3.Row
-    rows = conn.execute("SELECT metadata FROM items LIMIT 10000").fetchall()
-    conn.close()
+    rows = _safe_query("SELECT metadata FROM items LIMIT 10000")
 
     hot: Counter = Counter()
     for row in rows:
@@ -84,10 +92,7 @@ async def list_rising_trends(limit: int = Query(default=10, ge=1, le=50)):
     if not _ensure_db():
         return {"trends": [], "total": 0}
 
-    conn = sqlite3.connect(config.DB_PATH)
-    conn.row_factory = sqlite3.Row
-    rows = conn.execute("SELECT metadata FROM items LIMIT 10000").fetchall()
-    conn.close()
+    rows = _safe_query("SELECT metadata FROM items LIMIT 10000")
 
     rising: Counter = Counter()
     for row in rows:
@@ -111,10 +116,7 @@ async def list_opportunities(limit: int = Query(default=20, ge=1, le=100)):
         return {"opportunities": [], "total": 0}
 
     # Look for _product_intelligence in items metadata
-    conn = sqlite3.connect(config.DB_PATH)
-    conn.row_factory = sqlite3.Row
-    rows = conn.execute("SELECT metadata FROM items LIMIT 10000").fetchall()
-    conn.close()
+    rows = _safe_query("SELECT metadata FROM items LIMIT 10000")
 
     opportunities: list[dict] = []
     for row in rows:
@@ -148,10 +150,7 @@ async def list_top_opportunities(limit: int = Query(default=10, ge=1, le=50)):
     if not _ensure_db():
         return {"opportunities": [], "total": 0}
 
-    conn = sqlite3.connect(config.DB_PATH)
-    conn.row_factory = sqlite3.Row
-    rows = conn.execute("SELECT metadata FROM items LIMIT 10000").fetchall()
-    conn.close()
+    rows = _safe_query("SELECT metadata FROM items LIMIT 10000")
 
     opportunities: list[dict] = []
     for row in rows:
@@ -181,17 +180,14 @@ async def get_trends_timeline(days: int = Query(default=7, ge=1, le=90)):
     if not _ensure_db():
         return {"timeline": [], "days": days}
 
-    conn = sqlite3.connect(config.DB_PATH)
-    conn.row_factory = sqlite3.Row
     cutoff = (datetime.now(timezone.utc) - timedelta(days=days)).isoformat()
-    rows = conn.execute(
+    rows = _safe_query(
         """SELECT DATE(collected_at) AS date, COUNT(*) AS count, source
            FROM items WHERE collected_at > ?
            GROUP BY DATE(collected_at), source
            ORDER BY date DESC""",
         (cutoff,)
-    ).fetchall()
-    conn.close()
+    )
 
     # Group by date
     timeline: dict[str, dict] = defaultdict(lambda: {"total": 0, "by_source": {}})

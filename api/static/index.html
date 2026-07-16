@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Market-Intel Dashboard</title>
+<style>
+:root {
+  --bg: #0f172a;
+  --bg-card: #1e293b;
+  --bg-hover: #334155;
+  --text: #e2e8f0;
+  --text-muted: #94a3b8;
+  --primary: #3b82f6;
+  --primary-hover: #2563eb;
+  --success: #22c55e;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+  --border: #334155;
+  --radius: 8px;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); display: flex; min-height: 100vh; }
+.sidebar { width: 240px; background: var(--bg-card); border-right: 1px solid var(--border); padding: 20px 0; flex-shrink: 0; position: fixed; height: 100vh; overflow-y: auto; }
+.sidebar h1 { font-size: 18px; padding: 0 20px 20px; border-bottom: 1px solid var(--border); color: var(--primary); }
+.nav-item { display: flex; align-items: center; gap: 10px; padding: 10px 20px; cursor: pointer; color: var(--text-muted); transition: all 0.15s; font-size: 14px; }
+.nav-item:hover { background: var(--bg-hover); color: var(--text); }
+.nav-item.active { background: var(--primary); color: white; }
+.main { margin-left: 240px; padding: 30px; flex: 1; min-width: 0; }
+.page { display: none; }
+.page.active { display: block; }
+.page h2 { font-size: 24px; margin-bottom: 20px; }
+.card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; margin-bottom: 20px; }
+.card h3 { font-size: 16px; margin-bottom: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+.metric { display: inline-block; margin-right: 30px; }
+.metric-value { font-size: 32px; font-weight: 700; color: var(--primary); }
+.metric-label { font-size: 12px; color: var(--text-muted); text-transform: uppercase; }
+table { width: 100%; border-collapse: collapse; font-size: 14px; }
+th { text-align: left; padding: 10px; border-bottom: 2px solid var(--border); color: var(--text-muted); font-size: 12px; text-transform: uppercase; }
+td { padding: 10px; border-bottom: 1px solid var(--border); }
+tr:hover { background: var(--bg-hover); }
+.badge { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 11px; font-weight: 600; }
+.badge-healthy, .badge-VERIFIED, .badge-completed { background: var(--success); color: white; }
+.badge-degraded, .badge-PROBABLE, .badge-running { background: var(--warning); color: white; }
+.badge-down, .badge-CONFLICTED, .badge-EXPIRED, .badge-failed { background: var(--danger); color: white; }
+.badge-HYPOTHESIS, .badge-UNKNOWN, .badge-queued { background: var(--text-muted); color: white; }
+.badge-cancelling, .badge-retrying { background: var(--primary); color: white; }
+.btn { display: inline-block; padding: 8px 16px; background: var(--primary); color: white; border: none; border-radius: var(--radius); cursor: pointer; font-size: 14px; transition: background 0.15s; }
+.btn:hover { background: var(--primary-hover); }
+.btn-danger { background: var(--danger); }
+.btn-danger:hover { background: #dc2626; }
+.btn-sm { padding: 4px 10px; font-size: 12px; }
+input, select, textarea { background: var(--bg); color: var(--text); border: 1px solid var(--border); border-radius: var(--radius); padding: 8px 12px; font-size: 14px; width: 100%; }
+input:focus, select:focus { outline: none; border-color: var(--primary); }
+.search-bar { display: flex; gap: 10px; margin-bottom: 20px; }
+.search-bar input { flex: 1; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
+.stat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; margin-bottom: 20px; }
+.stat-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; }
+.stat-card .stat-value { font-size: 28px; font-weight: 700; }
+.stat-card .stat-label { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+.loading { text-align: center; padding: 40px; color: var(--text-muted); }
+.error { color: var(--danger); padding: 10px; background: rgba(239, 68, 68, 0.1); border-radius: var(--radius); margin-bottom: 10px; }
+pre { background: var(--bg); padding: 12px; border-radius: var(--radius); overflow-x: auto; font-size: 13px; line-height: 1.5; }
+.markdown { background: var(--bg); padding: 16px; border-radius: var(--radius); font-size: 14px; line-height: 1.6; overflow-x: auto; }
+.markdown h1, .markdown h2, .markdown h3 { margin: 16px 0 8px; color: var(--primary); }
+.markdown table { margin: 8px 0; }
+.markdown code { background: var(--bg-hover); padding: 2px 6px; border-radius: 4px; font-size: 13px; }
+.markdown ul, .markdown ol { padding-left: 20px; margin: 8px 0; }
+.graph-container { background: var(--bg); border-radius: var(--radius); padding: 20px; min-height: 400px; position: relative; }
+.node { fill: var(--primary); stroke: var(--border); stroke-width: 2px; cursor: pointer; }
+.node:hover { fill: var(--primary-hover); }
+.edge { stroke: var(--border); stroke-width: 1px; }
+.node-label { fill: var(--text); font-size: 11px; text-anchor: middle; }
+.tag { display: inline-block; padding: 2px 8px; background: var(--bg-hover); border-radius: 4px; font-size: 11px; margin: 2px; }
+.json-viewer { background: var(--bg); padding: 12px; border-radius: var(--radius); font-family: monospace; font-size: 13px; overflow-x: auto; }
+.empty-state { text-align: center; padding: 60px 20px; color: var(--text-muted); }
+.empty-state .icon { font-size: 48px; margin-bottom: 12px; }
+</style>
+</head>
+<body>
+
+<div class="sidebar">
+  <h1>📊 Market-Intel</h1>
+  <div class="nav-item active" data-page="dashboard">📈 Dashboard</div>
+  <div class="nav-item" data-page="search">🔍 Search</div>
+  <div class="nav-item" data-page="reports">📄 Reports</div>
+  <div class="nav-item" data-page="collectors">🔌 Collectors</div>
+  <div class="nav-item" data-page="knowledge-graph">🕸️ Knowledge Graph</div>
+  <div class="nav-item" data-page="decisions">🎯 Decisions</div>
+  <div class="nav-item" data-page="validation">✅ Validation</div>
+  <div class="nav-item" data-page="acquisition">📋 Acquisition</div>
+  <div class="nav-item" data-page="trends">📈 Trends</div>
+  <div class="nav-item" data-page="opportunities">💎 Opportunities</div>
+  <div class="nav-item" data-page="scheduler">⏰ Scheduler</div>
+  <div class="nav-item" data-page="settings">⚙️ Settings</div>
+</div>
+
+<div class="main">
+
+<!-- Dashboard Page -->
+<div class="page active" id="page-dashboard">
+  <h2>Dashboard</h2>
+  <div class="stat-grid" id="dashboard-stats">
+    <div class="loading">Loading metrics...</div>
+  </div>
+  <div class="card">
+    <h3>System Status</h3>
+    <div id="system-status"><div class="loading">Loading...</div></div>
+  </div>
+  <div class="card">
+    <h3>Recent Runs</h3>
+    <div id="recent-runs"><div class="loading">Loading...</div></div>
+  </div>
+  <div class="card">
+    <h3>Top Sources</h3>
+    <div id="top-sources"><div class="loading">Loading...</div></div>
+  </div>
+</div>
+
+<!-- Search Page -->
+<div class="page" id="page-search">
+  <h2>Search</h2>
+  <div class="search-bar">
+    <input type="text" id="search-input" placeholder="Search items..." onkeypress="if(event.key==='Enter')doSearch()">
+    <button class="btn" onclick="doSearch()">Search</button>
+  </div>
+  <div class="card">
+    <div id="search-results"><div class="empty-state"><div class="icon">🔍</div><p>Enter a search query to find items</p></div></div>
+  </div>
+</div>
+
+<!-- Reports Page -->
+<div class="page" id="page-reports">
+  <h2>Reports</h2>
+  <div class="search-bar">
+    <input type="text" id="report-filter" placeholder="Filter by type..." oninput="loadReports()">
+  </div>
+  <div class="card">
+    <div id="reports-list"><div class="loading">Loading reports...</div></div>
+  </div>
+  <div class="card" id="report-viewer" style="display:none">
+    <h3 id="report-title"></h3>
+    <div class="markdown" id="report-content"></div>
+  </div>
+</div>
+
+<!-- Collectors Page -->
+<div class="page" id="page-collectors">
+  <h2>Collector Registry</h2>
+  <div class="stat-grid" id="collector-stats"><div class="loading">Loading...</div></div>
+  <div class="card">
+    <h3>All Collectors</h3>
+    <div id="collectors-list"><div class="loading">Loading...</div></div>
+  </div>
+  <div class="card">
+    <h3>Health Monitor</h3>
+    <div id="collectors-health"><div class="loading">Loading...</div></div>
+  </div>
+</div>
+
+<!-- Knowledge Graph Page -->
+<div class="page" id="page-knowledge-graph">
+  <h2>Knowledge Graph</h2>
+  <div class="stat-grid" id="graph-stats"><div class="loading">Loading...</div></div>
+  <div class="card">
+    <h3>Graph Visualization</h3>
+    <div class="graph-container" id="graph-viz">
+      <div class="empty-state"><div class="icon">🕸️</div><p>No graph data available</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- Decisions Page -->
+<div class="page" id="page-decisions">
+  <h2>Decision Ledger</h2>
+  <div class="stat-grid" id="decision-stats"><div class="loading">Loading...</div></div>
+  <div class="card">
+    <h3>Recent Decisions</h3>
+    <div id="decisions-list"><div class="loading">Loading...</div></div>
+  </div>
+</div>
+
+<!-- Validation Page -->
+<div class="page" id="page-validation">
+  <h2>Validation Engine</h2>
+  <div class="stat-grid" id="validation-stats"><div class="loading">Loading...</div></div>
+  <div class="card">
+    <h3>Claims by Status</h3>
+    <div id="claims-by-status"><div class="loading">Loading...</div></div>
+  </div>
+  <div class="card">
+    <h3>Verified Claims</h3>
+    <div id="verified-claims"><div class="loading">Loading...</div></div>
+  </div>
+</div>
+
+<!-- Acquisition Page -->
+<div class="page" id="page-acquisition">
+  <h2>Acquisition Planner</h2>
+  <div class="card">
+    <h3>Latest Acquisition Report</h3>
+    <div id="acquisition-report"><div class="loading">Loading...</div></div>
+  </div>
+</div>
+
+<!-- Trends Page -->
+<div class="page" id="page-trends">
+  <h2>Trends</h2>
+  <div class="card">
+    <h3>Hot Trends</h3>
+    <div id="hot-trends"><div class="loading">Loading...</div></div>
+  </div>
+  <div class="card">
+    <h3>Rising Trends</h3>
+    <div id="rising-trends"><div class="loading">Loading...</div></div>
+  </div>
+</div>
+
+<!-- Opportunities Page -->
+<div class="page" id="page-opportunities">
+  <h2>Opportunities</h2>
+  <div class="card">
+    <h3>Top Opportunities</h3>
+    <div id="opportunities-list"><div class="loading">Loading...</div></div>
+  </div>
+</div>
+
+<!-- Scheduler Page -->
+<div class="page" id="page-scheduler">
+  <h2>Scheduler</h2>
+  <div class="card">
+    <h3>Scheduler Status</h3>
+    <div id="scheduler-status"><div class="loading">Loading...</div></div>
+  </div>
+  <div class="card">
+    <h3>Scheduled Jobs</h3>
+    <div id="jobs-list"><div class="loading">Loading...</div></div>
+  </div>
+  <div class="card">
+    <h3>Run History</h3>
+    <div id="run-history"><div class="loading">Loading...</div></div>
+  </div>
+  <div class="card">
+    <h3>Trigger Manual Run</h3>
+    <div class="search-bar">
+      <select id="run-profile">
+        <option value="default">Default (Marketing Intel)</option>
+        <option value="algeria_ecom">Algeria E-commerce</option>
+        <option value="client_acq">Client Acquisition</option>
+      </select>
+      <button class="btn" onclick="triggerRun()">Trigger Run</button>
+    </div>
+  </div>
+</div>
+
+<!-- Settings Page -->
+<div class="page" id="page-settings">
+  <h2>Settings</h2>
+  <div class="card">
+    <h3>API Configuration</h3>
+    <div id="api-config"><div class="loading">Loading...</div></div>
+  </div>
+  <div class="card">
+    <h3>API Endpoints</h3>
+    <p><a href="/docs" target="_blank" style="color: var(--primary)">Swagger UI (Interactive API Docs)</a></p>
+    <p><a href="/redoc" target="_blank" style="color: var(--primary)">ReDoc (Alternative API Docs)</a></p>
+    <p><a href="/openapi.json" target="_blank" style="color: var(--primary)">OpenAPI Schema (JSON)</a></p>
+  </div>
+</div>
+
+</div>
+
+<script>
+const API = '/api/v1';
+
+// ─── Navigation ──────────────────────────────────────────────────────
+document.querySelectorAll('.nav-item').forEach(item => {
+  item.addEventListener('click', () => {
+    const page = item.dataset.page;
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    item.classList.add('active');
+    document.getElementById('page-' + page).classList.add('active');
+    loadPage(page);
+  });
+});
+
+async function api(path) {
+  try {
+    const res = await fetch(API + path);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return await res.json();
+  } catch(e) {
+    console.error('API error:', path, e);
+    return null;
+  }
+}
+
+async function apiPost(path, body) {
+  try {
+    const res = await fetch(API + path, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(body || {})
+    });
+    return await res.json();
+  } catch(e) { console.error('API error:', path, e); return null; }
+}
+
+async function apiDelete(path) {
+  try {
+    const res = await fetch(API + path, {method: 'DELETE'});
+    return await res.json();
+  } catch(e) { console.error('API error:', path, e); return null; }
+}
+
+function esc(s) { return String(s||'').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function fmtDate(d) { return d ? new Date(d).toLocaleString() : '—'; }
+function fmtNum(n) { return (n||0).toLocaleString(); }
+
+// ─── Page loaders ────────────────────────────────────────────────────
+function loadPage(page) {
+  switch(page) {
+    case 'dashboard': loadDashboard(); break;
+    case 'search': break; // lazy load on search
+    case 'reports': loadReports(); break;
+    case 'collectors': loadCollectors(); break;
+    case 'knowledge-graph': loadKnowledgeGraph(); break;
+    case 'decisions': loadDecisions(); break;
+    case 'validation': loadValidation(); break;
+    case 'acquisition': loadAcquisition(); break;
+    case 'trends': loadTrends(); break;
+    case 'opportunities': loadOpportunities(); break;
+    case 'scheduler': loadScheduler(); break;
+    case 'settings': loadSettings(); break;
+  }
+}
+
+async function loadDashboard() {
+  const data = await api('/stats/dashboard');
+  if (!data) return;
+
+  const items = data.items || {};
+  const archive = data.archive || {};
+  const claims = data.claims || {};
+  const decisions = data.decisions || {};
+  const collectors = data.collectors || {};
+
+  document.getElementById('dashboard-stats').innerHTML = `
+    <div class="stat-card"><div class="stat-value">${fmtNum(items.total)}</div><div class="stat-label">Items in DB</div></div>
+    <div class="stat-card"><div class="stat-value">${fmtNum(archive.total_items_archived)}</div><div class="stat-label">Archived Items</div></div>
+    <div class="stat-card"><div class="stat-value">${fmtNum(claims.total_claims)}</div><div class="stat-label">Total Claims</div></div>
+    <div class="stat-card"><div class="stat-value">${fmtNum(claims.by_status?.VERIFIED || 0)}</div><div class="stat-label">Verified Claims</div></div>
+    <div class="stat-card"><div class="stat-value">${fmtNum(decisions.total_decisions)}</div><div class="stat-label">Decisions</div></div>
+    <div class="stat-card"><div class="stat-value">${fmtNum(collectors.total_collectors)}</div><div class="stat-label">Collectors</div></div>
+  `;
+
+  document.getElementById('system-status').innerHTML = `
+    <table>
+      <tr><td>Items distinct sources</td><td>${items.distinct_sources || 0}</td></tr>
+      <tr><td>Archive distinct sources</td><td>${archive.total_distinct_sources || 0}</td></tr>
+      <tr><td>Archive date range</td><td>${archive.earliest_archive_date || '—'} → ${archive.latest_archive_date || '—'}</td></tr>
+      <tr><td>Total evidence pieces</td><td>${fmtNum(claims.total_evidence_pieces)}</td></tr>
+      <tr><td>Decisions with warnings</td><td>${decisions.decisions_with_warnings || 0}</td></tr>
+    </table>
+  `;
+
+  // Recent runs
+  const runs = await api('/scheduler/runs?limit=5');
+  if (runs && runs.history) {
+    document.getElementById('recent-runs').innerHTML = `
+      <table>
+        <thead><tr><th>Run ID</th><th>Profile</th><th>Status</th><th>Started</th><th>Duration</th></tr></thead>
+        <tbody>
+          ${runs.history.slice(0,5).map(r => `
+            <tr>
+              <td><code>${esc(r.run_id.substring(0,20))}</code></td>
+              <td>${esc(r.profile)}</td>
+              <td><span class="badge badge-${r.status}">${r.status}</span></td>
+              <td>${fmtDate(r.started_at)}</td>
+              <td>${r.duration_seconds ? r.duration_seconds.toFixed(1)+'s' : '—'}</td>
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>
+    `;
+  }
+
+  // Top sources
+  if (items.top_sources) {
+    document.getElementById('top-sources').innerHTML = `
+      <table>
+        <thead><tr><th>Source</th><th>Items</th></tr></thead>
+        <tbody>
+          ${items.top_sources.map(s => `<tr><td><code>${esc(s.source)}</code></td><td>${fmtNum(s.count)}</td></tr>`).join('')}
+        </tbody>
+      </table>
+    `;
+  }
+}
+
+async function doSearch() {
+  const q = document.getElementById('search-input').value.trim();
+  if (!q) return;
+  document.getElementById('search-results').innerHTML = '<div class="loading">Searching...</div>';
+  const data = await api(`/search?q=${encodeURIComponent(q)}&limit=20`);
+  if (!data || !data.items || data.items.length === 0) {
+    document.getElementById('search-results').innerHTML = '<div class="empty-state"><div class="icon">📭</div><p>No results found</p></div>';
+    return;
+  }
+  document.getElementById('search-results').innerHTML = `
+    <p style="margin-bottom:12px;color:var(--text-muted)">${data.total} results</p>
+    <table>
+      <thead><tr><th>Title</th><th>Source</th><th>Collected</th></tr></thead>
+      <tbody>
+        ${data.items.map(i => `
+          <tr>
+            <td><a href="${esc(i.url)}" target="_blank" style="color:var(--primary)">${esc(i.title)}</a><br><small style="color:var(--text-muted)">${esc(i.body_excerpt||'')}</small></td>
+            <td><code>${esc(i.source_name)}</code></td>
+            <td>${fmtDate(i.collected_at)}</td>
+          </tr>
+        `).join('')}
+      </tbody>
+    </table>
+  `;
+}
+
+async function loadReports() {
+  const filter = document.getElementById('report-filter').value;
+  const data = await api(`/reports${filter ? '?type='+filter : ''}&limit=50`);
+  if (!data || !data.reports) return;
+  document.getElementById('reports-list').innerHTML = `
+    <table>
+      <thead><tr><th>Filename</th><th>Type</th><th>Date</th><th>Size</th><th>Action</th></tr></thead>
+      <tbody>
+        ${data.reports.map(r => `
+          <tr>
+            <td><code>${esc(r.filename)}</code></td>
+            <td><span class="tag">${esc(r.type)}</span></td>
+            <td>${esc(r.date)}</td>
+            <td>${r.size_kb} KB</td>
+            <td><button class="btn btn-sm" onclick="viewReport('${esc(r.filename)}')">View</button></td>
+          </tr>
+        `).join('')}
+      </tbody>
+    </table>
+  `;
+}
+
+async function viewReport(filename) {
+  const data = await api(`/reports/${filename}`);
+  if (!data) return;
+  document.getElementById('report-viewer').style.display = 'block';
+  document.getElementById('report-title').textContent = data.filename;
+  document.getElementById('report-content').textContent = data.content;
+}
+
+async function loadCollectors() {
+  const data = await api('/collectors');
+  if (!data) return;
+  const stats = data.stats || {};
+  document.getElementById('collector-stats').innerHTML = `
+    <div class="stat-card"><div class="stat-value">${data.total}</div><div class="stat-label">Total Collectors</div></div>
+    <div class="stat-card"><div class="stat-value">${stats.by_country?.DZ || 0}</div><div class="stat-label">Algerian (DZ)</div></div>
+    <div class="stat-card"><div class="stat-value">${Object.keys(stats.by_category||{}).length}</div><div class="stat-label">Categories</div></div>
+  `;
+  document.getElementById('collectors-list').innerHTML = `
+    <table>
+      <thead><tr><th>Name</th><th>Country</th><th>Category</th><th>Reliability</th><th>Entity Types</th></tr></thead>
+      <tbody>
+        ${data.collectors.map(c => `
+          <tr>
+            <td><code>${esc(c.name)}</code></td>
+            <td>${esc(c.country)}</td>
+            <td>${esc(c.category)}</td>
+            <td>${(c.reliability*100).toFixed(0)}%</td>
+            <td>${c.entity_types.map(t=>`<span class="tag">${esc(t)}</span>`).join('')}</td>
+          </tr>
+        `).join('')}
+      </tbody>
+    </table>
+  `;
+  const health = await api('/collectors/health/all');
+  if (health && health.collectors) {
+    document.getElementById('collectors-health').innerHTML = `
+      <table>
+        <thead><tr><th>Collector</th><th>Status</th><th>Success Rate</th><th>Items Collected</th><th>Avg Latency</th></tr></thead>
+        <tbody>
+          ${Object.entries(health.collectors).map(([name, h]) => `
+            <tr>
+              <td><code>${esc(name)}</code></td>
+              <td><span class="badge badge-${h.status}">${h.status}</span></td>
+              <td>${(h.success_rate*100).toFixed(1)}%</td>
+              <td>${fmtNum(h.total_items_collected)}</td>
+              <td>${h.avg_latency_ms.toFixed(0)}ms</td>
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>
+    `;
+  }
+}
+
+async function loadKnowledgeGraph() {
+  const stats = await api('/knowledge-graph/stats');
+  if (stats && stats.stats) {
+    const s = stats.stats;
+    document.getElementById('graph-stats').innerHTML = `
+      <div class="stat-card"><div class="stat-value">${s.total_nodes||0}</div><div class="stat-label">Nodes</div></div>
+      <div class="stat-card"><div class="stat-value">${s.total_edges||0}</div><div class="stat-label">Edges</div></div>
+      <div class="stat-card"><div class="stat-value">${s.companies||0}</div><div class="stat-label">Companies</div></div>
+      <div class="stat-card"><div class="stat-value">${s.products||0}</div><div class="stat-label">Products</div></div>
+    `;
+  }
+  const graph = await api('/knowledge-graph?limit=50');
+  if (graph && graph.nodes && graph.nodes.length > 0) {
+    drawGraph(graph.nodes, graph.edges);
+  }
+}
+
+function drawGraph(nodes, edges) {
+  // Simple SVG graph layout (force-directed approximation)
+  const container = document.getElementById('graph-viz');
+  const width = container.clientWidth - 40;
+  const height = 400;
+  // Position nodes in a circle
+  const positioned = nodes.map((n, i) => ({
+    ...n,
+    x: width/2 + Math.cos(2*Math.PI*i/nodes.length) * 150,
+    y: height/2 + Math.sin(2*Math.PI*i/nodes.length) * 150,
+  }));
+  const nodeMap = {};
+  positioned.forEach(n => nodeMap[n.name || n.id] = n);
+
+  let svg = `<svg width="${width}" height="${height}">`;
+  // Edges
+  edges.forEach(e => {
+    const s = nodeMap[e.source] || positioned.find(n => n.name === e.source || n.id === e.source);
+    const t = nodeMap[e.target] || positioned.find(n => n.name === e.target || n.id === e.target);
+    if (s && t) svg += `<line class="edge" x1="${s.x}" y1="${s.y}" x2="${t.x}" y2="${t.y}"/>`;
+  });
+  // Nodes
+  positioned.forEach(n => {
+    svg += `<circle class="node" cx="${n.x}" cy="${n.y}" r="20"/>`;
+    svg += `<text class="node-label" x="${n.x}" y="${n.y+35}">${esc(n.name||n.id||'').substring(0,15)}</text>`;
+  });
+  svg += '</svg>';
+  container.innerHTML = svg;
+}
+
+async function loadDecisions() {
+  const data = await api('/decisions?limit=20');
+  if (!data) return;
+  const stats = data.stats || {};
+  document.getElementById('decision-stats').innerHTML = `
+    <div class="stat-card"><div class="stat-value">${stats.total_decisions||0}</div><div class="stat-label">Total Decisions</div></div>
+    <div class="stat-card"><div class="stat-value">${stats.decisions_with_warnings||0}</div><div class="stat-label">With Warnings</div></div>
+    <div class="stat-card"><div class="stat-value">${(stats.avg_confidence||0).toFixed(2)}</div><div class="stat-label">Avg Confidence</div></div>
+  `;
+  document.getElementById('decisions-list').innerHTML = `
+    <table>
+      <thead><tr><th>Decision ID</th><th>Type</th><th>Target</th><th>Confidence</th><th>Warnings</th></tr></thead>
+      <tbody>
+        ${(data.decisions||[]).map(d => `
+          <tr>
+            <td><code>${esc(d.decision_id?.substring(0,16))}</code></td>
+            <td>${esc(d.decision_type)}</td>
+            <td>${esc(d.target)}</td>
+            <td>${(d.decision_confidence*100).toFixed(0)}%</td>
+            <td>${(d.warnings||[]).length}</td>
+          </tr>
+        `).join('')}
+      </tbody>
+    </table>
+  `;
+}
+
+async function loadValidation() {
+  const data = await api('/claims/stats/summary');
+  if (!data) return;
+  const byStatus = data.by_status || {};
+  document.getElementById('validation-stats').innerHTML = `
+    <div class="stat-card"><div class="stat-value">${data.total_claims||0}</div><div class="stat-label">Total Claims</div></div>
+    <div class="stat-card"><div class="stat-value">${byStatus.VERIFIED||0}</div><div class="stat-label">Verified</div></div>
+    <div class="stat-card"><div class="stat-value">${byStatus.PROBABLE||0}</div><div class="stat-label">Probable</div></div>
+    <div class="stat-card"><div class="stat-value">${byStatus.HYPOTHESIS||0}</div><div class="stat-label">Hypothesis</div></div>
+    <div class="stat-card"><div class="stat-value">${byStatus.CONFLICTED||0}</div><div class="stat-label">Conflicted</div></div>
+    <div class="stat-card"><div class="stat-value">${data.total_evidence_pieces||0}</div><div class="stat-label">Evidence Pieces</div></div>
+  `;
+  document.getElementById('claims-by-status').innerHTML = `
+    <table>
+      <thead><tr><th>Status</th><th>Count</th></tr></thead>
+      <tbody>
+        ${Object.entries(byStatus).map(([s,c]) => `<tr><td><span class="badge badge-${s}">${s}</span></td><td>${c}</td></tr>`).join('')}
+      </tbody>
+    </table>
+  `;
+  const verified = await api('/claims?status=VERIFIED&limit=10');
+  if (verified && verified.claims) {
+    document.getElementById('verified-claims').innerHTML = `
+      <table>
+        <thead><tr><th>Claim ID</th><th>Entity</th><th>Type</th><th>Value</th><th>Confidence</th></tr></thead>
+        <tbody>
+          ${verified.claims.map(c => `
+            <tr>
+              <td><code>${esc(c.id.substring(0,12))}</code></td>
+              <td>${esc(c.entity)}</td>
+              <td>${esc(c.claim_type)}</td>
+              <td>${esc(JSON.stringify(c.value)).substring(0,30)}</td>
+              <td>${(c.confidence_score*100).toFixed(0)}%</td>
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>
+    `;
+  }
+}
+
+async function loadAcquisition() {
+  // Find latest acquisition report
+  const data = await api('/reports?type=acquisition&limit=1');
+  if (!data || !data.reports || data.reports.length === 0) {
+    document.getElementById('acquisition-report').innerHTML = '<div class="empty-state"><div class="icon">📋</div><p>No acquisition reports yet</p></div>';
+    return;
+  }
+  const report = await api(`/reports/${data.reports[0].filename}`);
+  if (report) {
+    document.getElementById('acquisition-report').innerHTML = `<div class="markdown"><pre>${esc(report.content)}</pre></div>`;
+  }
+}
+
+async function loadTrends() {
+  const hot = await api('/trends/hot?limit=10');
+  if (hot && hot.trends) {
+    document.getElementById('hot-trends').innerHTML = hot.trends.length === 0 ? '<p>No hot trends</p>' : `
+      <table><thead><tr><th>Topic</th><th>Mentions</th></tr></thead><tbody>
+        ${hot.trends.map(t => `<tr><td>${esc(t.topic)}</td><td>${t.mentions}</td></tr>`).join('')}
+      </tbody></table>
+    `;
+  }
+  const rising = await api('/trends/rising?limit=10');
+  if (rising && rising.trends) {
+    document.getElementById('rising-trends').innerHTML = rising.trends.length === 0 ? '<p>No rising trends</p>' : `
+      <table><thead><tr><th>Topic</th><th>Mentions</th></tr></thead><tbody>
+        ${rising.trends.map(t => `<tr><td>${esc(t.topic)}</td><td>${t.mentions}</td></tr>`).join('')}
+      </tbody></table>
+    `;
+  }
+}
+
+async function loadOpportunities() {
+  const data = await api('/opportunities?limit=20');
+  if (!data || !data.opportunities || data.opportunities.length === 0) {
+    document.getElementById('opportunities-list').innerHTML = '<div class="empty-state"><div class="icon">💎</div><p>No opportunities detected</p></div>';
+    return;
+  }
+  document.getElementById('opportunities-list').innerHTML = `
+    <table>
+      <thead><tr><th>Product</th><th>Score</th><th>Demand</th><th>Saturation</th><th>Avg Price</th></tr></thead>
+      <tbody>
+        ${data.opportunities.map(o => `
+          <tr>
+            <td>${esc(o.product)}</td>
+            <td><strong>${o.opportunity_score}</strong>/100</td>
+            <td>${esc(o.demand)}</td>
+            <td>${esc(o.saturation)}</td>
+            <td>${o.avg_price_dzd ? o.avg_price_dzd+' DZD' : '—'}</td>
+          </tr>
+        `).join('')}
+      </tbody>
+    </table>
+  `;
+}
+
+async function loadScheduler() {
+  const status = await api('/scheduler/status');
+  if (status) {
+    document.getElementById('scheduler-status').innerHTML = `
+      <table>
+        <tr><td>Running</td><td>${status.running ? '✅ Yes' : '❌ No'}</td></tr>
+        <tr><td>Active runs</td><td>${status.active_runs?.length || 0}</td></tr>
+        <tr><td>Jobs</td><td>${status.jobs?.length || 0}</td></tr>
+      </table>
+      ${!status.running ? '<button class="btn" onclick="startScheduler()">Start Scheduler</button>' : ''}
+    `;
+  }
+  if (status && status.jobs) {
+    document.getElementById('jobs-list').innerHTML = `
+      <table>
+        <thead><tr><th>ID</th><th>Name</th><th>Profile</th><th>Cron</th><th>Next Run</th><th>Actions</th></tr></thead>
+        <tbody>
+          ${status.jobs.map(j => `
+            <tr>
+              <td><code>${esc(j.id)}</code></td>
+              <td>${esc(j.name)}</td>
+              <td>${esc(j.profile)}</td>
+              <td><code>${esc(j.cron)}</code></td>
+              <td>${fmtDate(j.next_run_time)}</td>
+              <td>
+                <button class="btn btn-sm" onclick="pauseJob('${esc(j.id)}')">Pause</button>
+                <button class="btn btn-sm" onclick="resumeJob('${esc(j.id)}')">Resume</button>
+                <button class="btn btn-sm btn-danger" onclick="removeJob('${esc(j.id)}')">Remove</button>
+              </td>
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>
+    `;
+  }
+  const runs = await api('/scheduler/runs?limit=10');
+  if (runs && runs.history) {
+    document.getElementById('run-history').innerHTML = `
+      <table>
+        <thead><tr><th>Run ID</th><th>Profile</th><th>Status</th><th>Started</th><th>Duration</th><th>Items</th></tr></thead>
+        <tbody>
+          ${runs.history.map(r => `
+            <tr>
+              <td><code>${esc(r.run_id?.substring(0,16))}</code></td>
+              <td>${esc(r.profile)}</td>
+              <td><span class="badge badge-${r.status}">${r.status}</span></td>
+              <td>${fmtDate(r.started_at)}</td>
+              <td>${r.duration_seconds ? r.duration_seconds.toFixed(1)+'s' : '—'}</td>
+              <td>${fmtNum(r.items_collected)}</td>
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>
+    `;
+  }
+}
+
+async function loadSettings() {
+  const health = await api('/health/detailed');
+  if (health) {
+    document.getElementById('api-config').innerHTML = `
+      <table>
+        <tr><td>API Version</td><td>1.0.0</td></tr>
+        <tr><td>Overall Status</td><td><span class="badge badge-${health.status==='ok'?'healthy':'degraded'}">${health.status}</span></td></tr>
+        ${Object.entries(health.checks||{}).map(([k,v]) => `<tr><td>${esc(k)}</td><td>${esc(v)}</td></tr>`).join('')}
+      </table>
+    `;
+  }
+}
+
+// ─── Actions ─────────────────────────────────────────────────────────
+async function triggerRun() {
+  const profile = document.getElementById('run-profile').value;
+  const result = await apiPost('/scheduler/runs/trigger', {profile});
+  if (result) {
+    alert(`Run triggered: ${result.run_id}`);
+    loadScheduler();
+  }
+}
+async function startScheduler() { await apiPost('/scheduler/start'); loadScheduler(); }
+async function pauseJob(id) { await apiPost(`/scheduler/jobs/${id}/pause`); loadScheduler(); }
+async function resumeJob(id) { await apiPost(`/scheduler/jobs/${id}/resume`); loadScheduler(); }
+async function removeJob(id) { if(confirm('Remove job?')) { await apiDelete(`/scheduler/jobs/${id}`); loadScheduler(); } }
+
+// ─── Init ────────────────────────────────────────────────────────────
+loadDashboard();
+</script>
+</body>
+</html>

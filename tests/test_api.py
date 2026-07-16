@@ -266,3 +266,21 @@ def test_docs_endpoint(client):
 def test_redoc_endpoint(client):
     response = client.get("/redoc")
     assert response.status_code == 200
+
+
+# ─── Dashboard (Phase 4) ───────────────────────────────────────────────
+
+def test_dashboard_served(client):
+    """Dashboard HTML should be served at /dashboard."""
+    response = client.get("/dashboard")
+    assert response.status_code == 200
+    assert "Market-Intel" in response.text
+    assert "sidebar" in response.text
+    assert "Dashboard" in response.text
+
+def test_dashboard_has_all_pages(client):
+    """Dashboard should have all 12 pages."""
+    response = client.get("/dashboard")
+    # Count page divs
+    page_count = response.text.count('class="page')
+    assert page_count >= 12, f"Expected >= 12 pages, got {page_count}"

@@ -78,7 +78,7 @@ def create_app() -> FastAPI:
     )
 
     # Register routers
-    from api.routers import health, runs, reports, collectors, claims, decisions, search, stats, scheduler, entities, trends, knowledge_graph
+    from api.routers import health, runs, reports, collectors, claims, decisions, search, stats, scheduler, entities, trends, knowledge_graph, static
 
     app.include_router(health.router, prefix=config.API_PREFIX, tags=["health"])
     app.include_router(runs.router, prefix=config.API_PREFIX, tags=["runs"])
@@ -92,6 +92,8 @@ def create_app() -> FastAPI:
     app.include_router(trends.router, prefix=config.API_PREFIX, tags=["trends"])
     app.include_router(search.router, prefix=config.API_PREFIX, tags=["search"])
     app.include_router(stats.router, prefix=config.API_PREFIX, tags=["stats"])
+    # Dashboard (no API prefix — served at /dashboard)
+    app.include_router(static.router, tags=["dashboard"])
 
     # Root endpoint
     @app.get("/", tags=["root"])

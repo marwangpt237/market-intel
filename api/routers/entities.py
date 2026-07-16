@@ -1,6 +1,7 @@
 """Entities endpoints — companies, products, people, topics."""
 from __future__ import annotations
 import json
+import os
 import sqlite3
 from collections import Counter
 from fastapi import APIRouter, HTTPException, Query
@@ -10,8 +11,21 @@ router = APIRouter()
 
 
 def _ensure_db() -> bool:
-    import os
     return os.path.exists(config.DB_PATH)
+
+
+def _safe_query(sql: str, params: tuple = ()) -> list:
+    """Safely execute a DB query — returns [] on any error."""
+    if not _ensure_db():
+        return []
+    try:
+        conn = sqlite3.connect(config.DB_PATH)
+        conn.row_factory = sqlite3.Row
+        rows = conn.execute(sql, params).fetchall()
+        conn.close()
+        return rows
+    except Exception:
+        return []
 
 
 @router.get("/entities")
@@ -23,12 +37,7 @@ async def list_entities(
     if not _ensure_db():
         return {"entities": [], "total": 0}
 
-    conn = sqlite3.connect(config.DB_PATH)
-    conn.row_factory = sqlite3.Row
-
-    # Scan items for entities in metadata
-    rows = conn.execute("SELECT metadata FROM items LIMIT 10000").fetchall()
-    conn.close()
+    rows = _safe_query("SELECT metadata FROM items LIMIT 10000")
 
     entities: Counter = Counter()
     entity_types: dict[str, Counter] = {"company": Counter(), "product": Counter(), "person": Counter(), "topic": Counter()}
@@ -65,10 +74,7 @@ async def list_companies(limit: int = Query(default=50, ge=1, le=500)):
     """List all companies with mention counts."""
     if not _ensure_db():
         return {"companies": [], "total": 0}
-    conn = sqlite3.connect(config.DB_PATH)
-    conn.row_factory = sqlite3.Row
-    rows = conn.execute("SELECT metadata FROM items LIMIT 10000").fetchall()
-    conn.close()
+    rows = _safe_query("SELECT metadata FROM items LIMIT 10000")
 
     companies: Counter = Counter()
     for row in rows:
@@ -88,10 +94,7 @@ async def list_products(limit: int = Query(default=50, ge=1, le=500)):
     """List all products with mention counts."""
     if not _ensure_db():
         return {"products": [], "total": 0}
-    conn = sqlite3.connect(config.DB_PATH)
-    conn.row_factory = sqlite3.Row
-    rows = conn.execute("SELECT metadata FROM items LIMIT 10000").fetchall()
-    conn.close()
+    rows = _safe_query("SELECT metadata FROM items LIMIT 10000")
 
     products: Counter = Counter()
     for row in rows:
@@ -116,10 +119,7 @@ async def list_topics(limit: int = Query(default=50, ge=1, le=500)):
     """List all topics (cluster labels) with mention counts + trends."""
     if not _ensure_db():
         return {"topics": [], "total": 0}
-    conn = sqlite3.connect(config.DB_PATH)
-    conn.row_factory = sqlite3.Row
-    rows = conn.execute("SELECT metadata FROM items LIMIT 10000").fetchall()
-    conn.close()
+    rows = _safe_query("SELECT metadata FROM items LIMIT 10000")
 
     topics: Counter = Counter()
     topic_trends: dict[str, Counter] = {}

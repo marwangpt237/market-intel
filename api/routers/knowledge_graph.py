@@ -19,10 +19,13 @@ async def get_knowledge_graph(limit: int = Query(default=100, ge=1, le=1000)):
     if not _ensure_db():
         return {"nodes": [], "edges": [], "stats": {}}
 
-    conn = sqlite3.connect(config.DB_PATH)
-    conn.row_factory = sqlite3.Row
-    rows = conn.execute("SELECT metadata FROM items LIMIT 10000").fetchall()
-    conn.close()
+    try:
+        conn = sqlite3.connect(config.DB_PATH)
+        conn.row_factory = sqlite3.Row
+        rows = conn.execute("SELECT metadata FROM items LIMIT 10000").fetchall()
+        conn.close()
+    except Exception as e:
+        return {"nodes": [], "edges": [], "stats": {}, "error": str(e)}
 
     # Find the item with _entity_graph
     graph_data = None
@@ -55,10 +58,13 @@ async def get_knowledge_graph_stats():
     if not _ensure_db():
         return {"stats": {}}
 
-    conn = sqlite3.connect(config.DB_PATH)
-    conn.row_factory = sqlite3.Row
-    rows = conn.execute("SELECT metadata FROM items LIMIT 10000").fetchall()
-    conn.close()
+    try:
+        conn = sqlite3.connect(config.DB_PATH)
+        conn.row_factory = sqlite3.Row
+        rows = conn.execute("SELECT metadata FROM items LIMIT 10000").fetchall()
+        conn.close()
+    except Exception:
+        return {"stats": {}}
 
     for row in rows:
         try:
