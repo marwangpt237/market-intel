@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: market-intel
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /api/v1/health
+    autoDeploy: true
+    envVars:
+      - key: MARKET_INTEL_AUTH_ENABLED
+        value: false
+      - key: MARKET_INTEL_DB
+        value: data/market_intel.db
+      - key: PYTHON_VERSION
+        value: 3.11.15

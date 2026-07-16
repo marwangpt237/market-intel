@@ -21,7 +21,7 @@ PROJECT_ROOT = Path(__file__).parent.parent
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 
 from api.config import config
@@ -77,6 +77,37 @@ def create_app() -> FastAPI:
         allow_headers=["*"],
     )
 
+    # Phase 7: Audit logging middleware
+    @app.middleware("http")
+    async def audit_log_middleware(request: Request, call_next):
+        import time
+        start = time.time()
+
+        # Extract API key if present
+        from api.auth import is_auth_enabled, validate_api_key, record_audit_log
+        auth_header = request.headers.get("Authorization", "")
+        api_key = None
+        if auth_header.startswith("Bearer "):
+            raw_key = auth_header[7:]
+            api_key = validate_api_key(raw_key)
+
+        response = await call_next(request)
+        duration_ms = (time.time() - start) * 1000
+
+        # Record audit log for all requests
+        record_audit_log(
+            api_key_id=api_key.key_id if api_key else None,
+            organization=api_key.organization if api_key else None,
+            method=request.method,
+            path=str(request.url.path),
+            status_code=response.status_code,
+            duration_ms=duration_ms,
+            ip_address=request.client.host if request.client else None,
+            user_agent=request.headers.get("user-agent"),
+        )
+
+        return response
+
     # Register routers
     from api.routers import health, runs, reports, collectors, claims, decisions, search, stats, scheduler, entities, trends, knowledge_graph, static
 
@@ -94,6 +125,10 @@ def create_app() -> FastAPI:
     app.include_router(stats.router, prefix=config.API_PREFIX, tags=["stats"])
     # Dashboard (no API prefix — served at /dashboard)
     app.include_router(static.router, tags=["dashboard"])
+
+    # Phase 7: Auth + admin endpoints
+    from api.routers import auth as auth_router
+    app.include_router(auth_router.router, prefix=config.API_PREFIX, tags=["auth"])
 
     # Root endpoint
     @app.get("/", tags=["root"])
