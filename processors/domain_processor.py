@@ -16,6 +16,7 @@ from processors.base import BaseProcessor
 from processors.domain.saas import SaaSDomainModule
 from processors.domain.cybersecurity import CybersecurityDomainModule
 from processors.domain.ecommerce import EcommerceDomainModule
+from processors.domain.client_acquisition import ClientAcquisitionModule
 
 
 class DomainProcessor(BaseProcessor):
@@ -33,6 +34,9 @@ class DomainProcessor(BaseProcessor):
         ecom_cfg = self._config.get("ecommerce", {})
         if ecom_cfg.get("enabled", True):
             self._modules.append(EcommerceDomainModule(ecom_cfg))
+        client_acq_cfg = self._config.get("client_acquisition", {})
+        if client_acq_cfg.get("enabled", False):  # off by default — opt-in via profile
+            self._modules.append(ClientAcquisitionModule(client_acq_cfg))
 
     def _process(self, items: list[ProcessedItem]) -> list[ProcessedItem]:
         if not self._modules:

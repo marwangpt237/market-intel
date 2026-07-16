@@ -1,0 +1,245 @@
+# Market-Intel Configuration — CLIENT ACQUISITION PROFILE
+#
+# This profile retunes the platform for a single use case:
+#   "Find paying clients for custom web development work, outside Algeria."
+#
+# Activate via: python main.py --profile client_acq
+# Or via env:    MARKET_INTEL_PROFILE=client_acq python main.py
+#
+# Output: reports/client_acq_<date>_<run>.md with:
+#   - Top countries by hiring activity
+#   - Top niches (SaaS, legal, medical, etc.)
+#   - Specific prospects to contact (with URL, niche, country, project type, lead_score)
+#   - Reddit threads to reply to
+#   - Job board gigs to apply to
+#   - LinkedIn content suggestions
+#   - Expected leads + cost ($0 organic vs $X paid)
+
+# ─── General ────────────────────────────────────────────────────────────────
+general:
+  environment: production
+  timezone: UTC
+  max_items_per_collector: 80     # higher cap — we want maximum prospect coverage
+
+# ─── Collectors (tuned for client acquisition signals) ─────────────────────
+collectors:
+  # Reddit — subreddits where people hire developers
+  reddit:
+    enabled: true
+    subreddits:
+      - forhire              # primary hiring subreddit
+      - freelance
+      - freelance_forhire
+      - webdev
+      - programming
+      - startups
+      - Entrepreneur
+      - SaaS
+      - smallbusiness
+      - digitalmarketing
+      - agency
+      - techforgood
+    sort: new                # newest first — freshest leads
+    time_range: day          # last 24 hours only
+    min_score: 0             # don't filter by upvotes — even 0-score posts can be leads
+
+  # RSS — blogs + job boards
+  rss:
+    enabled: true
+    feeds:
+      # Job boards (RSS)
+      - url: https://remoteok.com/remote-dev-jobs.rss
+        name: RemoteOK Dev Jobs
+      - url: https://weworkremotely.com/remote-jobs.rss
+        name: WeWorkRemotely
+      - url: https://workinstartups.com/rss/
+        name: WorkInStartups
+      # News / discussion
+      - url: https://news.ycombinator.com/rss
+        name: Hacker News (Front Page)
+
+  # Google News — buying intent queries
+  google_news:
+    enabled: true
+    queries:
+      - "looking for web developer"
+      - "need website built"
+      - "hiring freelance developer"
+      - "need MVP developer"
+      - "agency recommendations web development"
+      - "startup hiring developer"
+    language: en
+    country: US
+
+  # Hacker News — Algolia search for "Who is Hiring" + Ask HN posts
+  hacker_news:
+    enabled: true
+    queries:
+      - "looking for developer"
+      - "need website"
+      - "freelance developer"
+      - "agency recommendations"
+      - "who is hiring"
+      - "build mvp"
+      - "technical co-founder"
+    min_points: 0             # don't filter — HN "Ask HN" posts are often low-score but high-intent
+
+  # GitHub Issues — repos with bounties / help wanted
+  github_issues:
+    enabled: true
+    queries:
+      - "freelance developer"
+      - "bounty"
+      - "looking for developer"
+      - "help wanted web development"
+      - "build feature paid"
+    labels: ["help wanted", "enhancement", "bounty"]
+
+  # Product Hunt — founders launching (often need dev help next)
+  product_hunt:
+    enabled: true
+    categories:
+      - developer-tools
+      - saas
+      - productivity
+      - marketing
+
+  # Job boards
+  job_boards:
+    enabled: true
+    keywords:
+      - web developer
+      - full stack developer
+      - front-end developer
+      - react developer
+      - node.js developer
+      - freelance developer
+      - contract developer
+    sources: ["remoteok", "workinstartups"]
+
+  # G2 disabled — not relevant for client acquisition
+  g2:
+    enabled: false
+
+# ─── Processors ─────────────────────────────────────────────────────────────
+processors:
+  similarity_dedup:
+    enabled: true
+    title_threshold: 0.6
+    url_normalize: true
+  enrich:
+    enabled: true
+    add_sentiment: true
+    add_keywords: true
+    add_read_time: true
+  entity_extraction:
+    enabled: true
+  competitor_detection:
+    enabled: false              # not relevant for client acquisition
+  pain_point_extraction:
+    enabled: true
+  buying_signal_detection:
+    enabled: true
+  topic_clustering:
+    enabled: true
+    similarity_threshold: 0.2
+    min_cluster_size: 2
+    max_clusters: 15
+  trend_detection:
+    enabled: false              # not relevant
+  entity_graph:
+    enabled: false              # not relevant
+  scoring:
+    enabled: true
+
+  # ─── Source authority (keep high — we want quality prospects) ────────
+  source_authority:
+    enabled: true
+    min_authority: 20           # lower bar — many prospects post on small subreddits
+    demote_non_english: true
+    non_english_penalty: 30
+
+  # ─── Domain modules — CLIENT ACQUISITION ENABLED ─────────────────────
+  domain:
+    enabled: true
+    saas:
+      enabled: false             # turn off SaaS / cyber / ecommerce — we only want client_acq
+    cybersecurity:
+      enabled: false
+    ecommerce:
+      enabled: false
+    client_acquisition:
+      enabled: true              # ← THIS IS THE KEY ENABLE
+
+  # ─── Phase 4 modules (still run, but client_acq_report is the primary output) ───
+  decision_engine:
+    enabled: true
+    opportunity_high: 40        # lower thresholds — we want more decisions, the report filters them
+    opportunity_medium: 25
+    threat_high: 60
+    threat_medium: 35
+    weakness_high: 50
+    trend_hot: 60
+    trend_rising: 35
+    min_evidence: 1             # single-source is fine — a prospect is a prospect
+
+  # Disable false positive filter's mega_corp rule — for client acquisition,
+  # even prospects mentioning Google/Microsoft could be hiring
+  false_positive_filter:
+    enabled: true
+    min_evidence_count: 1
+    min_authority_avg: 20
+    mega_corp_blocklist: []     # empty — don't block any targets
+    generic_terms: []           # empty — don't block any terms
+
+  # Strategy engine — for client acquisition, mostly time-constrained (not budget)
+  strategy_engine:
+    enabled: true
+    budget_usd: 0               # organic outreach — no paid ads
+    time_hours: 15              # 15 hours/week for outreach
+    team_size: 1
+
+  execution_engine:
+    enabled: true
+    output_path: actions
+    max_artifacts_per_run: 30   # more artifacts — we want all prospect outreach drafts
+
+  analytics_engine:
+    enabled: true
+  learning_engine:
+    enabled: true
+
+# ─── Storage ────────────────────────────────────────────────────────────────
+storage:
+  type: sqlite
+  path: data/client_acq.db     # SEPARATE DB — client acquisition data isolated from marketing data
+  versioning: true
+  retention_days: 180          # keep prospect data longer
+
+# ─── Reports ────────────────────────────────────────────────────────────────
+reports:
+  intelligence:
+    enabled: true
+    output_path: reports/
+    top_stories_count: 20
+  decisions:
+    enabled: false              # decision report not useful for client acquisition
+  strategy:
+    enabled: true
+    output_path: reports/
+  learning:
+    enabled: true
+    output_path: reports/
+  client_acq:                   # THE PRIMARY OUTPUT for this profile
+    enabled: true
+    output_path: reports/
+    top_prospects_count: 30
+    top_countries_count: 10
+    top_niches_count: 10
+
+# ─── Retry Logic ────────────────────────────────────────────────────────────
+retry:
+  max_attempts: 3
+  initial_backoff: 1.0
+  max_backoff: 10.0
+  retryable_status_codes: [429, 500, 502, 503, 504]

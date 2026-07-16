@@ -398,6 +398,26 @@ class DailyRun:
         except Exception as e:
             self._logger.error(f"Learning report failed: {e}", exc_info=True)
 
+        # 6d. Client acquisition report (optional — only if client_acq domain module ran)
+        client_acq_report_path = None
+        try:
+            from reports.client_acq_report import ClientAcquisitionReportGenerator
+            ca_cfg = self._config.reports.get("client_acq", {"enabled": False, "output_path": "reports/"})
+            if ca_cfg.get("enabled", False):
+                # Only generate if at least one item has client_acquisition domain signals
+                has_client_acq_signals = any(
+                    "client_acquisition" in (i.metadata.get("domain_signals") or {})
+                    for i in processed_items
+                )
+                if has_client_acq_signals:
+                    ca_gen = ClientAcquisitionReportGenerator(ca_cfg)
+                    client_acq_report_path = ca_gen.generate(processed_items, self._run_id)
+                    self._logger.info(f"Client acquisition report generated: {client_acq_report_path}")
+                else:
+                    self._logger.info("Client acquisition report enabled but no client_acq signals detected — skipping")
+        except Exception as e:
+            self._logger.error(f"Client acquisition report failed: {e}", exc_info=True)
+
         # 7. Build summary
         scores = processed_items[0].metadata.get("_scores", {}) if processed_items else {}
         decisions = processed_items[0].metadata.get("_decisions", {}) if processed_items else {}
@@ -423,6 +443,7 @@ class DailyRun:
             "decision_report_path": decision_report_path,
             "strategy_report_path": strategy_report_path,
             "learning_report_path": learning_report_path,
+            "client_acq_report_path": client_acq_report_path,
         }
 
         self._logger.info(f"Run complete: {summary}")
