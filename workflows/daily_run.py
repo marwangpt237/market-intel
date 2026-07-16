@@ -273,6 +273,23 @@ class DailyRun:
             except Exception as e:
                 self._logger.error(f"Acquisition engine failed to load: {e}", exc_info=True)
 
+        # ─── Collector Marketplace (Phase 10) — register collectors here,
+        # run them in the run() method during the Collect phase ──────────
+        marketplace_cfg = self._config.to_dict().get("collector_marketplace", {})
+        self._marketplace_cfg = marketplace_cfg  # stash for run()
+        if marketplace_cfg.get("enabled", False):
+            try:
+                from collectors.marketplace.base import CollectorRegistry
+                from collectors.marketplace.health import CollectorHealthMonitor
+                storage_cfg = self._config.storage
+                db_path = storage_cfg.get("path", "data/market_intel.db")
+                self._health_monitor = CollectorHealthMonitor(db_path)
+                self._marketplace_registry = CollectorRegistry
+                self._logger.info(f"Collector marketplace enabled (Phase 10)")
+            except Exception as e:
+                self._logger.error(f"Collector marketplace setup failed: {e}", exc_info=True)
+                self._marketplace_cfg = {}
+
         # ─── Storage ───────────────────────────────────────────────────
         storage_cfg = self._config.storage
         storage_type = storage_cfg.get("type", "json")
@@ -381,6 +398,43 @@ class DailyRun:
             except Exception as e:
                 self._logger.error(f"Collector '{name}' failed: {e}", exc_info=True)
                 collector_stats[name] = 0
+
+        # 1b. Run marketplace collectors (Phase 10)
+        if self._marketplace_cfg.get("enabled", False):
+            try:
+                # Import + register collectors
+                from collectors.marketplace.ouedkniss_collector import OuedknissCollector
+                from collectors.marketplace.algeria_jobs_collector import AlgerianJobBoardCollector
+                from collectors.marketplace.algeria_forum_collector import AlgerianForumCollector
+                from collectors.marketplace.algeria_gov_collector import AlgerianGovCollector
+
+                enabled = self._marketplace_cfg.get("collectors", {})
+                if enabled.get("ouedkniss", {}).get("enabled", False):
+                    self._marketplace_registry.register(OuedknissCollector(enabled["ouedkniss"]))
+                if enabled.get("algeria_jobs", {}).get("enabled", False):
+                    self._marketplace_registry.register(AlgerianJobBoardCollector(enabled["algeria_jobs"]))
+                if enabled.get("algeria_forums", {}).get("enabled", False):
+                    self._marketplace_registry.register(AlgerianForumCollector(enabled["algeria_forums"]))
+                if enabled.get("algeria_gov", {}).get("enabled", False):
+                    self._marketplace_registry.register(AlgerianGovCollector(enabled["algeria_gov"]))
+
+                # Run each registered marketplace collector
+                import time
+                for name, collector in list(self._marketplace_registry._collectors.items()):
+                    try:
+                        start = time.time()
+                        items = collector.collect()
+                        latency_ms = (time.time() - start) * 1000
+                        raw_items.extend(items)
+                        collector_stats[f"marketplace_{name}"] = len(items)
+                        self._health_monitor.record_success(name, latency_ms, len(items))
+                        self._logger.info(f"Marketplace collector '{name}': {len(items)} items in {latency_ms:.0f}ms")
+                    except Exception as e:
+                        self._health_monitor.record_failure(name, str(e))
+                        collector_stats[f"marketplace_{name}"] = 0
+                        self._logger.error(f"Marketplace collector '{name}' failed: {e}", exc_info=True)
+            except Exception as e:
+                self._logger.error(f"Marketplace collection failed: {e}", exc_info=True)
 
         if not raw_items:
             self._logger.warning("No items collected — aborting run")
@@ -523,6 +577,19 @@ class DailyRun:
         except Exception as e:
             self._logger.error(f"Acquisition report failed: {e}", exc_info=True)
 
+        # 6h. Collector Registry report (Phase 10 — Collector Marketplace)
+        registry_report_path = None
+        try:
+            from reports.collector_registry_report import CollectorRegistryReportGenerator
+            reg_cfg = self._config.reports.get("collector_registry", {"enabled": False, "output_path": "reports/"})
+            if reg_cfg.get("enabled", False):
+                reg_cfg_with_storage = {**reg_cfg, "storage": self._config.storage}
+                reg_gen = CollectorRegistryReportGenerator(reg_cfg_with_storage)
+                registry_report_path = reg_gen.generate(processed_items, self._run_id)
+                self._logger.info(f"Collector registry report generated: {registry_report_path}")
+        except Exception as e:
+            self._logger.error(f"Collector registry report failed: {e}", exc_info=True)
+
         # 7. Build summary
         scores = processed_items[0].metadata.get("_scores", {}) if processed_items else {}
         decisions = processed_items[0].metadata.get("_decisions", {}) if processed_items else {}
@@ -552,6 +619,7 @@ class DailyRun:
             "product_intelligence_report_path": product_intel_report_path,
             "validation_report_path": validation_report_path,
             "acquisition_report_path": acquisition_report_path,
+            "collector_registry_report_path": registry_report_path,
         }
 
         self._logger.info(f"Run complete: {summary}")

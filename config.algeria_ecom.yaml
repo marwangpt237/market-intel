@@ -214,6 +214,24 @@ vertical_pack:
     product_aggregator:
       min_mentions: 1           # show all products, even single mentions
 
+# ─── Collector Marketplace (Phase 10) ───────────────────────────────────────
+collector_marketplace:
+  enabled: true
+  collectors:
+    ouedkniss:
+      enabled: true
+      categories: ["immobilier", "automobile", "high-tech", "emploi"]
+      max_items: 40
+    algeria_jobs:
+      enabled: true
+      max_items_per_source: 25
+    algeria_forums:
+      enabled: true
+      max_items_per_source: 25
+    algeria_gov:
+      enabled: true
+      max_items: 20
+
 # ─── Storage ────────────────────────────────────────────────────────────────
 storage:
   type: sqlite
@@ -245,6 +263,9 @@ reports:
     enabled: true
     output_path: reports/
   acquisition:
+    enabled: true
+    output_path: reports/
+  collector_registry:
     enabled: true
     output_path: reports/
 
