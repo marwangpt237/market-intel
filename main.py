@@ -35,6 +35,8 @@ def resolve_config_path(profile: str | None = None) -> str:
 
     if profile == "client_acq":
         return "config.client_acq.yaml"
+    elif profile == "algeria_ecom":
+        return "config.algeria_ecom.yaml"
     elif profile and profile != "default":
         # Allow custom profiles: config.<name>.yaml
         candidate = f"config.{profile}.yaml"
@@ -49,7 +51,7 @@ def main():
     parser = argparse.ArgumentParser(description="Market-Intel intelligence platform")
     parser.add_argument(
         "--profile", "-p",
-        choices=["default", "client_acq"],
+        choices=["default", "client_acq", "algeria_ecom"],
         default=None,
         help="Configuration profile to use (default: marketing intelligence)",
     )

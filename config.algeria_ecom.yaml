@@ -1,0 +1,236 @@
+# Market-Intel Configuration — ALGERIA E-COMMERCE PROFILE
+#
+# This profile activates the Algeria Country Pack + E-commerce Radar Vertical Pack.
+# It turns the platform into an Algeria-first Market OS for e-commerce intelligence.
+#
+# Activate via:
+#   python main.py --profile algeria_ecom
+#   MARKET_INTEL_PROFILE=algeria_ecom python main.py
+#
+# Output: reports/product_intelligence_<date>_<run>.md with:
+#   - Per-product demand, saturation, opportunity score
+#   - Top wilayas for each product
+#   - Average DZD prices + price ranges
+#   - Top complaints per product
+#   - Best posting hours
+#   - Recommended offers
+#   - Seasonal insights (Ramadan, Aid, Back-to-school, Summer)
+
+# ─── General ────────────────────────────────────────────────────────────────
+general:
+  environment: production
+  timezone: Africa/Algiers
+  max_items_per_collector: 100
+
+# ─── Collectors (Algeria-tuned) ─────────────────────────────────────────────
+collectors:
+  # RSS — Algerian news + classifieds
+  rss:
+    enabled: true
+    feeds:
+      # Algerian news / commerce
+      - url: https://www.aps.dz/algerie/feed
+        name: APS Algeria
+      - url: https://www.elwatan.com/feed
+        name: El Watan
+      - url: https://www.tsa-algerie.com/feed
+        name: TSA Algerie
+      - url: https://www.liberte-algerie.com/rss
+        name: Liberte Algerie
+      # General commerce / product trends
+      - url: https://news.google.com/rss/search?q=algerie+ecommerce+when:7d&hl=fr&gl=DZ&ceid=DZ:fr
+        name: Google News Algeria Ecommerce
+      - url: https://news.google.com/rss/search?q=algerie+produit+vente+when:7d&hl=fr&gl=DZ&ceid=DZ:fr
+        name: Google News Algeria Products
+
+  # Google News — Algeria-focused queries (French + Arabic)
+  google_news:
+    enabled: true
+    queries:
+      - "algérie vente en ligne"
+      - "algérie e-commerce"
+      - "algérie produit tendance"
+      - "algerie ramadan"
+      - "algérie prix produit"
+      - "ouedkniss"
+      - "algérie marché"
+      - "algérie achat"
+    language: fr
+    country: DZ
+
+  # Hacker News — for tech + startup signals (Algerian founders)
+  hacker_news:
+    enabled: true
+    queries:
+      - "algeria"
+      - "algeria startup"
+      - "algiers"
+      - "algerian developer"
+    min_points: 0
+
+  # Reddit — Algerian subreddits + diaspora
+  reddit:
+    enabled: true
+    subreddits:
+      - algeria
+      - AlgerianEnglish
+      - algerie
+    sort: hot
+    time_range: week
+    min_score: 0
+
+  # GitHub Issues — disabled (not relevant for e-commerce)
+  github_issues:
+    enabled: false
+
+  # Product Hunt — disabled
+  product_hunt:
+    enabled: false
+
+  # G2 — disabled
+  g2:
+    enabled: false
+
+  # Job boards — disabled
+  job_boards:
+    enabled: false
+
+# ─── Processors ─────────────────────────────────────────────────────────────
+processors:
+  similarity_dedup:
+    enabled: true
+    title_threshold: 0.6
+    url_normalize: true
+  enrich:
+    enabled: true
+    add_sentiment: true
+    add_keywords: true
+    add_read_time: true
+  entity_extraction:
+    enabled: true
+  competitor_detection:
+    enabled: true
+  pain_point_extraction:
+    enabled: true
+  buying_signal_detection:
+    enabled: true
+  topic_clustering:
+    enabled: true
+    similarity_threshold: 0.2
+    min_cluster_size: 2
+    max_clusters: 15
+  trend_detection:
+    enabled: true
+    spike_threshold: 2.0
+    hot_threshold: 3.0
+  entity_graph:
+    enabled: true
+  scoring:
+    enabled: true
+
+  # Phase 5 modules
+  source_authority:
+    enabled: true
+    min_authority: 15            # lower bar — Algerian sources have less "authority" globally
+    demote_non_english: false    # CRITICAL: don't demote Arabic / Darija / French mix
+    non_english_penalty: 0
+
+  domain:
+    enabled: true
+    saas:
+      enabled: false             # turn off SaaS / cyber / ecommerce / client_acq for this profile
+    cybersecurity:
+      enabled: false
+    ecommerce:
+      enabled: false             # the built-in ecommerce domain module — we use the Algeria-specific one instead
+    client_acquisition:
+      enabled: false
+
+  # Phase 4 modules (still run)
+  decision_engine:
+    enabled: true
+    opportunity_high: 50
+    opportunity_medium: 30
+    threat_high: 60
+    threat_medium: 35
+    weakness_high: 50
+    trend_hot: 60
+    trend_rising: 35
+    min_evidence: 1
+
+  false_positive_filter:
+    enabled: true
+    min_evidence_count: 1
+    min_authority_avg: 15
+    mega_corp_blocklist: []
+    generic_terms: []
+
+  strategy_engine:
+    enabled: true
+    budget_usd: 200             # small budget for ads / boosted posts
+    time_hours: 10
+    team_size: 1
+
+  execution_engine:
+    enabled: true
+    output_path: actions
+    max_artifacts_per_run: 20
+
+  analytics_engine:
+    enabled: true
+  learning_engine:
+    enabled: true
+
+# ─── Country Pack: Algeria ──────────────────────────────────────────────────
+country_pack:
+  enabled: true
+  name: algeria
+  config:
+    darija_nlp: {}
+    wilaya_extractor: {}
+    payment_detector: {}
+    seasonal_detector: {}
+    product_extractor: {}
+
+# ─── Vertical Pack: E-commerce Radar ────────────────────────────────────────
+vertical_pack:
+  enabled: true
+  name: ecommerce
+  config:
+    product_aggregator:
+      min_mentions: 1           # show all products, even single mentions
+
+# ─── Storage ────────────────────────────────────────────────────────────────
+storage:
+  type: sqlite
+  path: data/algeria_ecom.db   # separate DB for Algeria e-commerce data
+  versioning: true
+  retention_days: 365          # keep for full year — seasonal patterns need long history
+
+# ─── Reports ────────────────────────────────────────────────────────────────
+reports:
+  intelligence:
+    enabled: true
+    output_path: reports/
+    top_stories_count: 20
+  decisions:
+    enabled: false
+  strategy:
+    enabled: true
+    output_path: reports/
+  learning:
+    enabled: true
+    output_path: reports/
+  client_acq:
+    enabled: false
+  product_intelligence:         # THE PRIMARY OUTPUT for this profile
+    enabled: true
+    output_path: reports/
+    top_products_count: 25
+
+# ─── Retry Logic ────────────────────────────────────────────────────────────
+retry:
+  max_attempts: 3
+  initial_backoff: 1.0
+  max_backoff: 10.0
+  retryable_status_codes: [429, 500, 502, 503, 504]

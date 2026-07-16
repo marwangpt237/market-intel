@@ -216,6 +216,38 @@ class DailyRun:
                 LearningEngine({**learning_cfg, **{"storage": storage_cfg}})
             )
 
+        # ─── Country Packs (Phase 7) — regional intelligence layer ────────
+        country_cfg = self._config.to_dict().get("country_pack", {})
+        if country_cfg.get("enabled"):
+            country_name = country_cfg.get("name", "algeria")
+            try:
+                if country_name == "algeria":
+                    from country_packs.algeria.pack import AlgeriaPack
+                from country_packs.base import get_country_pack
+                pack = get_country_pack(country_name, country_cfg.get("config", {}))
+                if pack:
+                    for processor in pack.get_processors():
+                        self._container.register_processor(f"country_{processor.name}", processor)
+                    self._logger.info(f"Country pack '{country_name}' loaded: {len(pack.get_processors())} processors")
+            except Exception as e:
+                self._logger.error(f"Country pack '{country_name}' failed to load: {e}", exc_info=True)
+
+        # ─── Vertical Packs (Phase 7) — use-case intelligence layer ───────
+        vertical_cfg = self._config.to_dict().get("vertical_pack", {})
+        if vertical_cfg.get("enabled"):
+            vertical_name = vertical_cfg.get("name", "ecommerce")
+            try:
+                if vertical_name == "ecommerce":
+                    from vertical_packs.ecommerce.radar import EcommerceVerticalPack
+                from vertical_packs.base import get_vertical_pack
+                pack = get_vertical_pack(vertical_name, vertical_cfg.get("config", {}))
+                if pack:
+                    for processor in pack.get_processors():
+                        self._container.register_processor(f"vertical_{processor.name}", processor)
+                    self._logger.info(f"Vertical pack '{vertical_name}' loaded: {len(pack.get_processors())} processors")
+            except Exception as e:
+                self._logger.error(f"Vertical pack '{vertical_name}' failed to load: {e}", exc_info=True)
+
         # ─── Storage ───────────────────────────────────────────────────
         storage_cfg = self._config.storage
         storage_type = storage_cfg.get("type", "json")
@@ -418,6 +450,22 @@ class DailyRun:
         except Exception as e:
             self._logger.error(f"Client acquisition report failed: {e}", exc_info=True)
 
+        # 6e. Product Intelligence report (Phase 7 — Algeria Pack + E-commerce Radar)
+        product_intel_report_path = None
+        try:
+            from reports.product_intelligence_report import ProductIntelligenceReportGenerator
+            pi_cfg = self._config.reports.get("product_intelligence", {"enabled": False, "output_path": "reports/"})
+            if pi_cfg.get("enabled", False):
+                has_product_intel = any("_product_intelligence" in i.metadata for i in processed_items)
+                if has_product_intel:
+                    pi_gen = ProductIntelligenceReportGenerator(pi_cfg)
+                    product_intel_report_path = pi_gen.generate(processed_items, self._run_id)
+                    self._logger.info(f"Product intelligence report generated: {product_intel_report_path}")
+                else:
+                    self._logger.info("Product intelligence report enabled but no _product_intelligence data — skipping")
+        except Exception as e:
+            self._logger.error(f"Product intelligence report failed: {e}", exc_info=True)
+
         # 7. Build summary
         scores = processed_items[0].metadata.get("_scores", {}) if processed_items else {}
         decisions = processed_items[0].metadata.get("_decisions", {}) if processed_items else {}
@@ -444,6 +492,7 @@ class DailyRun:
             "strategy_report_path": strategy_report_path,
             "learning_report_path": learning_report_path,
             "client_acq_report_path": client_acq_report_path,
+            "product_intelligence_report_path": product_intel_report_path,
         }
 
         self._logger.info(f"Run complete: {summary}")
