@@ -2,11 +2,11 @@
 
 > Decision ID: `dec_a254bb31e977`
 > Priority: **P2**
-> Generated: 2026-07-17T14:10:14.825546+00:00
+> Generated: 2026-07-17T19:34:29.042027+00:00
 
 ## Watch trigger
 
-Competitor linkedin shows momentum — threat_score=40/100, 8 mentions, 0 positive sentiment items.
+Competitor linkedin shows momentum — threat_score=45/100, 9 mentions, 0 positive sentiment items.
 
 ## Action
 
