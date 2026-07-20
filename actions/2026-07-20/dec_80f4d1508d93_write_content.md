@@ -3,7 +3,7 @@
 > Decision ID: `dec_80f4d1508d93`
 > Priority: **P2**
 > ⏰ Publish within 7 days to ride the trend wave.
-> Generated: 2026-07-20T09:35:06.955774+00:00
+> Generated: 2026-07-20T14:34:43.750159+00:00
 
 ## Topic & angle
 
@@ -11,7 +11,7 @@ Publish a deep-dive on 'marketing / startup / tools' within 7 days. Address the 
 
 ## Why now
 
-Topic 'marketing / startup / tools' is emerging — trend_score=62/100, 5 mentions, 0 pain points raised. Content published now will ride the rising wave.
+Topic 'marketing / startup / tools' is emerging — trend_score=75/100, 6 mentions, 0 pain points raised. Content published now will ride the rising wave.
 
 ## SEO keywords (primary + secondary)
 
@@ -67,6 +67,6 @@ Secondary:
 
 - [5 Marketing Tools Every Startup Should Use](http://www.instigatorblog.com/5-marketing-tools-every-startup-should-use/2008/01/02/)
 - [Lean Startup "Marketing Bullshit"](http://giffconstable.com/2010/05/lean-startup-marketing-bullshit/)
+- [Startup Marketing Plan Template](http://daniellegeva.com/2014/09/09/startup-marketing-plan-template/)
 - [Open-sourced startup marketing](http://www.binpress.com/community/leaderboard)
 - [The startup marketing checklist](http://devmarketing.xyz/startup-marketing-checklist/)
-- [Very Basic Startup Marketing](http://robgo.org/2012/10/08/very-basic-startup-marketing/)
