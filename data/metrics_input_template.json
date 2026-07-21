@@ -2,8 +2,8 @@
   "_instructions": "Fill in the metrics for each action below, then save this file. The Learning Engine will read it on the next run and adjust scoring weights. Set status to 'sent' once you send/publish, 'published' once live, 'abandoned' to drop, 'paused' to defer.",
   "actions": [
     {
-      "id": "dec_38686e253ef9",
-      "target": "vente / moutons / via",
+      "id": "dec_e7739f3ab0c4",
+      "target": "google / search / data",
       "type": "write_content",
       "current_status": "draft",
       "clicks": 0,
@@ -14,8 +14,8 @@
       "notes": ""
     },
     {
-      "id": "dec_cd17a54a4c76",
-      "target": "vente / des / match",
+      "id": "dec_319671bbb280",
+      "target": "google / search / console",
       "type": "write_content",
       "current_status": "draft",
       "clicks": 0,
@@ -26,8 +26,8 @@
       "notes": ""
     },
     {
-      "id": "dec_323e988ac80e",
-      "target": "moutons / vente / via",
+      "id": "dec_8c3bb3f39148",
+      "target": "trends / social / media",
       "type": "write_content",
       "current_status": "draft",
       "clicks": 0,
@@ -38,8 +38,8 @@
       "notes": ""
     },
     {
-      "id": "dec_edc3e7091715",
-      "target": "plateforme / moutons / via",
+      "id": "dec_9364104064dc",
+      "target": "social / trends / media",
       "type": "write_content",
       "current_status": "draft",
       "clicks": 0,
@@ -50,8 +50,8 @@
       "notes": ""
     },
     {
-      "id": "dec_053582b8a034",
-      "target": "vente / moutons / lance",
+      "id": "dec_1d0f232b996b",
+      "target": "trends / media / digital",
       "type": "write_content",
       "current_status": "draft",
       "clicks": 0,
@@ -62,8 +62,8 @@
       "notes": ""
     },
     {
-      "id": "dec_99967b017712",
-      "target": "vente / moutons / vignette",
+      "id": "dec_3a6d46104da2",
+      "target": "marketing / trends / new",
       "type": "write_content",
       "current_status": "draft",
       "clicks": 0,
@@ -74,8 +74,8 @@
       "notes": ""
     },
     {
-      "id": "dec_0eae72410f7f",
-      "target": "vente / moutons / lancement",
+      "id": "dec_76476a94fc7b",
+      "target": "google / seo / mueller",
       "type": "write_content",
       "current_status": "draft",
       "clicks": 0,
@@ -86,8 +86,20 @@
       "notes": ""
     },
     {
-      "id": "dec_17891369396d",
-      "target": "vente / vignette / auto",
+      "id": "dec_a254bb31e977",
+      "target": "linkedin",
+      "type": "monitor_competitor",
+      "current_status": "draft",
+      "clicks": 0,
+      "signups": 0,
+      "conversions": 0,
+      "revenue": 0.0,
+      "status": "draft",
+      "notes": ""
+    },
+    {
+      "id": "dec_f8d476106c31",
+      "target": "search / google / mode",
       "type": "write_content",
       "current_status": "draft",
       "clicks": 0,
@@ -98,9 +110,189 @@
       "notes": ""
     },
     {
-      "id": "dec_ee8661f5f314",
-      "target": "vente / des / tickets",
+      "id": "dec_ed22902cb7d4",
+      "target": "entry / data / administrative",
       "type": "write_content",
+      "current_status": "draft",
+      "clicks": 0,
+      "signups": 0,
+      "conversions": 0,
+      "revenue": 0.0,
+      "status": "draft",
+      "notes": ""
+    },
+    {
+      "id": "dec_6b4cf5766b9e",
+      "target": "social / media / trends",
+      "type": "write_content",
+      "current_status": "draft",
+      "clicks": 0,
+      "signups": 0,
+      "conversions": 0,
+      "revenue": 0.0,
+      "status": "draft",
+      "notes": ""
+    },
+    {
+      "id": "dec_c9e256b4df07",
+      "target": "entry / administrative / data",
+      "type": "write_content",
+      "current_status": "draft",
+      "clicks": 0,
+      "signups": 0,
+      "conversions": 0,
+      "revenue": 0.0,
+      "status": "draft",
+      "notes": ""
+    },
+    {
+      "id": "dec_38bf0301e8d9",
+      "target": "read / applicants / see",
+      "type": "write_content",
+      "current_status": "draft",
+      "clicks": 0,
+      "signups": 0,
+      "conversions": 0,
+      "revenue": 0.0,
+      "status": "draft",
+      "notes": ""
+    },
+    {
+      "id": "dec_77acb742d1b9",
+      "target": "entry / assistant / data",
+      "type": "write_content",
+      "current_status": "draft",
+      "clicks": 0,
+      "signups": 0,
+      "conversions": 0,
+      "revenue": 0.0,
+      "status": "draft",
+      "notes": ""
+    },
+    {
+      "id": "dec_80f4d1508d93",
+      "target": "marketing / startup / tools",
+      "type": "write_content",
+      "current_status": "draft",
+      "clicks": 0,
+      "signups": 0,
+      "conversions": 0,
+      "revenue": 0.0,
+      "status": "draft",
+      "notes": ""
+    },
+    {
+      "id": "dec_688a9892d42a",
+      "target": "trends / social / media",
+      "type": "write_content",
+      "current_status": "draft",
+      "clicks": 0,
+      "signups": 0,
+      "conversions": 0,
+      "revenue": 0.0,
+      "status": "draft",
+      "notes": ""
+    },
+    {
+      "id": "dec_b5a0ef774ad2",
+      "target": "read / applicants / see",
+      "type": "write_content",
+      "current_status": "draft",
+      "clicks": 0,
+      "signups": 0,
+      "conversions": 0,
+      "revenue": 0.0,
+      "status": "draft",
+      "notes": ""
+    },
+    {
+      "id": "dec_19589b63e40b",
+      "target": "google",
+      "type": "monitor_competitor",
+      "current_status": "draft",
+      "clicks": 0,
+      "signups": 0,
+      "conversions": 0,
+      "revenue": 0.0,
+      "status": "draft",
+      "notes": ""
+    },
+    {
+      "id": "dec_baaad8b570d8",
+      "target": "userp",
+      "type": "launch_campaign",
+      "current_status": "draft",
+      "clicks": 0,
+      "signups": 0,
+      "conversions": 0,
+      "revenue": 0.0,
+      "status": "draft",
+      "notes": ""
+    },
+    {
+      "id": "dec_9d7fc0836c5b",
+      "target": "uber",
+      "type": "launch_campaign",
+      "current_status": "draft",
+      "clicks": 0,
+      "signups": 0,
+      "conversions": 0,
+      "revenue": 0.0,
+      "status": "draft",
+      "notes": ""
+    },
+    {
+      "id": "dec_179b477e9f1f",
+      "target": "ahrefs",
+      "type": "launch_campaign",
+      "current_status": "draft",
+      "clicks": 0,
+      "signups": 0,
+      "conversions": 0,
+      "revenue": 0.0,
+      "status": "draft",
+      "notes": ""
+    },
+    {
+      "id": "dec_3d34e1b7438e",
+      "target": "wordpress",
+      "type": "launch_campaign",
+      "current_status": "draft",
+      "clicks": 0,
+      "signups": 0,
+      "conversions": 0,
+      "revenue": 0.0,
+      "status": "draft",
+      "notes": ""
+    },
+    {
+      "id": "dec_cba4ecc31ce8",
+      "target": "twitter",
+      "type": "launch_campaign",
+      "current_status": "draft",
+      "clicks": 0,
+      "signups": 0,
+      "conversions": 0,
+      "revenue": 0.0,
+      "status": "draft",
+      "notes": ""
+    },
+    {
+      "id": "dec_5f4364800669",
+      "target": "google",
+      "type": "reach_out",
+      "current_status": "draft",
+      "clicks": 0,
+      "signups": 0,
+      "conversions": 0,
+      "revenue": 0.0,
+      "status": "draft",
+      "notes": ""
+    },
+    {
+      "id": "dec_f41e0bc407b8",
+      "target": "google",
+      "type": "launch_campaign",
       "current_status": "draft",
       "clicks": 0,
       "signups": 0,
