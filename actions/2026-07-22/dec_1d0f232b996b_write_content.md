@@ -3,7 +3,7 @@
 > Decision ID: `dec_1d0f232b996b`
 > Priority: **P2**
 > ⏰ Publish within 7 days to ride the trend wave.
-> Generated: 2026-07-22T08:46:06.972236+00:00
+> Generated: 2026-07-22T19:45:57.547067+00:00
 
 ## Topic & angle
 
@@ -11,7 +11,7 @@ Publish a deep-dive on 'trends / media / digital' within 7 days. Address the 0 d
 
 ## Why now
 
-Topic 'trends / media / digital' is emerging — trend_score=100/100, 10 mentions, 0 pain points raised. Content published now will ride the rising wave.
+Topic 'trends / media / digital' is emerging — trend_score=100/100, 9 mentions, 0 pain points raised. Content published now will ride the rising wave.
 
 ## SEO keywords (primary + secondary)
 
