@@ -3,7 +3,7 @@
 > Decision ID: `dec_cd17a54a4c76`
 > Priority: **P2**
 > ⏰ Publish within 7 days to ride the trend wave.
-> Generated: 2026-07-28T03:51:35.322975+00:00
+> Generated: 2026-07-28T15:05:10.865029+00:00
 
 ## Topic & angle
 
