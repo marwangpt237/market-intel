@@ -3,7 +3,7 @@
 > Decision ID: `dec_707a133c7e41`
 > Priority: **P1**
 > ⏰ Publish within 7 days to ride the trend wave.
-> Generated: 2026-07-29T03:42:32.414594+00:00
+> Generated: 2026-07-29T09:10:46.019687+00:00
 
 ## Topic & angle
 
@@ -69,4 +69,4 @@ Secondary:
 - [Google SEO Test Shows What Happens In 5-Second Rendering Window via @sejournal, @martinibuster](https://www.searchenginejournal.com/google-seo-test-shows-what-happens-in-5-second-rendering-window/583878/)
 - [Google May Be Penalizing AI-Generated Content As Thin Content via @sejournal, @martinibuster](https://www.searchenginejournal.com/google-may-be-penalizing-ai-generated-content-as-thin-content/583773/)
 - [Google Expands Review Guidelines And Warns Of Manual Actions via @sejournal, @martinibuster](https://www.searchenginejournal.com/google-expands-review-guidelines-and-warns-of-manual-actions/583674/)
-- [Google Says Why It May Ignore Robots.txt And Negatively Impact SEO via @sejournal, @martinibuster](https://www.searchenginejournal.com/google-says-why-it-may-ignore-robots-txt-and-negatively-impact-seo/583475/)
+- [X Live-Tweets Its Fight Against Chatbot Spam In Real-Time via @sejournal, @martinibuster](https://www.searchenginejournal.com/x-live-tweets-its-fight-against-chatbot-spam-in-real-time/583572/)
