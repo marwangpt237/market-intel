@@ -1,0 +1,185 @@
+# Product Intelligence Report — Algeria — 2026-07-30
+
+_Generated: 2026-07-30T14:54:37.602918+00:00 | Run: `run_20260730_145424_5b9beb`_
+
+> Algeria-first market intelligence — product-level demand, saturation, and opportunity analysis.
+
+## Executive Summary
+
+- **Products detected:** 8
+- **Total mentions:** 23
+- **Top opportunity:** Toys (score: 32/100)
+
+**Top 3 opportunities to act on this week:**
+
+1. **Toys** — opportunity score 32/100
+   - Demand: Low (3 mentions)
+   - Top wilayas: Alger
+   - Recommended offer: Free delivery
+
+## Product Intelligence Cards (8)
+
+> Each card aggregates signals across all collected items mentioning this product.
+
+### 1. Product: Toys
+
+- **Demand:** Low (score: 15/100, 3 mentions)
+- **Saturation:** Medium (score: 33/100, 3 sellers)
+- **Highest-demand wilayas:** Alger
+- **Average selling price:** _no price data_
+- **Top complaints:** _none detected_
+- **Best posting hours:** 14:00–15:00
+- **Recommended offer:** Free delivery
+- **Opportunity score:** **32/100**
+
+  _Details: seasonal: summer_
+
+  **Sample listings:**
+  - [Algérie : reprise des incendies après deux jours d’accalmie](https://www.tsa-algerie.com/algerie-reprise-des-incendies-apres-deux-jours-daccalmie/) — _TSA Algerie_
+  - [Maroc : pendant que Mohamed VI s’auto-glorifie, la jeunesse fuit vers Ceuta](https://www.tsa-algerie.com/maroc-pendant-que-mohamed-vi-sauto-glorifie-la-jeunesse-fuit-vers-ceuta/) — _TSA Algerie_
+  - [Paiement électronique : la Banque d’Algérie fixe deux règles majeures](https://news.google.com/rss/articles/CBMimwFBVV95cUxOZDE0dmNsVzM0WXQ5dUtkeVZmZU1fcC1tSjZRcE90Y0NHcXZLUURfRS1KLVFtZzNmcmF4X1VySVpyZk9TN0duSHZoeGxjd3NXVUc0MU9MdS1yQ1NWdmU1S2hrbmRZS0dJbDJLTEYzNXpiaExwQkFmNVRGY0YtZFpRZ3hLV0ozTG9WOVBOYzFNU2Z0anItVzYtd29Wcw?oc=5) — _tsa-algerie.com_
+
+### 2. Product: Electronics
+
+- **Demand:** Low (score: 5/100, 1 mentions)
+- **Saturation:** Low (score: 3/100, 0 sellers)
+- **Highest-demand wilayas:** _not enough location data_
+- **Average selling price:** _no price data_
+- **Top complaints:** _none detected_
+- **Best posting hours:** 14:00–15:00
+- **Recommended offer:** 6-month warranty
+- **Opportunity score:** **26/100**
+
+  _Details: top brands: samsung_
+
+  **Sample listings:**
+  - [Quel smartphone Samsung Galaxy choisir en 2026 ? Tous les modèles testés, nos re](https://news.google.com/rss/articles/CBMitAFBVV95cUxQUVJGTUZiRGtROGhFWjFIZ2JGVll6N1hzQTFVQnpoZS1CS1NuTDBJa3BMX1RoYUZzc0dJOWh1Mm5jZmdsZVVrOGw4aHJUVXZreWhITUl5NjdsLW5HcF9tMVZqaF9sOS0zUDAxQTcxUGVBbnR3UmtxMVNpNjlLUUFSTUhLcDMtR09mSi1TMkRLZXIwYWVIbDQtQzVyd2hOZmRtT3U2NzFNNElaX01IeFg2RWdIVVQ?oc=5) — _Google News Algeria Products_
+
+### 3. Product: Auto
+
+- **Demand:** Low (score: 15/100, 3 mentions)
+- **Saturation:** Low (score: 25/100, 2 sellers)
+- **Highest-demand wilayas:** Alger
+- **Average selling price:** _no price data_
+- **Top complaints:** _none detected_
+- **Best posting hours:** 14:00–15:00
+- **Recommended offer:** Free delivery
+- **Opportunity score:** **25/100**
+
+  **Sample listings:**
+  - [Pneus en Algérie : Himayatec pointe un écart de prix entre Naftal et le privé - ](https://news.google.com/rss/articles/CBMijgFBVV95cUxQOHYwcEZBQ0xKOTZkUzFyeW5VV3N1SzB0NlVvWEhfMTYtT0hCU0Mza2dlUjhxY0lSeVpFZzJ3cEZxaWp3WVpURVVtYkNXaHhlTkNWckltRDFzcDBuR2s3elQ3Wk5OV09uc0JNUXFDWDljWVJqbV9kdVNCUVp0TDlzajYyemJIWEtORDBUOV9B?oc=5) — _Google News Algeria Products_
+  - [IRIS Tyres Algérie : Alerte contre les faux sites de pneus](https://news.google.com/rss/articles/CBMie0FVX3lxTE5iRlZtaTdubUdDc0xSTERHZE5YcGR5U1I5V3dxc043T3NRaVloN2tOMnhyendUcDFGNUxWV05PTVJtbm5xMDg5TzJwbERpaEtyNEswU21WVUUyTjhsZnRIVEZES0hXb01wMEEwX25KUGNUQkEtNU5QZHlMdw?oc=5) — _Just-InfoDZ_
+  - [Naftal lance une plateforme d’achat de pneus en ligne, voici les conditions](https://news.google.com/rss/articles/CBMipAFBVV95cUxNdEJpSnczZ3cza3hKcm81SUF1dWJpVG1kc19BNWZYOURFU0hRNzFCVXlRbXZmNlp4V0VaMW5sclZQbnc1aURzMjEzdkhiak5mMlI4N2lldW1mUklaeDBUUERVQ1UyN0UzeGtfUHppN2hucDVheERic3M1SkJwejlnN2tRZjZxYWl2RDVtUHBiUUNUOFIxQmVBSm96blZNcU1UT3NVaQ?oc=5) — _tsa-algerie.com_
+
+### 4. Product: School Supplies
+
+- **Demand:** Low (score: 5/100, 1 mentions)
+- **Saturation:** Low (score: 11/100, 1 sellers)
+- **Highest-demand wilayas:** Alger
+- **Average selling price:** _no price data_
+- **Top complaints:** _none detected_
+- **Best posting hours:** 14:00–15:00
+- **Recommended offer:** Free delivery + competitive pricing
+- **Opportunity score:** **24/100**
+
+  **Sample listings:**
+  - [Paiement électronique : la Banque d’Algérie fixe deux règles majeures](https://news.google.com/rss/articles/CBMimwFBVV95cUxOZDE0dmNsVzM0WXQ5dUtkeVZmZU1fcC1tSjZRcE90Y0NHcXZLUURfRS1KLVFtZzNmcmF4X1VySVpyZk9TN0duSHZoeGxjd3NXVUc0MU9MdS1yQ1NWdmU1S2hrbmRZS0dJbDJLTEYzNXpiaExwQkFmNVRGY0YtZFpRZ3hLV0ozTG9WOVBOYzFNU2Z0anItVzYtd29Wcw?oc=5) — _tsa-algerie.com_
+
+### 5. Product: Food
+
+- **Demand:** Low (score: 5/100, 1 mentions)
+- **Saturation:** Low (score: 11/100, 1 sellers)
+- **Highest-demand wilayas:** _not enough location data_
+- **Average selling price:** _no price data_
+- **Top complaints:** _none detected_
+- **Best posting hours:** 14:00–15:00
+- **Recommended offer:** freshness guarantee or money back
+- **Opportunity score:** **24/100**
+
+  **Sample listings:**
+  - [Inauguration d’une nouvelle laiterie à Rouiba](https://news.google.com/rss/articles/CBMisAFBVV95cUxNX3RLM1diOU9mc2RObXhzNEtWTGk0T2w1UnBZNG1PRkVyRmN3aE1ITEFqcHVFSXBEaFFfZGZCRV8yR3ZZZUtneERlWFJKRVJiNjNZTjUwbWlaU2N5dnY2TGNFYUtBRThNczd2MjREUHdqODV0ejl4UE1xQmNRWkdSMld4aFdIS2JWdHFBQ3RHLTFRZ01rZW5FdkwxTUg4dDVVdHNpemx6MEpNdnVwZmZQSA?oc=5) — _aps.dz_
+
+### 6. Product: Books
+
+- **Demand:** Low (score: 10/100, 2 mentions)
+- **Saturation:** Low (score: 22/100, 2 sellers)
+- **Highest-demand wilayas:** Alger
+- **Average selling price:** _no price data_
+- **Top complaints:** _none detected_
+- **Best posting hours:** 14:00–15:00
+- **Recommended offer:** Free delivery + competitive pricing
+- **Opportunity score:** **23/100**
+
+  **Sample listings:**
+  - [France ou Algérie : où la diaspora a-t-elle intérêt à placer ses devises ?](https://www.tsa-algerie.com/france-ou-algerie-ou-la-diaspora-a-t-elle-interet-a-placer-ses-devises/) — _TSA Algerie_
+  - [Thamugadi, a Roman outpost in Algeria, was saved by the Sahara](https://www.nationalgeographic.com/archaeology-and-history/magazine/2019/07-08/thamugadi-roman-outpost-ruins/) — _Hacker News_
+
+### 7. Product: Bags
+
+- **Demand:** Low (score: 15/100, 3 mentions)
+- **Saturation:** Medium (score: 33/100, 3 sellers)
+- **Highest-demand wilayas:** Alger
+- **Average selling price:** _no price data_
+- **Top complaints:** _none detected_
+- **Best posting hours:** 14:00–15:00
+- **Recommended offer:** Free delivery
+- **Opportunity score:** **22/100**
+
+  **Sample listings:**
+  - [Maroc : pendant que Mohamed VI s’auto-glorifie, la jeunesse fuit vers Ceuta](https://www.tsa-algerie.com/maroc-pendant-que-mohamed-vi-sauto-glorifie-la-jeunesse-fuit-vers-ceuta/) — _TSA Algerie_
+  - [How a massacre of Algerians in Paris was covered up](https://www.bbc.co.uk/news/world-africa-58927939) — _Hacker News_
+  - [Algerians massacred in Paris in 1961](http://www.history.com/this-day-in-history/algerians-massacred-in-paris) — _Hacker News_
+
+### 8. Product: Furniture
+
+- **Demand:** Medium (score: 45/100, 9 mentions)
+- **Saturation:** High (score: 91/100, 8 sellers)
+- **Highest-demand wilayas:** Alger
+- **Average selling price:** _no price data_
+- **Top complaints:** _none detected_
+- **Best posting hours:** 14:00–15:00
+- **Recommended offer:** Free delivery
+- **Opportunity score:** **20/100**
+
+  **Sample listings:**
+  - [Maroc : pendant que Mohamed VI s’auto-glorifie, la jeunesse fuit vers Ceuta](https://www.tsa-algerie.com/maroc-pendant-que-mohamed-vi-sauto-glorifie-la-jeunesse-fuit-vers-ceuta/) — _TSA Algerie_
+  - [France ou Algérie : où la diaspora a-t-elle intérêt à placer ses devises ?](https://www.tsa-algerie.com/france-ou-algerie-ou-la-diaspora-a-t-elle-interet-a-placer-ses-devises/) — _TSA Algerie_
+  - [Services bancaires : la Banque d’Algérie fixe six exigences aux banques](https://www.tsa-algerie.com/services-bancaires-la-banque-dalgerie-fixe-six-exigences-aux-banques/) — _TSA Algerie_
+
+## Wilaya Demand Heatmap
+
+| Rank | Wilaya | Products Mentioning |
+|------|--------|---------------------|
+| 1 | Alger | 6 |
+
+## Seasonal Insights
+
+| Season | Products Affected |
+|--------|-------------------|
+| Summer | Toys |
+
+## Pricing Insights
+
+_No pricing data detected this run._
+
+## Saturation Warnings
+
+_These products have many sellers — entering this market requires differentiation._
+
+- **Furniture** — 8 sellers, saturation score 91/100
+
+## Closed-Loop Status
+
+- ✅ **Collect** — 109 items from Algeria-tuned sources
+- ✅ **Algeria Pack** — WilayaExtractor, DarijaNLP, PaymentDetector, SeasonalDetector, ProductExtractor ran
+- ✅ **Aggregate** — 8 products aggregated
+- ✅ **Score** — Opportunity score computed per product
+- ✅ **Report** — Product intelligence cards generated
+- ⏸ **Act** — Manual: act on top opportunities (post listings, run campaigns)
+- ⏸ **Measure** — Outcomes tracked via metrics_input_template.json
+- ⏸ **Learn** — Opportunity score weights tune over time
+
+---
+
+_Market-Intel — Algeria Pack v1 + E-commerce Radar vertical._
+_Long-term moat: proprietary regional intelligence that global products cannot match._
