@@ -3,7 +3,7 @@
 > Decision ID: `dec_6b4cf5766b9e`
 > Priority: **P2**
 > ⏰ Publish within 7 days to ride the trend wave.
-> Generated: 2026-07-31T14:37:05.256680+00:00
+> Generated: 2026-07-31T19:53:48.725055+00:00
 
 ## Topic & angle
 
@@ -11,7 +11,7 @@ Publish a deep-dive on 'social / media / trends' within 7 days. Address the 0 do
 
 ## Why now
 
-Topic 'social / media / trends' is emerging — trend_score=100/100, 8 mentions, 0 pain points raised. Content published now will ride the rising wave.
+Topic 'social / media / trends' is emerging — trend_score=100/100, 9 mentions, 0 pain points raised. Content published now will ride the rising wave.
 
 ## SEO keywords (primary + secondary)
 
@@ -67,6 +67,6 @@ Secondary:
 
 - [The new fundamentals of brand strategy for modern social media](https://news.google.com/rss/articles/CBMirAFBVV95cUxOeU9hLTFvTktta2lYWkVVUnVBVHhxSjJTRHB6NGR6M2t6RkNjVGZyYmtEV2FvLXBCWG40eW5aSFBuRTFZWmdSNnpadE1UYUMyajdydkJmQjVEUDl1S2VpSXlDY3FvN0VBNTFjYW5vd3pTOHR2ZXFZRXBadFhRTldXamRoNUttQWNGMkZ0LThvOWJ2M0NMdGIzOTV1d1pSMUFiWU1PRWg2M0dkMkpk?oc=5)
 - [Digital marketing trends 2026: How AI, search and social will reshape growth](https://news.google.com/rss/articles/CBMiuAFBVV95cUxOZGNIZU1XTDNrckMxMDFzck9KUXRvVk9NeDJ1bENpNlc5NkR4eC1FaVM4TF9raXZ4Q3QyU201Y1gtOFdDU29XT19VYnVDYlkzX1NYT01ZYjhSVW9VdDhnd0pTOEZ5bllkVmIzejQ2aGxZaTFqdkNQR3dLWmdzSXQxNUw2RENZZ2RLWklDZHpuUkVqazhGeTBzYmNPLTNIOU56Yk9Xb0xRb1JOOUZzaWVSV3ZhZXNPdFdE?oc=5)
+- [The new social media rules: 3 trends marketers need in 2026](https://news.google.com/rss/articles/CBMikAFBVV95cUxQWUk3UzlEZ1J3MUdkRG1UZm9EM19QLWstWFZyem9kVTExMjZMTGVfcW5Sci0wSVQ0QVNGbGZIUWhlODFTbTRjdWRwRUFQekVqSzd4VUlMX2lfekFOdVdaaGFBaVVFN1U5RkVGSGVoRE9DLXVvVC1Eb3pLRWFoUzNLMmJzUWtYNUZENGkycUFqSHU?oc=5)
 - [7 Digital Marketing Trends to Watch for in 2026](https://news.google.com/rss/articles/CBMimAFBVV95cUxOT1lzSDY1dkhtcVBYdF9uZjBIRmhKUE11QlFZRVhRTVVjQXNOWEpIeDJsTXBjdmhhU0o4bmxvcHViMS1qWWVramFiaTFhMHQ4NXhzRVlzcWF5ZVg3X3czT18xNGtjcktraXFuMV9HLTktc1Qta0o4OWdmcUFwcHhDWm10SE9QcEFGanBaZGJGMVNOSkozQ0FDSw?oc=5)
 - [15 Social Media Marketing Trends for 2026 [Infographic]](https://news.google.com/rss/articles/CBMioAFBVV95cUxQYnBrQVNqR2lrRVY3cEQzN3dJN2I3RFY2UEpQWnJPbzJMcWVCMTZqM3B0ZU9HWnFWcUdVSDNsTXd2cEFjcEhRcmlBbTR3MEFDWnlUSVh3VGd2M0laWGFmejloOHlSNnc4OU9zXzZrMU1HcjBCcG5KemtSUnEwN1FwMXlDQllkSGhaOXpXcXFwdldTeFR1MHlXZFVSTWFzODFw?oc=5)
-- [Australian social media trends: The 2026 trust-shift](https://news.google.com/rss/articles/CBMickFVX3lxTE53N1d0ZDV5aFhxZG03UVdiWm13NDBfQjB2LTI2SzBjT01PQmN3R3BsaXRmeHBOQ2dMaWlpaGVqaEt0Y3RHckwyWV9JdUhMcWZubHFhVzRrMVRKU3BLUWMyYzBjSnkxTHEydHVlbzNpU1Bnd9IBd0FVX3lxTE56NFBwbmlORVVIcjJyMlRVMFVhYkVHTVM2NjBLUGZrNU41UDJvbGhQNXhpeENSU0hPdVlxM3ZjU25Ia1lZdHZKTFo0cG8yc2JTRkhJeW9CUUtnb21Oa3pxTllhUVBrZ1JuaEdlU0ljWE5kVUZvdVFB?oc=5)
