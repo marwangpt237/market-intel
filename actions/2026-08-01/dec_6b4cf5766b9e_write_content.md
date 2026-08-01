@@ -3,7 +3,7 @@
 > Decision ID: `dec_6b4cf5766b9e`
 > Priority: **P2**
 > ⏰ Publish within 7 days to ride the trend wave.
-> Generated: 2026-08-01T03:51:58.102820+00:00
+> Generated: 2026-08-01T08:34:56.817841+00:00
 
 ## Topic & angle
 
@@ -65,8 +65,8 @@ Secondary:
 
 ## Source evidence
 
+- [Top 6 Social Media Trends For Businesses: August 2026](https://news.google.com/rss/articles/CBMibEFVX3lxTFA0cmttVmIyOEp3bVR5cUM3aFRQSVZyMFZrNDl4UEk1RHZUTS0yZGNwOUktUUJxZXR0RUJnV0ZiczBGNEZCd0RDNFhWRjlrUHpkMG5vTHE0clQzblY0a1B1ZmtxQmhIOVVUMl9LTg?oc=5)
 - [The new fundamentals of brand strategy for modern social media](https://news.google.com/rss/articles/CBMirAFBVV95cUxOeU9hLTFvTktta2lYWkVVUnVBVHhxSjJTRHB6NGR6M2t6RkNjVGZyYmtEV2FvLXBCWG40eW5aSFBuRTFZWmdSNnpadE1UYUMyajdydkJmQjVEUDl1S2VpSXlDY3FvN0VBNTFjYW5vd3pTOHR2ZXFZRXBadFhRTldXamRoNUttQWNGMkZ0LThvOWJ2M0NMdGIzOTV1d1pSMUFiWU1PRWg2M0dkMkpk?oc=5)
 - [Digital marketing trends 2026: How AI, search and social will reshape growth](https://news.google.com/rss/articles/CBMiuAFBVV95cUxOZGNIZU1XTDNrckMxMDFzck9KUXRvVk9NeDJ1bENpNlc5NkR4eC1FaVM4TF9raXZ4Q3QyU201Y1gtOFdDU29XT19VYnVDYlkzX1NYT01ZYjhSVW9VdDhnd0pTOEZ5bllkVmIzejQ2aGxZaTFqdkNQR3dLWmdzSXQxNUw2RENZZ2RLWklDZHpuUkVqazhGeTBzYmNPLTNIOU56Yk9Xb0xRb1JOOUZzaWVSV3ZhZXNPdFdE?oc=5)
-- [The new social media rules: 3 trends marketers need in 2026](https://news.google.com/rss/articles/CBMikAFBVV95cUxQWUk3UzlEZ1J3MUdkRG1UZm9EM19QLWstWFZyem9kVTExMjZMTGVfcW5Sci0wSVQ0QVNGbGZIUWhlODFTbTRjdWRwRUFQekVqSzd4VUlMX2lfekFOdVdaaGFBaVVFN1U5RkVGSGVoRE9DLXVvVC1Eb3pLRWFoUzNLMmJzUWtYNUZENGkycUFqSHU?oc=5)
 - [7 Digital Marketing Trends to Watch for in 2026](https://news.google.com/rss/articles/CBMimAFBVV95cUxOT1lzSDY1dkhtcVBYdF9uZjBIRmhKUE11QlFZRVhRTVVjQXNOWEpIeDJsTXBjdmhhU0o4bmxvcHViMS1qWWVramFiaTFhMHQ4NXhzRVlzcWF5ZVg3X3czT18xNGtjcktraXFuMV9HLTktc1Qta0o4OWdmcUFwcHhDWm10SE9QcEFGanBaZGJGMVNOSkozQ0FDSw?oc=5)
-- [15 Social Media Marketing Trends for 2026 [Infographic]](https://news.google.com/rss/articles/CBMioAFBVV95cUxQYnBrQVNqR2lrRVY3cEQzN3dJN2I3RFY2UEpQWnJPbzJMcWVCMTZqM3B0ZU9HWnFWcUdVSDNsTXd2cEFjcEhRcmlBbTR3MEFDWnlUSVh3VGd2M0laWGFmejloOHlSNnc4OU9zXzZrMU1HcjBCcG5KemtSUnEwN1FwMXlDQllkSGhaOXpXcXFwdldTeFR1MHlXZFVSTWFzODFw?oc=5)
+- [The new social media rules: 3 trends marketers need in 2026](https://news.google.com/rss/articles/CBMikAFBVV95cUxQWUk3UzlEZ1J3MUdkRG1UZm9EM19QLWstWFZyem9kVTExMjZMTGVfcW5Sci0wSVQ0QVNGbGZIUWhlODFTbTRjdWRwRUFQekVqSzd4VUlMX2lfekFOdVdaaGFBaVVFN1U5RkVGSGVoRE9DLXVvVC1Eb3pLRWFoUzNLMmJzUWtYNUZENGkycUFqSHU?oc=5)
