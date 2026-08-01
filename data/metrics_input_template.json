@@ -2,6 +2,18 @@
   "_instructions": "Fill in the metrics for each action below, then save this file. The Learning Engine will read it on the next run and adjust scoring weights. Set status to 'sent' once you send/publish, 'published' once live, 'abandoned' to drop, 'paused' to defer.",
   "actions": [
     {
+      "id": "dec_733d6b399f4f",
+      "target": "digital / marketing / trends",
+      "type": "write_content",
+      "current_status": "draft",
+      "clicks": 0,
+      "signups": 0,
+      "conversions": 0,
+      "revenue": 0.0,
+      "status": "draft",
+      "notes": ""
+    },
+    {
       "id": "dec_0f56ad73e382",
       "target": "trends / marketing / new",
       "type": "write_content",
