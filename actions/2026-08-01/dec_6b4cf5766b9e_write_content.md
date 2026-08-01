@@ -3,7 +3,7 @@
 > Decision ID: `dec_6b4cf5766b9e`
 > Priority: **P2**
 > ⏰ Publish within 7 days to ride the trend wave.
-> Generated: 2026-08-01T13:56:44.945098+00:00
+> Generated: 2026-08-01T19:36:28.548058+00:00
 
 ## Topic & angle
 
@@ -11,7 +11,7 @@ Publish a deep-dive on 'social / media / trends' within 7 days. Address the 0 do
 
 ## Why now
 
-Topic 'social / media / trends' is emerging — trend_score=100/100, 11 mentions, 0 pain points raised. Content published now will ride the rising wave.
+Topic 'social / media / trends' is emerging — trend_score=100/100, 10 mentions, 0 pain points raised. Content published now will ride the rising wave.
 
 ## SEO keywords (primary + secondary)
 
@@ -69,4 +69,4 @@ Secondary:
 - [Top 6 Social Media Trends For Businesses: August 2026](https://news.google.com/rss/articles/CBMibEFVX3lxTFA0cmttVmIyOEp3bVR5cUM3aFRQSVZyMFZrNDl4UEk1RHZUTS0yZGNwOUktUUJxZXR0RUJnV0ZiczBGNEZCd0RDNFhWRjlrUHpkMG5vTHE0clQzblY0a1B1ZmtxQmhIOVVUMl9LTg?oc=5)
 - [Digital marketing trends 2026: How AI, search and social will reshape growth](https://news.google.com/rss/articles/CBMiuAFBVV95cUxOZGNIZU1XTDNrckMxMDFzck9KUXRvVk9NeDJ1bENpNlc5NkR4eC1FaVM4TF9raXZ4Q3QyU201Y1gtOFdDU29XT19VYnVDYlkzX1NYT01ZYjhSVW9VdDhnd0pTOEZ5bllkVmIzejQ2aGxZaTFqdkNQR3dLWmdzSXQxNUw2RENZZ2RLWklDZHpuUkVqazhGeTBzYmNPLTNIOU56Yk9Xb0xRb1JOOUZzaWVSV3ZhZXNPdFdE?oc=5)
 - [7 Digital Marketing Trends to Watch for in 2026](https://news.google.com/rss/articles/CBMimAFBVV95cUxOT1lzSDY1dkhtcVBYdF9uZjBIRmhKUE11QlFZRVhRTVVjQXNOWEpIeDJsTXBjdmhhU0o4bmxvcHViMS1qWWVramFiaTFhMHQ4NXhzRVlzcWF5ZVg3X3czT18xNGtjcktraXFuMV9HLTktc1Qta0o4OWdmcUFwcHhDWm10SE9QcEFGanBaZGJGMVNOSkozQ0FDSw?oc=5)
-- [The new social media rules: 3 trends marketers need in 2026](https://news.google.com/rss/articles/CBMikAFBVV95cUxQWUk3UzlEZ1J3MUdkRG1UZm9EM19QLWstWFZyem9kVTExMjZMTGVfcW5Sci0wSVQ0QVNGbGZIUWhlODFTbTRjdWRwRUFQekVqSzd4VUlMX2lfekFOdVdaaGFBaVVFN1U5RkVGSGVoRE9DLXVvVC1Eb3pLRWFoUzNLMmJzUWtYNUZENGkycUFqSHU?oc=5)
+- [15 Social Media Marketing Trends for 2026 [Infographic]](https://news.google.com/rss/articles/CBMioAFBVV95cUxQYnBrQVNqR2lrRVY3cEQzN3dJN2I3RFY2UEpQWnJPbzJMcWVCMTZqM3B0ZU9HWnFWcUdVSDNsTXd2cEFjcEhRcmlBbTR3MEFDWnlUSVh3VGd2M0laWGFmejloOHlSNnc4OU9zXzZrMU1HcjBCcG5KemtSUnEwN1FwMXlDQllkSGhaOXpXcXFwdldTeFR1MHlXZFVSTWFzODFw?oc=5)

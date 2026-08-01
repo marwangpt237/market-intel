@@ -3,7 +3,7 @@
 > Decision ID: `dec_733d6b399f4f`
 > Priority: **P2**
 > ⏰ Publish within 7 days to ride the trend wave.
-> Generated: 2026-08-01T13:56:44.945126+00:00
+> Generated: 2026-08-01T19:36:28.548076+00:00
 
 ## Topic & angle
 
@@ -66,7 +66,7 @@ Secondary:
 ## Source evidence
 
 - [How AI Influencers Are Changing Digital Marketing: Trends, Risks & Future Outlook](https://news.google.com/rss/articles/CBMinwFBVV95cUxQZjcyTmpsSHlSWXU0dVlNTHE5ZUJDUkhaeGdidEVGeUw5SzFCQ3FPZHgxSzkzdWZacmpXcHNVVTdBZ0Z6a2RhN1h5MmdCaGM5a1lBSzZXVlRYeUxMVVNLNjZKWENvd191VVFEVEE5WHhYcV9sb052ME1kZWs4THBUbmNzYzd6QlA5b01vNWRjRkw5bEFaLUJuNDNYNVFVNW8?oc=5)
-- [Digital Marketing Trends Every Hialeah Business Should Know in 2026](https://news.google.com/rss/articles/CBMiqgFBVV95cUxPUmZuWG9pOUVVbktkcFVTMU5jaU0tYUlrRmtLRDQzbGFncVotRVdtbFI0VFNoT2NtMk9WZklJakViNFc2Sjd2VzRKY0lkZXdFRTJQMUtDbHVHNmN1YW9WMWdfMFFUU09mYU8wWTdzc3dUeTNGS3pRangwcTl0MGYzMDQtYTZDVFBsWFF3RTllQkw5Z0ZvZTZxR1RwRUtYbENzNXdFSXBrMUJrZw?oc=5)
 - [5 Digital Marketing Trends Students Should Know - Leavey School of Business - SCU](https://news.google.com/rss/articles/CBMikAFBVV95cUxPSFlVWGFWeTBoMy1GRFNmYTJpM2tRTy10ZFV1SGU3czk0YlZjNmxHVWs0M2ZfVGRtNVFhdFU4am1iZlFpNDhPRjFYT3htamZzbzdqckdaR1UzUjl2UXRXcW10Y3kxU0x3WTJ5dzJwZHdzQmk2Q1E1RWdzN2FSZE5CcFpVQmJHNzdhTkFOMlYxelM?oc=5)
+- [Digital Marketing Trends Every Hialeah Business Should Know in 2026](https://news.google.com/rss/articles/CBMiqgFBVV95cUxPUmZuWG9pOUVVbktkcFVTMU5jaU0tYUlrRmtLRDQzbGFncVotRVdtbFI0VFNoT2NtMk9WZklJakViNFc2Sjd2VzRKY0lkZXdFRTJQMUtDbHVHNmN1YW9WMWdfMFFUU09mYU8wWTdzc3dUeTNGS3pRangwcTl0MGYzMDQtYTZDVFBsWFF3RTllQkw5Z0ZvZTZxR1RwRUtYbENzNXdFSXBrMUJrZw?oc=5)
 - [Digital Marketing Trends 2026: What Brands Need to Know Next](https://news.google.com/rss/articles/CBMiogFBVV95cUxNSl92d1NOc05YTFZnR3U1US0wN0JaZzFWRGFSRjRkZnhpSExoVFZkZmRzV2x0ajFDcHp1bEE0N054b19Tb3Noblc0YUhnT0V4dmNsemdhMW84OUtFdl85VkI4Rl9HdTJmS2RfMms4cDR3cGNpV1JyTXlsbXpzLVB2R1FqeXBLT1pZdWdmN2tGVV9GTmFITkpXcTBCTERCT2pjY3c?oc=5)
 - [The Top Digital Marketing Trends Shaping Business Growth Today](https://news.google.com/rss/articles/CBMinAFBVV95cUxOckJadkVzeWpWMDV4VW5fNW1oQlFVRDRCQVRsM0FHOGM2czBYT1dScmZTOVgyYkxKX3gzT0lJdW5XM3NqTHQ5dHFwTWxzcUpNX1hCUDZhdjFoT05TWk5uSTV5b1piWnYtMXRwRnJfQW1mbEMzSW9DMGE1NzNGYkNmaU5fUHVoY1QxcTJTMGxPLVNSMzRhTUZzTWtNTlo?oc=5)
