@@ -2,7 +2,7 @@
 
 > Decision ID: `dec_e07306a6103a`
 > Priority: **P1**
-> Generated: 2026-08-02T04:02:14.419930+00:00
+> Generated: 2026-08-02T14:05:30.506620+00:00
 
 ## Objective
 
@@ -16,7 +16,7 @@ Launch comparison campaign targeting 'toptal alternative' search intent. Highlig
 
 ## Pain points to address
 
-Capture dissatisfied toptal users — opportunity=60/100. 0 pain points, 3 buying signals detected.
+Capture dissatisfied toptal users — opportunity=40/100. 0 pain points, 2 buying signals detected.
 
 ## Ad copy variants (A/B/C test)
 
