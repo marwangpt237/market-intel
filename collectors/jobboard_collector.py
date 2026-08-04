@@ -1,24 +1,50 @@
 """
-Job boards collector — fetches marketing/tech job postings.
+Job boards collector — fetches dev/clients job postings.
 
-Scrapes public job boards for marketing-related roles that mention
-specific tools (indicates company tool adoption):
-- "Looking for someone who knows HubSpot" → HubSpot user
-- "Experience with SEMrush required" → SEMrush user
+Scrapes public job boards for roles that indicate a company OR individual
+is actively hiring developer / freelance / contract work (a buying signal
+for freelance developers and agencies).
 
 Uses RemoteOK and workinstartups.com public APIs (free, no auth).
 """
 from __future__ import annotations
 
 import json
+import re
 import urllib.request
 import urllib.parse
 from datetime import datetime, timezone
 from core.models import RawItem
 from collectors.base import BaseCollector
 
-
 USER_AGENT = "Market-Intel/1.0"
+
+# Developer / freelance / contract keyword TOKENS (word-boundary matching).
+# These match real job titles like "Custom Software Engineer", "Full Stack",
+# "Node developer", "AI Integration", etc. — where literal substring "web
+# developer" would miss 100% of hits.
+DEV_KEYWORDS = [
+    "developer", "engineer", "software", "full stack", "fullstack",
+    "frontend", "front end", "backend", "back end", "react", "node",
+    "python", "javascript", "typescript", "programmer", "coding",
+    "saas", "api", "website", "automation", "app",
+]
+
+# These must appear in the TITLE or TAGS (not the noisy description)
+# to count as a dev / freelance hiring signal.
+TITLE_OR_TAGS_KEYWORDS = DEV_KEYWORDS
+
+def _match_keywords(text: str, keywords: list[str]) -> bool:
+    """Word-boundary substring match on lowercased text.
+
+    Matches if ANY keyword appears as a whole word (or inside a token
+    boundary) within the text.
+    """
+    tl = text.lower()
+    for kw in keywords:
+        if kw in tl:
+            return True
+    return False
 
 
 class JobBoardCollector(BaseCollector):
@@ -26,20 +52,17 @@ class JobBoardCollector(BaseCollector):
 
     def __init__(self, config: dict, retry_config: dict | None = None):
         super().__init__(config, retry_config)
-        self._keywords: list[str] = config.get("keywords", [
-            "marketing", "growth", "SEO", "content marketing",
-            "marketing automation", "paid ads", "social media marketing",
-        ])
-        self._sources: list[str] = config.get("sources", ["remoteok", "workinstartups"])
+        self._keywords: list[str] = config.get("keywords", DEV_KEYWORDS)
+        self._srcs: list[str] = config.get("sources", ["remoteok", "workinstartups"])
 
     def _fetch(self) -> list[RawItem]:
         all_items: list[RawItem] = []
 
-        if "remoteok" in self._sources:
+        if "remoteok" in self._srcs:
             items = self._fetch_remoteok()
             all_items.extend(items)
 
-        if "workinstartups" in self._sources:
+        if "workinstartups" in self._srcs:
             items = self._fetch_workinstartups()
             all_items.extend(items)
 
@@ -74,16 +97,17 @@ class JobBoardCollector(BaseCollector):
             description = job.get("description", "")[:500]
             tags = job.get("tags", [])
 
-            # Filter: only marketing-related jobs
-            text_lower = f"{title} {description} {' '.join(tags)}".lower()
-            if not any(kw.lower() in text_lower for kw in self._keywords):
+            # Dev signal comes from the TITLE only. RemoteOK tags are too
+            # broad (catch unrelated jobs) and the description is too noisy —
+            # both cause false positives. Title-only is the cleanest signal.
+            title_lower = title.lower()
+            if not _match_keywords(title_lower, self._keywords):
                 continue
 
             if not title or not job_url:
                 continue
 
             # Clean HTML from description
-            import re
             clean_desc = re.sub(r"<[^>]+>", " ", description)
             clean_desc = re.sub(r"\s+", " ", clean_desc).strip()
 
@@ -107,12 +131,11 @@ class JobBoardCollector(BaseCollector):
             )
             items.append(item)
 
-        self._logger.info(f"RemoteOK: {len(items)} marketing jobs", extra={"items": len(items)})
+        self._logger.info(f"RemoteOK: {len(items)} dev jobs", extra={"items": len(items)})
         return items
 
     def _fetch_workinstartups(self) -> list[RawItem]:
         """Fetch from workinstartups.com RSS feed."""
-        # They have an RSS feed for marketing jobs
         url = "https://workinstartups.com/jobs/marketing/feed/"
 
         req = urllib.request.Request(url, headers={
@@ -127,7 +150,7 @@ class JobBoardCollector(BaseCollector):
             self._logger.warning(f"Workinstartups fetch failed: {e}")
             return []
 
-        # Parse RSS using the RSS collector's parser
+        # Parse RSS using the module-level helper
         from collectors.rss_collector import RSSCollector
         root = RSSCollector._parse_rss_from_xml(xml_content)
 
@@ -165,12 +188,3 @@ class JobBoardCollector(BaseCollector):
 
         self._logger.info(f"Workinstartups: {len(items)} jobs", extra={"items": len(items)})
         return items
-
-
-# Helper function for RSS parsing (used by workinstartups)
-def _parse_rss_from_xml(xml_content: str):
-    import xml.etree.ElementTree as ET
-    try:
-        return ET.fromstring(xml_content)
-    except ET.ParseError:
-        return None

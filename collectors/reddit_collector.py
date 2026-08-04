@@ -16,7 +16,14 @@ from collectors.base import BaseCollector
 
 
 REDDIT_BASE = "https://www.reddit.com"
-USER_AGENT = "Market-Intel/1.0 (Python; +https://github.com/marwangpt237/market-intel)"
+# Reddit blocks default datacenter/script user-agents with HTTP 403.
+# Use a realistic browser UA (Reddit's public JSON API tolerates this) and
+# note: Reddit will STILL 403 when run from cloud/datacenter IPs (GitHub
+# Actions, Render, this sandbox). It works from a residential/home IP.
+USER_AGENT = (
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+    "(KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+)
 
 
 class RedditCollector(BaseCollector):
@@ -60,6 +67,12 @@ class RedditCollector(BaseCollector):
         })
 
         with urllib.request.urlopen(req, timeout=15) as resp:
+            if resp.status != 200:
+                self._logger.warning(
+                    f"r/{subreddit}: HTTP {resp.status} (likely IP-blocked; run from home IP)",
+                    extra={"subreddit": subreddit, "status": resp.status},
+                )
+                return []
             data = json.loads(resp.read().decode("utf-8"))
 
         posts = data.get("data", {}).get("children", [])

@@ -107,14 +107,45 @@ collectors:
   # Job boards
   job_boards:
     enabled: true
+    strong_keywords:
+      - developer
+      - engineer
+      - software
+      - full stack
+      - fullstack
+      - frontend
+      - backend
+      - react
+      - node
+      - python
+      - javascript
+      - typescript
+      - saas
+      - api
+      - website
+      - programmer
+      - automation
     keywords:
-      - web developer
-      - full stack developer
-      - front-end developer
-      - react developer
-      - node.js developer
-      - freelance developer
-      - contract developer
+      - developer
+      - engineer
+      - software
+      - full stack
+      - fullstack
+      - frontend
+      - front end
+      - backend
+      - back end
+      - react
+      - node
+      - python
+      - javascript
+      - typescript
+      - programmer
+      - saas
+      - api
+      - website
+      - automation
+      - app
     sources: ["remoteok", "workinstartups"]
 
   # G2 disabled — not relevant for client acquisition
