@@ -56,6 +56,10 @@ class ClientAcquisitionReportGenerator(BaseReportGenerator):
 
             entities = signals.get("entities", {})
             lead_score = entities.get("lead_score", 0)
+            # Skip 'not_a_client' (freelancers advertising their own services)
+            # and low-score noise. Those aren't buyers.
+            if entities.get("client_type") == "not_a_client":
+                continue
             if lead_score < 5:  # filter out noise
                 continue
 
@@ -76,6 +80,7 @@ class ClientAcquisitionReportGenerator(BaseReportGenerator):
                 "project_types": entities.get("project_types", []),
                 "outreach_channel": entities.get("outreach_channel", "email_or_linkedin"),
                 "client_type": entities.get("client_type", "freelance_client"),
+                "client_reason": entities.get("client_reason", ""),
                 "budget_amounts": entities.get("budget_amounts", []),
                 "authority_score": item.metadata.get("authority_score", 50),
                 "body_excerpt": (item.body or "")[:300] if item.body else "",

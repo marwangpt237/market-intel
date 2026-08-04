@@ -293,8 +293,31 @@ class ClientAcquisitionModule(BaseDomainModule):
         title_lower = (item.title or "").lower()
         is_employee_blocked = any(b in title_lower for b in _EMPLOYEE_ROLE_HARD_BLOCK)
         client_type = "freelance_client"  # default assumption
+        client_reason = "default"
         if employee_role_score >= 3 or is_employee_blocked:
             client_type = "employee_job"
+            client_reason = "employee_markers"
+
+        # ─── Reddit flair override (strongest signal) ──────────────────
+        # r/forhire + r/freelance use flairs that are MORE reliable than any
+        # text regex:
+        #   "[Hiring]" / "For Hire" / "Freelancer -- offering" variants
+        #   - link_flair_text "Hiring"      → a BUYER/client (money on the table)
+        #   - link_flair_text "For Hire"    → a freelancer ADVERTISING services
+        #     (that's SUPPLY, not a client — steer clear for the closer model)
+        flair = (item.metadata or {}).get("link_flair_text") or ""
+        flair_lower = flair.lower()
+        if flair_lower:
+            if "for hire" in flair_lower or "forhire" in flair_lower.lower() \
+                    or "offering" in flair_lower or "for sale" in flair_lower \
+                    or "freelancer" in flair_lower:
+                # Someone offering their own services = NOT a client
+                client_type = "not_a_client"
+                client_reason = f"reddit_flair:{flair}"
+            elif "hire" in flair_lower or "hiring" in flair_lower \
+                    or "client" in flair_lower or "job" in flair_lower:
+                client_type = "freelance_client"
+                client_reason = f"reddit_flair:{flair}"
 
         # ─── Outreach channel recommendation ────────────────────────────
         source = (item.source or "").lower()
@@ -324,6 +347,12 @@ class ClientAcquisitionModule(BaseDomainModule):
             (5 if project_types else 0)
         if client_type == "employee_job":
             base_score = min(base_score, 20)  # never rank employee-jobs high
+        elif client_type == "not_a_client":
+            base_score = 0  # freelancer offering services = not a lead
+        elif client_type == "freelance_client" and flair_lower and "hir" in flair_lower:
+            # Confirmed [Hiring] flair = explicit buyer; give it a strong floor
+            # so it outranks noise even without heavy text signals.
+            base_score = max(base_score, 45)
         lead_score = min(100, int(base_score))
 
         # ─── Severity ───────────────────────────────────────────────────
@@ -349,6 +378,7 @@ class ClientAcquisitionModule(BaseDomainModule):
             "buying_intent_score": buying_score,
             "budget_score": budget_score,
             "client_type": client_type,
+            "client_reason": client_reason,
         }
         if budget_amounts:
             entities["budget_amounts"] = budget_amounts
