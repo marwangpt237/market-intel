@@ -141,6 +141,41 @@ _COUNTRY_PATTERNS: dict[str, list[str]] = {
     "Kenya": ["kenya", "nairobi"],
 }
 
+# ─── Employee-role vs freelance-client classification ───────────────────
+# CRITICAL for the money play: job-board listings that hire a FULL-TIME
+# EMPLOYEE (e.g. "Technical Sales Enablement Manager", "Account Executive",
+# "Product Manager") are NOT freelance clients — they're people competing
+# for a salary. The 30%-closer model wants the OPPOSITE: a founder/owner who
+# wants to HIRE A FREELANCER/CONTRACTOR for their project.
+#
+# These markers appear in full-time employee role titles. If present at the
+# SAME intensity as buying-intent, the item is likely a job listing, not a
+# freelance-client lead → we DOWNWEIGHT its lead_score.
+_EMPLOYEE_ROLE_PATTERNS: list[tuple[str, str, int]] = [
+    # Full-time / salaried role markers
+    ("manager", r"\b(manager|management|head of|director|vp|department lead)\b", 2),
+    ("executive", r"\b(executive|account executive|chief|officer|president)\b", 2),
+    ("closer", r"\b(closer|sales|business development|account management)\b", 2),
+    ("coordinator", r"\b(coordinator|specialist|associate|analyst)\b", 1),
+    ("fulltime", r"\b(full[- ]?time|permanent|salaried|employee|employment)\b", 2),
+    ("jobposting", r"\b(job posting|apply now|we're hiring|we are hiring|open position|join our team|careers)\b", 2),
+]
+
+# Titles/roles we should NEVER rank as freelance-client leads (they are
+# salaried employees). Matched against the item title.
+_EMPLOYEE_ROLE_HARD_BLOCK: list[str] = [
+    " sales ", " vendor ", " closer ", " account executive ", " program delivery ",
+    " project manager ", " operations ", " general labor ", " fireman ", " coach ",
+    " coordinator ", " specialist ", " associate ", " analyst ",
+]
+
+# Titles that DO indicate an actual developer freelancer/client hire.
+_FREELANCE_CLIENT_TITLE: list[str] = [
+    "developer", "engineer", "full stack", "freelance", "contract",
+    "we need", "looking for a developer", "need a developer", "hire a developer",
+    "build", "app", "website", "mvp", "saas",
+]
+
 # ─── Project type detection ─────────────────────────────────────────────
 _PROJECT_TYPE_PATTERNS: dict[str, list[str]] = {
     "website": ["website", "web site", "web build", "site redesign"],
@@ -248,6 +283,19 @@ class ClientAcquisitionModule(BaseDomainModule):
                     project_types.append(ptype)
                     break
 
+        # ─── Employee-role / freelance-client classification ──────────
+        # Determine whether this is a full-time EMPLOYEE job listing (bad →
+        # downweight) or a genuine freelance/contract client (good).
+        employee_role_score = 0
+        for _sn, pattern, weight in _EMPLOYEE_ROLE_PATTERNS:
+            if re.search(pattern, text, re.IGNORECASE):
+                employee_role_score += weight
+        title_lower = (item.title or "").lower()
+        is_employee_blocked = any(b in title_lower for b in _EMPLOYEE_ROLE_HARD_BLOCK)
+        client_type = "freelance_client"  # default assumption
+        if employee_role_score >= 3 or is_employee_blocked:
+            client_type = "employee_job"
+
         # ─── Outreach channel recommendation ────────────────────────────
         source = (item.source or "").lower()
         source_name = (item.source_name or "").lower()
@@ -267,14 +315,16 @@ class ClientAcquisitionModule(BaseDomainModule):
         # ─── Composite lead score (0-100) ───────────────────────────────
         # buying_score max ~ 30 (5 signals * 5 weight + 5 signals * 4 weight etc.)
         # budget_score max ~ 20
-        # Niches + countries + project_types add small bonuses
-        lead_score = min(100, int(
-            buying_score * 2.5           # 0-50 range
-            + budget_score * 2.0          # 0-30 range
-            + (10 if niches else 0)       # niche known = +10
-            + (10 if countries else 0)    # location known = +10
-            + (5 if project_types else 0) # project type known = +5
-        ))
+        # ─── Composite lead score (0-100) ───────────────────────────────
+        # buying_score max ~ 30, budget_score max ~ 20, +niche/country/type.
+        # If this looks like a full-time EMPLOYEE job listing, cap it hard so
+        # real freelance-client leads rank above it.
+        base_score = buying_score * 2.5 + budget_score * 2.0 + \
+            (10 if niches else 0) + (10 if countries else 0) + \
+            (5 if project_types else 0)
+        if client_type == "employee_job":
+            base_score = min(base_score, 20)  # never rank employee-jobs high
+        lead_score = min(100, int(base_score))
 
         # ─── Severity ───────────────────────────────────────────────────
         if lead_score >= 40:
@@ -298,6 +348,7 @@ class ClientAcquisitionModule(BaseDomainModule):
             "lead_score": lead_score,
             "buying_intent_score": buying_score,
             "budget_score": budget_score,
+            "client_type": client_type,
         }
         if budget_amounts:
             entities["budget_amounts"] = budget_amounts

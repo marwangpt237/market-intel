@@ -75,6 +75,7 @@ class ClientAcquisitionReportGenerator(BaseReportGenerator):
                 "countries": entities.get("countries", []),
                 "project_types": entities.get("project_types", []),
                 "outreach_channel": entities.get("outreach_channel", "email_or_linkedin"),
+                "client_type": entities.get("client_type", "freelance_client"),
                 "budget_amounts": entities.get("budget_amounts", []),
                 "authority_score": item.metadata.get("authority_score", 50),
                 "body_excerpt": (item.body or "")[:300] if item.body else "",
@@ -90,8 +91,14 @@ class ClientAcquisitionReportGenerator(BaseReportGenerator):
                 project_type_counts[p] += 1
             channel_counts[entities.get("outreach_channel", "email_or_linkedin")] += 1
 
-        # Sort prospects by lead_score (desc)
-        prospects.sort(key=lambda p: p["lead_score"], reverse=True)
+        # Sort: freelance clients first, then by lead_score desc.
+        # Employee-job listings (nobody to sell to — they hire a salary) sink.
+        prospects.sort(
+            key=lambda p: (
+                0 if p["client_type"] == "freelance_client" else 1,
+                -p["lead_score"],
+            )
+        )
         top_prospects = prospects[: self._top_prospects]
 
         # ─── Build report ────────────────────────────────────────────────
@@ -143,16 +150,17 @@ class ClientAcquisitionReportGenerator(BaseReportGenerator):
         lines.append("")
 
         if top_prospects:
-            lines.append("| # | Score | Source | Country | Niche | Project Type | Budget | Title |")
-            lines.append("|---|-------|--------|---------|-------|--------------|--------|-------|")
+            lines.append("| # | Type | Score | Source | Country | Niche | Project Type | Budget | Title |")
+            lines.append("|---|------|-------|--------|---------|-------|--------------|--------|-------|")
             for i, p in enumerate(top_prospects, 1):
                 countries = ", ".join(p["countries"][:2]) or "—"
                 niches = ", ".join(p["niches"][:2]) or "—"
                 ptypes = ", ".join(p["project_types"][:2]) or "—"
                 budget = f"${p['budget_amounts'][0]:.0f}" if p["budget_amounts"] else "—"
-                title = p["title"][:60].replace("|", "\\|")
+                title = p["title"][:55].replace("|", "\\|")
+                ctype = "CLIENT" if p["client_type"] == "freelance_client" else "JOB"
                 lines.append(
-                    f"| {i} | **{p['lead_score']}** | {p['source'][:20]} | "
+                    f"| {i} | {ctype} | **{p['lead_score']}** | {p['source'][:16]} | "
                     f"{countries} | {niches} | {ptypes} | {budget} | "
                     f"[{title}]({p['url']}) |"
                 )
@@ -165,6 +173,7 @@ class ClientAcquisitionReportGenerator(BaseReportGenerator):
                 lines.append(f"#### {i}. {p['title'][:100]}")
                 lines.append("")
                 lines.append(f"- **URL:** {p['url']}")
+                lines.append(f"- **Type:** {'🟢 Freelance client (sell to this person)' if p['client_type']=='freelance_client' else '🔻 Employee job listing (they pay a salary, not a freelancer)'}")
                 lines.append(f"- **Source:** {p['source']}")
                 lines.append(f"- **Lead score:** {p['lead_score']}/100 (buying intent: {p['buying_intent_score']}, budget: {p['budget_score']})")
                 lines.append(f"- **Countries:** {', '.join(p['countries']) or 'unknown'}")
