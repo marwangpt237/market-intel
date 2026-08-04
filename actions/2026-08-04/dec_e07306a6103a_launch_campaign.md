@@ -2,7 +2,7 @@
 
 > Decision ID: `dec_e07306a6103a`
 > Priority: **P1**
-> Generated: 2026-08-04T03:45:32.626981+00:00
+> Generated: 2026-08-04T14:57:15.075485+00:00
 
 ## Objective
 
@@ -16,13 +16,13 @@ Launch comparison campaign targeting 'toptal alternative' search intent. Highlig
 
 ## Pain points to address
 
-Capture dissatisfied toptal users — opportunity=100/100. 0 pain points, 6 buying signals detected.
+Capture dissatisfied toptal users — opportunity=100/100. 0 pain points, 5 buying signals detected.
 
 ## Ad copy variants (A/B/C test)
 
 ### Variant A — Pain-point forward
 **Headline**: Tired of toptal's pricing?
-**Description**: 5+ users complained this month. See the alternative built for teams like yours.
+**Description**: 3+ users complained this month. See the alternative built for teams like yours.
 **CTA**: See comparison
 
 ### Variant B — Outcome forward
@@ -32,7 +32,7 @@ Capture dissatisfied toptal users — opportunity=100/100. 0 pain points, 6 buyi
 
 ### Variant C — Social proof forward
 **Headline**: Why teams are switching from toptal
-**Description**: Real reviews from 5 users who migrated. Read the case studies.
+**Description**: Real reviews from 3 users who migrated. Read the case studies.
 **CTA**: Read case studies
 
 ## Landing page requirements
@@ -60,5 +60,3 @@ Capture dissatisfied toptal users — opportunity=100/100. 0 pain points, 6 buyi
 - [Toptal: CAD Engineer — AI Model Training & Evaluation | Remote](https://weworkremotely.com/remote-jobs/toptal-cad-engineer-ai-model-training-evaluation-remote)
 - [Toptal : Technical Program Manager — ServiceNow Program | Remote](https://weworkremotely.com/remote-jobs/toptal-technical-program-manager-servicenow-program-remote)
 - [Toptal: Senior ServiceNow Developer | Remote](https://weworkremotely.com/remote-jobs/toptal-senior-servicenow-developer-remote)
-- [Toptal: STEP Platform Developer/Engineer — MDM | Remote](https://weworkremotely.com/remote-jobs/toptal-step-platform-developer-engineer-mdm-remote)
-- [Toptal: Scrum Master — Agile & Waterfall Hybrid Delivery | Remote](https://weworkremotely.com/remote-jobs/toptal-scrum-master-agile-waterfall-hybrid-delivery-remote)
