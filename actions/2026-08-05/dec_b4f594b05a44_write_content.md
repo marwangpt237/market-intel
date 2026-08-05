@@ -3,7 +3,7 @@
 > Decision ID: `dec_b4f594b05a44`
 > Priority: **P2**
 > ⏰ Publish within 7 days to ride the trend wave.
-> Generated: 2026-08-05T03:34:17.598485+00:00
+> Generated: 2026-08-05T14:34:32.601272+00:00
 
 ## Topic & angle
 
@@ -11,7 +11,7 @@ Publish a deep-dive on 'digital / trends / marketing' within 7 days. Address the
 
 ## Why now
 
-Topic 'digital / trends / marketing' is emerging — trend_score=62/100, 5 mentions, 0 pain points raised. Content published now will ride the rising wave.
+Topic 'digital / trends / marketing' is emerging — trend_score=75/100, 6 mentions, 0 pain points raised. Content published now will ride the rising wave.
 
 ## SEO keywords (primary + secondary)
 
@@ -67,6 +67,6 @@ Secondary:
 
 - [5 Digital Marketing Trends Students Should Know - Leavey School of Business - SCU](https://news.google.com/rss/articles/CBMikAFBVV95cUxPSFlVWGFWeTBoMy1GRFNmYTJpM2tRTy10ZFV1SGU3czk0YlZjNmxHVWs0M2ZfVGRtNVFhdFU4am1iZlFpNDhPRjFYT3htamZzbzdqckdaR1UzUjl2UXRXcW10Y3kxU0x3WTJ5dzJwZHdzQmk2Q1E1RWdzN2FSZE5CcFpVQmJHNzdhTkFOMlYxelM?oc=5)
 - [Digital Marketing Trends 2026: What Brands Need to Know Next](https://news.google.com/rss/articles/CBMiogFBVV95cUxNSl92d1NOc05YTFZnR3U1US0wN0JaZzFWRGFSRjRkZnhpSExoVFZkZmRzV2x0ajFDcHp1bEE0N054b19Tb3Noblc0YUhnT0V4dmNsemdhMW84OUtFdl85VkI4Rl9HdTJmS2RfMms4cDR3cGNpV1JyTXlsbXpzLVB2R1FqeXBLT1pZdWdmN2tGVV9GTmFITkpXcTBCTERCT2pjY3c?oc=5)
-- [Digital Marketing Trends Every Hialeah Business Should Know in 2026](https://news.google.com/rss/articles/CBMiqgFBVV95cUxPUmZuWG9pOUVVbktkcFVTMU5jaU0tYUlrRmtLRDQzbGFncVotRVdtbFI0VFNoT2NtMk9WZklJakViNFc2Sjd2VzRKY0lkZXdFRTJQMUtDbHVHNmN1YW9WMWdfMFFUU09mYU8wWTdzc3dUeTNGS3pRangwcTl0MGYzMDQtYTZDVFBsWFF3RTllQkw5Z0ZvZTZxR1RwRUtYbENzNXdFSXBrMUJrZw?oc=5)
 - [Digital marketing trends: Key Strategies](https://news.google.com/rss/articles/CBMiXkFVX3lxTE1nekl2VVg0WXBudXFqWXdSS01RRmZaLWlBNVpjWm93eC1QUzcwUHhiUWpqZFBEaHhJdWlmeWF5WjdFMy01U0h0SlJPQXd2cEV4TkV4OHZKclZVaVVyX3c?oc=5)
-- [10 Key Trends in Digital Commerce USA](https://news.google.com/rss/articles/CBMiXEFVX3lxTE1LSmZ6MksydUZlbWtJVEU1WUNqM0MtMEd5dTBaMnM0NXNTZ0huYWpzVmFhSVBMUUQ5V1EzclM4TEROUlpNeksxX204d1lSc3VDa2pqWGd1cGlvclpu?oc=5)
+- [Digital Privacy Trends 2026](https://news.google.com/rss/articles/CBMibkFVX3lxTE0wenp6WGsyb1NoeDBMUWE1czhYZ3MzWnRjUWh2NmhQS3JyQ3VkTTVncUFhc3k3eDRVbkhDQWN5Tzh1MG1JS1IzazlDd2xhYjJ0U2oySm9xdEpBUmNhZDdseDBlSUItNVJ0RVo0Smxn?oc=5)
+- [Brazil Digital Advertising Trends Survey H1 2026](https://news.google.com/rss/articles/CBMiigFBVV95cUxOakdudGlvbHhtUTdSVThsTFNkVks5U3MwR0FwVG9QemNSUUNYQW5WWVJYTFdZUjQ0X1d0ZF9JMzRvejFzc2VrSTQzc0RvOFFnSEFvYWVrcTZJMHpmSlgxNWJoVmVyYmc3VlByQnZDdlRuREdFaGFIYkpDRDgydWE2X2E5N0lSSXFSQ1E?oc=5)

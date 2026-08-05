@@ -3,7 +3,7 @@
 > Decision ID: `dec_9364104064dc`
 > Priority: **P2**
 > ⏰ Publish within 7 days to ride the trend wave.
-> Generated: 2026-08-05T03:34:17.598448+00:00
+> Generated: 2026-08-05T14:34:32.601237+00:00
 
 ## Topic & angle
 
@@ -68,5 +68,5 @@ Secondary:
 - [Digital marketing trends 2026: How AI, search and social will reshape growth](https://news.google.com/rss/articles/CBMiuAFBVV95cUxOZGNIZU1XTDNrckMxMDFzck9KUXRvVk9NeDJ1bENpNlc5NkR4eC1FaVM4TF9raXZ4Q3QyU201Y1gtOFdDU29XT19VYnVDYlkzX1NYT01ZYjhSVW9VdDhnd0pTOEZ5bllkVmIzejQ2aGxZaTFqdkNQR3dLWmdzSXQxNUw2RENZZ2RLWklDZHpuUkVqazhGeTBzYmNPLTNIOU56Yk9Xb0xRb1JOOUZzaWVSV3ZhZXNPdFdE?oc=5)
 - [7 Digital Marketing Trends to Watch for in 2026](https://news.google.com/rss/articles/CBMimAFBVV95cUxOT1lzSDY1dkhtcVBYdF9uZjBIRmhKUE11QlFZRVhRTVVjQXNOWEpIeDJsTXBjdmhhU0o4bmxvcHViMS1qWWVramFiaTFhMHQ4NXhzRVlzcWF5ZVg3X3czT18xNGtjcktraXFuMV9HLTktc1Qta0o4OWdmcUFwcHhDWm10SE9QcEFGanBaZGJGMVNOSkozQ0FDSw?oc=5)
 - [15 Social Media Marketing Trends for 2026 [Infographic]](https://news.google.com/rss/articles/CBMioAFBVV95cUxQYnBrQVNqR2lrRVY3cEQzN3dJN2I3RFY2UEpQWnJPbzJMcWVCMTZqM3B0ZU9HWnFWcUdVSDNsTXd2cEFjcEhRcmlBbTR3MEFDWnlUSVh3VGd2M0laWGFmejloOHlSNnc4OU9zXzZrMU1HcjBCcG5KemtSUnEwN1FwMXlDQllkSGhaOXpXcXFwdldTeFR1MHlXZFVSTWFzODFw?oc=5)
-- [Top 6 Social Media Trends For Businesses: August 2026](https://news.google.com/rss/articles/CBMibEFVX3lxTFA0cmttVmIyOEp3bVR5cUM3aFRQSVZyMFZrNDl4UEk1RHZUTS0yZGNwOUktUUJxZXR0RUJnV0ZiczBGNEZCd0RDNFhWRjlrUHpkMG5vTHE0clQzblY0a1B1ZmtxQmhIOVVUMl9LTg?oc=5)
 - [Australian social media trends: The 2026 trust-shift](https://news.google.com/rss/articles/CBMickFVX3lxTE53N1d0ZDV5aFhxZG03UVdiWm13NDBfQjB2LTI2SzBjT01PQmN3R3BsaXRmeHBOQ2dMaWlpaGVqaEt0Y3RHckwyWV9JdUhMcWZubHFhVzRrMVRKU3BLUWMyYzBjSnkxTHEydHVlbzNpU1Bnd9IBd0FVX3lxTE56NFBwbmlORVVIcjJyMlRVMFVhYkVHTVM2NjBLUGZrNU41UDJvbGhQNXhpeENSU0hPdVlxM3ZjU25Ia1lZdHZKTFo0cG8yc2JTRkhJeW9CUUtnb21Oa3pxTllhUVBrZ1JuaEdlU0ljWE5kVUZvdVFB?oc=5)
+- [Top 6 Social Media Trends For Businesses: August 2026](https://news.google.com/rss/articles/CBMibEFVX3lxTFA0cmttVmIyOEp3bVR5cUM3aFRQSVZyMFZrNDl4UEk1RHZUTS0yZGNwOUktUUJxZXR0RUJnV0ZiczBGNEZCd0RDNFhWRjlrUHpkMG5vTHE0clQzblY0a1B1ZmtxQmhIOVVUMl9LTg?oc=5)
