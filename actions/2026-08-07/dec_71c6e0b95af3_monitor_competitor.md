@@ -2,11 +2,11 @@
 
 > Decision ID: `dec_71c6e0b95af3`
 > Priority: **P2**
-> Generated: 2026-08-07T13:40:52.501683+00:00
+> Generated: 2026-08-07T19:16:48.060629+00:00
 
 ## Watch trigger
 
-Competitor google shows momentum — threat_score=55/100, 11 mentions, 0 positive sentiment items.
+Competitor google shows momentum — threat_score=45/100, 9 mentions, 0 positive sentiment items.
 
 ## Action
 
